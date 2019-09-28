@@ -5,7 +5,7 @@ import net.ocheyedan.wrk.Output;
 import net.ocheyedan.wrk.cmd.Args;
 import net.ocheyedan.wrk.cmd.Command;
 import net.ocheyedan.wrk.cmd.Usage;
-import org.codehaus.jackson.type.TypeReference;
+import com.fasterxml.jackson.core.type.TypeReference;
 
 import java.io.File;
 import java.io.FileNotFoundException;

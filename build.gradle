@@ -1,0 +1,31 @@
+plugins {
+    id "application"
+    id "java"
+    id "idea"
+}
+
+group = "net.ocheyedan.wrk"
+version = "1.0"
+
+repositories {
+    // Standard Maven 
+    mavenCentral()
+}
+
+dependencies {
+//    compile group: 'org.codehaus.jackson', name: 'jackson-mapper-asl', version: '1.9.5'
+    compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.9.10'
+
+}
+
+// Java version selection
+sourceCompatibility = 10
+targetCompatibility = 10
+
+configurations {
+    application {
+        mainClassName = 'net.ocheyedan.wrk.Wrk'
+    }    
+}
+
+startScripts.enabled = false

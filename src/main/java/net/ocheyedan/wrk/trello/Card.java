@@ -31,8 +31,6 @@ public final class Card {
 
     private final String id;
 
-    private final List<String> checkItemStates;
-
     private final Boolean closed;
 
     private final String desc;
@@ -60,14 +58,13 @@ public final class Card {
     private final Boolean subscribed;
 
     private Card() {
-        this(null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+        this(null, null, null, null, null, null, null, null, null, null, null, null, null, null);
     }
 
-    public Card(String id, List<String> checkItemStates, Boolean closed, String desc, String idBoard,
+    public Card(String id, Boolean closed, String desc, String idBoard,
                 List<String> idChecklists, String idList, List<String> idMembers, Integer idShort, List<Label> labels,
                 String name, Integer pos, String url, Badge badges, Boolean subscribed) {
         this.id = id;
-        this.checkItemStates = checkItemStates;
         this.closed = closed;
         this.desc = desc;
         this.idBoard = idBoard;
@@ -85,10 +82,6 @@ public final class Card {
 
     public String getId() {
         return id;
-    }
-
-    public List<String> getCheckItemStates() {
-        return checkItemStates;
     }
 
     public Boolean getClosed() {

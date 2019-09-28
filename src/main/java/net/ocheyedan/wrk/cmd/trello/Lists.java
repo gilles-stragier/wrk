@@ -5,7 +5,7 @@ import net.ocheyedan.wrk.RestTemplate;
 import net.ocheyedan.wrk.cmd.Args;
 import net.ocheyedan.wrk.cmd.Usage;
 import net.ocheyedan.wrk.trello.Trello;
-import org.codehaus.jackson.type.TypeReference;
+import com.fasterxml.jackson.core.type.TypeReference;
 
 import java.util.Collections;
 import java.util.HashMap;

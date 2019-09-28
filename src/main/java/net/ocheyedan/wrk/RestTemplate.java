@@ -1,12 +1,12 @@
 package net.ocheyedan.wrk;
 
-import org.codehaus.jackson.type.TypeReference;
+import com.fasterxml.jackson.core.type.TypeReference;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 
 /**
  * User: blangel
@@ -42,6 +42,7 @@ public final class RestTemplate {
             connection.setRequestMethod(method);
 
             stream = connection.getInputStream();
+           // displayResult(stream);
             result = Json.mapper().readValue(stream, forResultType);
             connection.disconnect();
         } catch (FileNotFoundException fnfe) {
@@ -64,6 +65,18 @@ public final class RestTemplate {
             }
         }
         return result;
+    }
+
+    private static void displayResult(InputStream stream) throws IOException {
+        StringBuilder textBuilder = new StringBuilder();
+        try (Reader reader = new BufferedReader(new InputStreamReader
+                (stream, Charset.forName(StandardCharsets.UTF_8.name())))) {
+            int c = 0;
+            while ((c = reader.read()) != -1) {
+                textBuilder.append((char) c);
+            }
+        }
+        System.out.println(textBuilder);
     }
 
     private RestTemplate() { }
