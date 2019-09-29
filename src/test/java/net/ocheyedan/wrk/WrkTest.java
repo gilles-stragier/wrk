@@ -79,7 +79,7 @@ class WrkTest {
         String output = getStdout();
         Assertions.assertEquals(
                 "Open cards assigned to you:\n" +
-                        "  trululu | wrk1\n" +
+                        "  trululu | wrk1 | 123\n" +
                         "    http://Someurl\n",
                 output
         );

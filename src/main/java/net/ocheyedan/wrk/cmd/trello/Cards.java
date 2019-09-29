@@ -80,7 +80,7 @@ public final class Cards extends IdCommand {
 
             String labels = buildLabel(card.getLabels());
             String closed = ((card.getClosed() != null) && card.getClosed()) ? "^black^[closed] ^r^" : "^b^";
-            Output.print("  %s%s^r^%s ^black^| %s^r^", closed, card.getName(), labels, wrkId);
+            Output.print("  %s%s^r^%s ^black^| %s^r^ | %s", closed, card.getName(), labels, wrkId, card.getId());
             Output.print("    ^black^%s^r^", getPrettyUrl(card));
         }
         return wrkIds;
