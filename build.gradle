@@ -13,8 +13,13 @@ repositories {
 }
 
 dependencies {
-//    compile group: 'org.codehaus.jackson', name: 'jackson-mapper-asl', version: '1.9.5'
     compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.9.10'
+    
+    testCompile group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: '5.5.2'
+    testCompile group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.5.2'
+    
+    testCompile group: 'org.mockito', name: 'mockito-core', version: '3.0.0'
+    testCompile 'org.mockito:mockito-junit-jupiter:3.0.0'
 
 }
 

@@ -13,25 +13,25 @@ import java.nio.charset.StandardCharsets;
  * Date: 6/29/12
  * Time: 9:26 PM
  */
-public final class RestTemplate {
+public class RestTemplate {
 
-    public static <T> T get(String restfulEndpoint, TypeReference<T> forResultType) {
+    public <T> T get(String restfulEndpoint, TypeReference<T> forResultType) {
         return invoke(restfulEndpoint, "GET", forResultType);
     }
 
-    public static <T> T post(String restfulEndpoint, TypeReference<T> forResultType) {
+    public <T> T post(String restfulEndpoint, TypeReference<T> forResultType) {
         return invoke(restfulEndpoint, "POST", forResultType);
     }
 
-    public static <T> T put(String restfulEndpoint, TypeReference<T> forResultType) {
+    public <T> T put(String restfulEndpoint, TypeReference<T> forResultType) {
         return invoke(restfulEndpoint, "PUT", forResultType);
     }
 
-    public static <T> T delete(String restfulEndpoint, TypeReference<T> forResultType) {
+    public <T> T delete(String restfulEndpoint, TypeReference<T> forResultType) {
         return invoke(restfulEndpoint, "DELETE", forResultType);
     }
 
-    private static <T> T invoke(String restfulEndpoint, String method, TypeReference<T> forResultType) {
+    private <T> T invoke(String restfulEndpoint, String method, TypeReference<T> forResultType) {
         T result = null;
         InputStream stream = null;
         try {
@@ -67,7 +67,7 @@ public final class RestTemplate {
         return result;
     }
 
-    private static void displayResult(InputStream stream) throws IOException {
+    private void displayResult(InputStream stream) throws IOException {
         StringBuilder textBuilder = new StringBuilder();
         try (Reader reader = new BufferedReader(new InputStreamReader
                 (stream, Charset.forName(StandardCharsets.UTF_8.name())))) {
@@ -79,6 +79,6 @@ public final class RestTemplate {
         System.out.println(textBuilder);
     }
 
-    private RestTemplate() { }
+    public RestTemplate() { }
 
 }

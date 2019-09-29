@@ -1,5 +1,6 @@
 package net.ocheyedan.wrk.cmd.trello;
 
+import net.ocheyedan.wrk.ApplicationContext;
 import net.ocheyedan.wrk.Config;
 import net.ocheyedan.wrk.Output;
 import net.ocheyedan.wrk.RestTemplate;
@@ -24,8 +25,8 @@ public final class Comment extends IdCommand {
 
     private final String description;
 
-    public Comment(Args args) {
-        super(args);
+    public Comment(Args args, ApplicationContext applicationContext) {
+        super(args, applicationContext);
         if ((args.args.size() == 3) && "on".equals(args.args.get(0))) {
             TrelloId cardId = parseWrkId(args.args.get(1), cardsPrefix);
             String comment = validate(encode(args.args.get(2)), "Comment", "comments");
@@ -79,7 +80,7 @@ public final class Comment extends IdCommand {
 
     @Override protected Map<String, String> _run() {
         Output.print(description);
-        Map<String, Object> result = RestTemplate.post(url, new TypeReference<Map<String, Object>>() {
+        Map<String, Object> result = applicationContext.restTemplate.post(url, new TypeReference<Map<String, Object>>() {
         });
         if (result == null) {
             Output.print("  ^red^Invalid id or insufficient privileges.^r^");

@@ -2,6 +2,7 @@ package net.ocheyedan.wrk;
 
 import net.ocheyedan.wrk.cmd.Command;
 import net.ocheyedan.wrk.cmd.CommandLineParser;
+import net.ocheyedan.wrk.cmd.TypeReferences;
 import net.ocheyedan.wrk.trello.Trello;
 
 /**
@@ -13,12 +14,27 @@ import net.ocheyedan.wrk.trello.Trello;
  */
 public final class Wrk {
 
-    public static void main(String[] args) {
+    private final ApplicationContext applicationContext;
 
+    public Wrk(ApplicationContext applicationContext) {
+        this.applicationContext = applicationContext;
+    }
+
+    public static void main(String[] args) {
+        ApplicationContext applicationContext = new ApplicationContext(
+                new RestTemplate(),
+                new TypeReferences()
+        );
+        Wrk wrk = new Wrk(applicationContext);
+        wrk.execute(args);
+
+    }
+
+    public void execute(String[] args) {
         Config.init();
         ensureTrelloToken();
 
-        Command command = CommandLineParser.parse(args);
+        Command command = CommandLineParser.parse(args, this.applicationContext);
         command.run();
     }
 

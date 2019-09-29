@@ -1,5 +1,6 @@
 package net.ocheyedan.wrk.cmd.trello;
 
+import net.ocheyedan.wrk.ApplicationContext;
 import net.ocheyedan.wrk.Output;
 import net.ocheyedan.wrk.RestTemplate;
 import net.ocheyedan.wrk.cmd.Args;
@@ -24,8 +25,8 @@ public final class Search extends IdCommand {
 
     private final String description;
 
-    public Search(Args args) {
-        super(args);
+    public Search(Args args, ApplicationContext applicationContext) {
+        super(args, applicationContext);
         String query, entered;
         if (args.args.size() > 1) {
             entered = combine(args.args.subList(1, args.args.size()));
@@ -81,7 +82,7 @@ public final class Search extends IdCommand {
     @Override protected Map<String, String> _run() {
         Output.print(description);
         boolean hadResults = false;
-        SearchResult searchResults = RestTemplate.get(url, new TypeReference<SearchResult>() { });
+        SearchResult searchResults = applicationContext.restTemplate.get(url, new TypeReference<SearchResult>() { });
         if (searchResults == null) {
             Output.print("^red^Invalid query.^r^");
             return Collections.emptyMap();

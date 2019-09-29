@@ -1,5 +1,6 @@
 package net.ocheyedan.wrk.cmd.trello;
 
+import net.ocheyedan.wrk.ApplicationContext;
 import net.ocheyedan.wrk.Output;
 import net.ocheyedan.wrk.RestTemplate;
 import net.ocheyedan.wrk.cmd.Args;
@@ -30,8 +31,8 @@ public final class Create extends IdCommand {
 
     private final Type type;
 
-    public Create(Args args) {
-        super(args);
+    public Create(Args args, ApplicationContext applicationContext) {
+        super(args, applicationContext);
         if (((args.args.size() == 4) || (args.args.size() == 5))
                 && "board".equals(args.args.get(0)) && "in".equals(args.args.get(1))) {
             TrelloId orgId = parseWrkId(args.args.get(2), orgPrefix);
@@ -70,7 +71,7 @@ public final class Create extends IdCommand {
         String wrkId = "wrk1";
         switch (type) {
             case Board:
-                Board board = RestTemplate.post(url, new TypeReference<Board>() { });
+                Board board = applicationContext.restTemplate.post(url, new TypeReference<Board>() { });
                 if (board == null) {
                     Output.print("^red^Invalid id or insufficient privileges.^r^");
                     break;
@@ -80,7 +81,7 @@ public final class Create extends IdCommand {
                 Output.print("    ^black^%s^r^", board.getUrl());
                 return wrkIds;
             case List:
-                net.ocheyedan.wrk.trello.List list = RestTemplate.post(url, new TypeReference<net.ocheyedan.wrk.trello.List>() { });
+                net.ocheyedan.wrk.trello.List list = applicationContext.restTemplate.post(url, new TypeReference<net.ocheyedan.wrk.trello.List>() { });
                 if (list == null) {
                     Output.print("^red^Invalid id or insufficient privileges.^r^");
                     break;
@@ -89,7 +90,7 @@ public final class Create extends IdCommand {
                 Output.print("  ^b^%s^r^ ^black^| %s^r^", list.getName(), wrkId);
                 return wrkIds;
             case Card:
-                Card card = RestTemplate.post(url, new TypeReference<Card>() { });
+                Card card = applicationContext.restTemplate.post(url, new TypeReference<Card>() { });
                 if (card == null) {
                     Output.print("^red^Invalid id or insufficient privileges.^r^");
                     break;
