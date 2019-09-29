@@ -24,8 +24,8 @@ public final class Search extends IdCommand {
 
     private final String description;
 
-    public Search(Args args) {
-        super(args);
+    public Search(Args args, RestTemplate restTemplate) {
+        super(args, restTemplate);
         String query, entered;
         if (args.args.size() > 1) {
             entered = combine(args.args.subList(1, args.args.size()));
@@ -81,7 +81,7 @@ public final class Search extends IdCommand {
     @Override protected Map<String, String> _run() {
         Output.print(description);
         boolean hadResults = false;
-        SearchResult searchResults = RestTemplate.get(url, new TypeReference<SearchResult>() { });
+        SearchResult searchResults = restTemplate.get(url, new TypeReference<SearchResult>() { });
         if (searchResults == null) {
             Output.print("^red^Invalid query.^r^");
             return Collections.emptyMap();

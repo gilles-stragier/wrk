@@ -1,6 +1,7 @@
 package net.ocheyedan.wrk.cmd;
 
 import net.ocheyedan.wrk.Output;
+import net.ocheyedan.wrk.RestTemplate;
 
 /**
  * User: blangel
@@ -11,8 +12,8 @@ import net.ocheyedan.wrk.Output;
  */
 public final class Version extends Command {
 
-    public Version(Args args) {
-        super(args);
+    public Version(Args args, RestTemplate restTemplate) {
+        super(args, restTemplate);
     }
 
     @Override public void run() {

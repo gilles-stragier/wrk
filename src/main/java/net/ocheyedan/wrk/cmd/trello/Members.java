@@ -24,8 +24,8 @@ public final class Members extends IdCommand {
 
     private final String description;
 
-    public Members(Args args) {
-        super(args);
+    public Members(Args args, RestTemplate restTemplate) {
+        super(args, restTemplate);
         if ((args.args.size() == 2) && "in".equals(args.args.get(0))) {
             TrelloId id = parseWrkId(args.args.get(1), orgsBoardsCardsPrefix);
             if (id.idWithTypePrefix.startsWith("o:")) {
@@ -53,7 +53,7 @@ public final class Members extends IdCommand {
 
     @Override protected Map<String, String> _run() {
         Output.print(description);
-        List<Member> members = RestTemplate.get(url, new TypeReference<List<Member>>() { });
+        List<Member> members = restTemplate.get(url, new TypeReference<List<Member>>() { });
         if ((members == null) || members.isEmpty()) {
             Output.print("  ^black^None^r^");
             return Collections.emptyMap();

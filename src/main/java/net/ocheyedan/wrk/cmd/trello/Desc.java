@@ -27,8 +27,8 @@ public final class Desc extends IdCommand {
 
     private final Type type;
 
-    public Desc(Args args) {
-        super(args);
+    public Desc(Args args, RestTemplate restTemplate) {
+        super(args, restTemplate);
         if (args.args.size() == 1) {
             TrelloId id = parseWrkId(args.args.get(0), allPrefix);
             if (id.idWithTypePrefix.startsWith("o:")) {
@@ -76,7 +76,7 @@ public final class Desc extends IdCommand {
         String desc;
         switch (type) {
             case Org:
-                Organization org = RestTemplate.get(url, new TypeReference<Organization>() { });
+                Organization org = restTemplate.get(url, new TypeReference<Organization>() { });
                 if (org == null) {
                     Output.print("^red^Invalid id or not found.^r^");
                     break;
@@ -89,7 +89,7 @@ public final class Desc extends IdCommand {
                 Output.print("    ^black^%s^r^", org.getUrl());
                 break;
             case Board:
-                Board board = RestTemplate.get(url, new TypeReference<Board>() { });
+                Board board = restTemplate.get(url, new TypeReference<Board>() { });
                 if (board == null) {
                     Output.print("^red^Invalid id or not found.^r^");
                     break;
@@ -103,7 +103,7 @@ public final class Desc extends IdCommand {
                 Output.print("    ^black^%s^r^", board.getUrl());
                 break;
             case List:
-                net.ocheyedan.wrk.trello.List list = RestTemplate.get(url, new TypeReference<net.ocheyedan.wrk.trello.List>() { });
+                net.ocheyedan.wrk.trello.List list = restTemplate.get(url, new TypeReference<net.ocheyedan.wrk.trello.List>() { });
                 if (list == null) {
                     Output.print("^red^Invalid id or not found.^r^");
                     break;
@@ -112,7 +112,7 @@ public final class Desc extends IdCommand {
                 Output.print("  %s%s^r^ ^black^| %s^r^", closed, list.getName(), list.getId());
                 break;
             case Card:
-                Card card = RestTemplate.get(url, new TypeReference<Card>() { });
+                Card card = restTemplate.get(url, new TypeReference<Card>() { });
                 if (card == null) {
                     Output.print("^red^Invalid id or not found.^r^");
                     break;
@@ -127,7 +127,7 @@ public final class Desc extends IdCommand {
                 Output.print("    ^black^%s^r^", Cards.getPrettyUrl(card));
                 break;
             case Member:
-                Member member = RestTemplate.get(url, new TypeReference<Member>() { });
+                Member member = restTemplate.get(url, new TypeReference<Member>() { });
                 if (member == null) {
                     Output.print("^red^Invalid id or not found.^r^");
                     break;

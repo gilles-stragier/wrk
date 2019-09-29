@@ -23,8 +23,8 @@ public final class Lists extends IdCommand {
 
     private final String description;
 
-    public Lists(Args args) {
-        super(args);
+    public Lists(Args args, RestTemplate restTemplate) {
+        super(args, restTemplate);
         if ((args.args.size() == 2) && "in".equals(args.args.get(0))) {
             TrelloId boardId = parseWrkId(args.args.get(1), boardsPrefix);
             url = Trello.url("https://trello.com/1/boards/%s/lists?filter=open&key=%s&token=%s", boardId.id,
@@ -37,7 +37,7 @@ public final class Lists extends IdCommand {
 
     @Override protected Map<String, String> _run() {
         Output.print(description);
-        List<net.ocheyedan.wrk.trello.List> lists = RestTemplate.get(url, new TypeReference<List<net.ocheyedan.wrk.trello.List>>() { });
+        List<net.ocheyedan.wrk.trello.List> lists = restTemplate.get(url, new TypeReference<List<net.ocheyedan.wrk.trello.List>>() { });
         if ((lists == null) || lists.isEmpty()) {
             Output.print("  ^black^None^r^");
             return Collections.emptyMap();

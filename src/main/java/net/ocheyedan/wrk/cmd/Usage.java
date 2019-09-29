@@ -1,6 +1,7 @@
 package net.ocheyedan.wrk.cmd;
 
 import net.ocheyedan.wrk.Output;
+import net.ocheyedan.wrk.RestTemplate;
 
 import java.util.ArrayList;
 
@@ -13,13 +14,13 @@ import java.util.ArrayList;
  */
 public final class Usage extends Command {
 
-    public Usage(Args args) {
-        super(args);
+    public Usage(Args args, RestTemplate restTemplate) {
+        super(args, restTemplate);
     }
 
     @SuppressWarnings("serial")
-    public Usage(final String subcommand) {
-        super(new Args(new ArrayList<String>() {{ add(subcommand); }}));
+    public Usage(final String subcommand, RestTemplate restTemplate) {
+        super(new Args(new ArrayList<String>() {{ add(subcommand); }}), restTemplate);
     }
 
     @Override public void run() {

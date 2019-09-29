@@ -1,6 +1,7 @@
 package net.ocheyedan.wrk.cmd.trello;
 
 import net.ocheyedan.wrk.Output;
+import net.ocheyedan.wrk.RestTemplate;
 import net.ocheyedan.wrk.cmd.Args;
 import net.ocheyedan.wrk.cmd.Usage;
 
@@ -16,8 +17,8 @@ public final class Pop extends IdCommand {
 
     private final Integer times;
 
-    public Pop(Args args) {
-        super(args);
+    public Pop(Args args, RestTemplate restTemplate) {
+        super(args, restTemplate);
         if (args.args.size() > 0) {
             if ("all".equals(args.args.get(0))) {
                 times = Integer.MAX_VALUE;

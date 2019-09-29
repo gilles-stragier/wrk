@@ -23,8 +23,8 @@ public final class UnAssign extends IdCommand {
 
     private final String description;
 
-    public UnAssign(Args args) {
-        super(args);
+    public UnAssign(Args args, RestTemplate restTemplate) {
+        super(args, restTemplate);
         if (args.args.size() == 1) {
             IdCommand.TrelloId cardId = parseWrkId(args.args.get(0), cardsPrefix);
             url = Trello.url("https://trello.com/1/cards/%s/members/%s?key=%s&token=%s", cardId.id,
@@ -43,7 +43,7 @@ public final class UnAssign extends IdCommand {
 
     @Override protected Map<String, String> _run() {
         Output.print(description);
-        List<Member> members = RestTemplate.delete(url, new TypeReference<List<Member>>() {
+        List<Member> members = restTemplate.delete(url, new TypeReference<List<Member>>() {
         });
         if (members == null) {
             Output.print("  ^red^Not added or invalid user.^r^");

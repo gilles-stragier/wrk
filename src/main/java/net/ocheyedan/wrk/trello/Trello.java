@@ -34,7 +34,7 @@ public final class Trello {
     public static String getUsrId() {
         if ((USR_ID == null) || USR_ID.isEmpty()) {
             String url = url("https://trello.com/1/members/my?fields=initials&key=%s&token=%s", APP_DEV_KEY, USR_TOKEN);
-            Map<String, String> result = RestTemplate.get(url, new TypeReference<>() {});
+            Map<String, String> result = new RestTemplate().get(url, new TypeReference<>() {});
             String id = result.get("id");
             File file = new File(String.format("%s%s%s%s%s", System.getProperty("user.home"), File.separator, ".wrk", File.separator, "usrid"));
             FileWriter fileWriter = null;
@@ -60,6 +60,8 @@ public final class Trello {
         }
     }
 
-    private Trello() { }
+    private Trello() {
+
+    }
 
 }

@@ -23,8 +23,8 @@ public final class UnLabels extends IdCommand {
 
     private final String description;
 
-    public UnLabels(Args args) {
-        super(args);
+    public UnLabels(Args args, RestTemplate restTemplate) {
+        super(args, restTemplate);
         if ((args.args.size() == 3) && "from".equals(args.args.get(1))) {
             TrelloId cardId = parseWrkId(args.args.get(2), cardsPrefix);
             String label = validate(args.args.get(0));
@@ -47,7 +47,7 @@ public final class UnLabels extends IdCommand {
 
     @Override protected Map<String, String> _run() {
         Output.print(description);
-        List<Label> result = RestTemplate.delete(url, new TypeReference<List<Label>>() { });
+        List<Label> result = restTemplate.delete(url, new TypeReference<List<Label>>() { });
         if (result == null) {
             Output.print("  ^red^Invalid id or insufficient privileges.^r^");
         } else {

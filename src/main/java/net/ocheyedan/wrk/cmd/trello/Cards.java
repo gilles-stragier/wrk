@@ -25,8 +25,8 @@ public final class Cards extends IdCommand {
 
     private final String description;
 
-    public Cards(Args args) {
-        super(args);
+    public Cards(Args args, RestTemplate restTemplate) {
+        super(args, restTemplate);
         if ((args.args.size() == 2) && "in".equals(args.args.get(0))) {
             TrelloId id = parseWrkId(args.args.get(1), boardsListsPrefix);
             if (id.idWithTypePrefix.startsWith("b:")) {
@@ -53,7 +53,7 @@ public final class Cards extends IdCommand {
 
     @Override protected Map<String, String> _run() {
         Output.print(description);
-        List<Card> cards = RestTemplate.get(url, new TypeReference<List<Card>>() {
+        List<Card> cards = restTemplate.get(url, new TypeReference<List<Card>>() {
         });
         if ((cards == null) || cards.isEmpty()) {
             Output.print("  ^black^None^r^");

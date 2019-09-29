@@ -24,8 +24,8 @@ public final class Boards extends IdCommand {
 
     private final String url;
 
-    public Boards(Args args) {
-        super(args);
+    public Boards(Args args, RestTemplate restTemplate) {
+        super(args, restTemplate);
         if ((args.args.size() == 2) && "in".equals(args.args.get(0))) {
             TrelloId orgId = parseWrkId(args.args.get(1), orgPrefix);
             url = Trello.url("https://trello.com/1/organization/%s/boards?filter=open&key=%s&token=%s", orgId.id,
@@ -42,7 +42,7 @@ public final class Boards extends IdCommand {
 
     @Override protected Map<String, String> _run() {
         Output.print(description);
-        List<Board> boards = RestTemplate.get(url, new TypeReference<List<Board>>() {
+        List<Board> boards = restTemplate.get(url, new TypeReference<List<Board>>() {
         });
         if ((boards == null) || boards.isEmpty()) {
             Output.print("  ^black^None^r^");

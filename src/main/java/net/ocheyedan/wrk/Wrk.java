@@ -18,7 +18,7 @@ public final class Wrk {
         Config.init();
         ensureTrelloToken();
 
-        Command command = CommandLineParser.parse(args);
+        Command command = CommandLineParser.parse(args, new RestTemplate());
         command.run();
     }
 

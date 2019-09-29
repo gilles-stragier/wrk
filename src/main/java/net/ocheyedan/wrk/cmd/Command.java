@@ -1,5 +1,7 @@
 package net.ocheyedan.wrk.cmd;
 
+import net.ocheyedan.wrk.RestTemplate;
+
 /**
  * User: blangel
  * Date: 6/29/12
@@ -10,8 +12,10 @@ package net.ocheyedan.wrk.cmd;
 public abstract class Command implements Runnable {
 
     public final Args args;
+    public final RestTemplate restTemplate;
 
-    protected Command(Args args) {
+    protected Command(Args args, RestTemplate restTemplate) {
         this.args = args;
+        this.restTemplate = restTemplate;
     }
 }
