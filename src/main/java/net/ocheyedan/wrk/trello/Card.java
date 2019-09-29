@@ -27,7 +27,7 @@ import java.util.List;
  *  subscribed=true
  * }
  */
-public final class Card {
+public class Card {
 
     private final String id;
 

@@ -1,7 +1,9 @@
 package net.ocheyedan.wrk.cmd.trello;
 
+import net.ocheyedan.wrk.ApplicationContext;
 import net.ocheyedan.wrk.Json;
 import net.ocheyedan.wrk.Output;
+import net.ocheyedan.wrk.RestTemplate;
 import net.ocheyedan.wrk.cmd.Args;
 import net.ocheyedan.wrk.cmd.Command;
 import net.ocheyedan.wrk.cmd.Usage;
@@ -59,8 +61,8 @@ abstract class IdCommand extends Command {
 
     private final Map<String, String> existingHead;
 
-    protected IdCommand(Args args) {
-        super(args);
+    protected IdCommand(Args args, ApplicationContext applicationContext) {
+        super(args, applicationContext);
         LinkedList<Map<String, String>> existing = new LinkedList<Map<String, String>>();
         wrkIdsFile = new File(String.format("%s%s%s%s%s", System.getProperty("user.home"), File.separator, ".wrk", File.separator, "wrk-ids"));
         try {
@@ -85,7 +87,7 @@ abstract class IdCommand extends Command {
     @Override public final void run() {
         if (!valid()) {
             Output.print("^red^Invalid arguments to command ^i^%s^r^^red^: %s^r^", getCommandName(), args);
-            new Usage(getCommandName()).run();
+            new Usage(getCommandName(), applicationContext).run();
             return;
         }
         Map<String, String> wrkids = _run();

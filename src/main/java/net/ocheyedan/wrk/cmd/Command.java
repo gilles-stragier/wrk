@@ -1,5 +1,8 @@
 package net.ocheyedan.wrk.cmd;
 
+import net.ocheyedan.wrk.ApplicationContext;
+import net.ocheyedan.wrk.RestTemplate;
+
 /**
  * User: blangel
  * Date: 6/29/12
@@ -10,8 +13,10 @@ package net.ocheyedan.wrk.cmd;
 public abstract class Command implements Runnable {
 
     public final Args args;
+    public final ApplicationContext applicationContext;
 
-    protected Command(Args args) {
+    protected Command(Args args, ApplicationContext applicationContext) {
         this.args = args;
+        this.applicationContext = applicationContext;
     }
 }

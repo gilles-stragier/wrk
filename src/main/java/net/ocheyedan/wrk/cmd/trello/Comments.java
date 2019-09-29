@@ -1,5 +1,6 @@
 package net.ocheyedan.wrk.cmd.trello;
 
+import net.ocheyedan.wrk.ApplicationContext;
 import net.ocheyedan.wrk.Output;
 import net.ocheyedan.wrk.RestTemplate;
 import net.ocheyedan.wrk.cmd.Args;
@@ -23,8 +24,8 @@ public final class Comments extends IdCommand {
 
     private final String description;
 
-    public Comments(Args args) {
-        super(args);
+    public Comments(Args args, ApplicationContext applicationContext) {
+        super(args, applicationContext);
         if ((args.args.size() == 2) && "in".equals(args.args.get(0))) {
             TrelloId cardId = parseWrkId(args.args.get(1), cardsPrefix);
             url = Trello.url("https://trello.com/1/cards/%s/actions?filter=commentCard&key=%s&token=%s", cardId.id,
@@ -37,7 +38,7 @@ public final class Comments extends IdCommand {
 
     @Override protected Map<String, String> _run() {
         Output.print(description);
-        List<Action> comments = RestTemplate.get(url, new TypeReference<List<Action>>() { });
+        List<Action> comments = applicationContext.restTemplate.get(url, new TypeReference<List<Action>>() { });
         if ((comments == null) || comments.isEmpty()) {
             Output.print("  ^black^None^r^");
             return Collections.emptyMap();

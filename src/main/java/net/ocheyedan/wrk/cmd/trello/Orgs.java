@@ -1,5 +1,6 @@
 package net.ocheyedan.wrk.cmd.trello;
 
+import net.ocheyedan.wrk.ApplicationContext;
 import net.ocheyedan.wrk.Output;
 import net.ocheyedan.wrk.RestTemplate;
 import net.ocheyedan.wrk.cmd.Args;
@@ -23,8 +24,8 @@ public final class Orgs extends IdCommand {
 
     private final String description;
 
-    public Orgs(Args args) {
-        super(args);
+    public Orgs(Args args, ApplicationContext applicationContext) {
+        super(args, applicationContext);
         url = Trello.url("https://trello.com/1/members/my/organizations?key=%s&token=%s", Trello.APP_DEV_KEY,
                 Trello.USR_TOKEN);
         description = "Your organizations:";
@@ -32,7 +33,7 @@ public final class Orgs extends IdCommand {
 
     @Override protected Map<String, String> _run() {
         Output.print(description);
-        List<Organization> orgs = RestTemplate.get(url, new TypeReference<List<Organization>>() { });
+        List<Organization> orgs = applicationContext.restTemplate.get(url, new TypeReference<List<Organization>>() { });
         if ((orgs == null) || orgs.isEmpty()) {
             Output.print("  ^black^None^r^");
             return Collections.emptyMap();

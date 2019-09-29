@@ -1,5 +1,6 @@
 package net.ocheyedan.wrk.cmd.trello;
 
+import net.ocheyedan.wrk.ApplicationContext;
 import net.ocheyedan.wrk.Output;
 import net.ocheyedan.wrk.RestTemplate;
 import net.ocheyedan.wrk.cmd.Args;
@@ -23,8 +24,8 @@ public final class Assign extends IdCommand {
 
     private final String description;
 
-    public Assign(Args args) {
-        super(args);
+    public Assign(Args args, ApplicationContext applicationContext) {
+        super(args, applicationContext);
         if (args.args.size() == 1) {
             TrelloId cardId = parseWrkId(args.args.get(0), cardsPrefix);
             url = Trello.url("https://trello.com/1/cards/%s/members?value=%s&key=%s&token=%s", cardId.id,
@@ -43,7 +44,7 @@ public final class Assign extends IdCommand {
 
     @Override protected Map<String, String> _run() {
         Output.print(description);
-        List<Member> members = RestTemplate.post(url, new TypeReference<List<Member>>() { });
+        List<Member> members = applicationContext.restTemplate.post(url, new TypeReference<List<Member>>() { });
         if ((members == null) || members.isEmpty()) {
             Output.print("  ^red^Already added or invalid user.^r^");
         } else {
