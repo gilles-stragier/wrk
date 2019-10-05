@@ -3,6 +3,7 @@ package net.ocheyedan.wrk;
 import net.ocheyedan.wrk.trello.Board;
 import net.ocheyedan.wrk.trello.Card;
 import net.ocheyedan.wrk.trello.Label;
+import net.ocheyedan.wrk.trello.List;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -44,6 +45,16 @@ public class TestData {
                 "http://Someurl",
                 null,
                 false
+        );
+    }
+
+    List sampleList() {
+        return new List(
+            "789",
+            "listname",
+            false,
+            "456",
+            1
         );
     }
 }

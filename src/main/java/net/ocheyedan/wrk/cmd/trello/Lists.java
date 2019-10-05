@@ -38,7 +38,7 @@ public final class Lists extends IdCommand {
 
     @Override protected Map<String, String> _run() {
         Output.print(description);
-        List<net.ocheyedan.wrk.trello.List> lists = applicationContext.restTemplate.get(url, new TypeReference<List<net.ocheyedan.wrk.trello.List>>() { });
+        List<net.ocheyedan.wrk.trello.List> lists = applicationContext.restTemplate.get(url, applicationContext.typeReferences.listsListType);
         if ((lists == null) || lists.isEmpty()) {
             Output.print("  ^black^None^r^");
             return Collections.emptyMap();
@@ -61,7 +61,7 @@ public final class Lists extends IdCommand {
             wrkIds.put(wrkId, String.format("l:%s", list.getId()));
 
             String closed = ((list.getClosed() != null) && list.getClosed()) ? "^black^[closed] ^r^" : "^b^";
-            Output.print("  %s%s^r^ ^black^| %s^r^", closed, list.getName(), wrkId);
+            Output.print("  %s%s^r^ ^black^| %s^r^ | %s", closed, list.getName(), wrkId, list.getId());
         }
         return wrkIds;
     }

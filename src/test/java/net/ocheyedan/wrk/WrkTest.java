@@ -52,6 +52,8 @@ class WrkTest {
         System.out.flush();
         System.setOut(stdout);
         System.out.println(baos.toString());
+
+        Mockito.verifyNoMoreInteractions(applicationContext.restTemplate);
     }
 
     @Test
@@ -68,12 +70,11 @@ class WrkTest {
 
         wrk.execute(new String[]{});
 
-        String output = getStdout();
         Assertions.assertEquals(
                 "Open cards assigned to you:\n" +
                         "  somename  somelabel  | wrk1 | 123\n" +
                         "    http://Someurl\n",
-                output
+                getStdout()
         );
     }
 
@@ -91,16 +92,36 @@ class WrkTest {
 
         wrk.execute(new String[]{"boards"});
 
-        String output = getStdout();
         Assertions.assertEquals(
                 "Open boards you've created:\n" +
                         "  boardname | wrk1 | 456\n" +
                         "    http://boardurl\n",
-                output
+                getStdout()
         );
 
-        Mockito.verifyNoMoreInteractions(applicationContext.restTemplate);
     }
+
+    @Test
+    public void testLists() {
+        when(
+                applicationContext.restTemplate.get(
+                        "https://trello.com/1/boards/456/lists?filter=open&key=fakeKey&token=fakeToken",
+                        applicationContext.typeReferences.listsListType
+                )).thenReturn(
+                asList(
+                        testData.sampleList()
+                )
+        );
+
+        wrk.execute(new String[]{"lists", "in", "456"});
+
+        Assertions.assertEquals(
+                "Open lists for board 456:\n" +
+                        "  listname | wrk1 | 789\n",
+                getStdout()
+        );
+    }
+
 
     private String getStdout() {
         System.out.flush();
