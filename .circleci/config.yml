@@ -35,7 +35,7 @@ jobs: # a collection of steps
           when: always
       - run:
           name: Assemble JAR
-          command: ./gradlew distZip            fi
+          command: ./gradlew distZip
       # As the JAR was only assembled in the first build container, build/libs will be empty in all the other build containers.
       - store_artifacts:
           path: build/distributions
