@@ -43,8 +43,7 @@ public final class Boards extends IdCommand {
 
     @Override protected Map<String, String> _run() {
         Output.print(description);
-        List<Board> boards = applicationContext.restTemplate.get(url, new TypeReference<List<Board>>() {
-        });
+        List<Board> boards = applicationContext.restTemplate.get(url, applicationContext.typeReferences.boardListType);
         if ((boards == null) || boards.isEmpty()) {
             Output.print("  ^black^None^r^");
             return Collections.emptyMap();
@@ -68,7 +67,7 @@ public final class Boards extends IdCommand {
             wrkIds.put(wrkId, String.format("b:%s", board.getId()));
 
             String closed = ((board.getClosed() != null) && board.getClosed()) ? "^black^[closed] ^r^" : "^b^";
-            Output.print("  %s%s^r^ ^black^| %s^r^", closed, board.getName(), wrkId);
+            Output.print("  %s%s^r^ ^black^| %s^r^ | %s", closed, board.getName(), wrkId, board.getId());
             Output.print("    ^black^%s^r^", board.getUrl());
         }
         return wrkIds;

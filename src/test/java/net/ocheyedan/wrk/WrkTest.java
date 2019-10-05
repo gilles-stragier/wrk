@@ -1,26 +1,15 @@
 package net.ocheyedan.wrk;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import net.ocheyedan.wrk.cmd.TypeReferences;
-import net.ocheyedan.wrk.trello.Badge;
-import net.ocheyedan.wrk.trello.Card;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 
 import static java.util.Arrays.asList;
-import static java.util.Collections.emptyList;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -29,6 +18,7 @@ class WrkTest {
 
     private ApplicationContext applicationContext;
     private Wrk wrk;
+    private TestData testData;
 
     private PrintStream stdout;
     private ByteArrayOutputStream baos;
@@ -43,6 +33,8 @@ class WrkTest {
         wrk = new Wrk(
                 applicationContext
         );
+
+        testData = new TestData();
 
         System.setProperty("wrk.trello.usr.token", "fakeToken");
         System.setProperty("wrk.trello.usr.key", "fakeKey");
@@ -70,7 +62,7 @@ class WrkTest {
                 applicationContext.typeReferences.cardListType
             )).thenReturn(
                 asList(
-                        sampleCard()
+                        testData.sampleCard()
                 )
         );
 
@@ -79,34 +71,40 @@ class WrkTest {
         String output = getStdout();
         Assertions.assertEquals(
                 "Open cards assigned to you:\n" +
-                        "  trululu | wrk1 | 123\n" +
+                        "  somename  somelabel  | wrk1 | 123\n" +
                         "    http://Someurl\n",
                 output
         );
     }
 
+    @Test
+    public void testBoards() {
+        when(
+                applicationContext.restTemplate.get(
+                        "https://trello.com/1/members/my/boards?filter=open&key=fakeKey&token=fakeToken",
+                        applicationContext.typeReferences.boardListType
+                )).thenReturn(
+                asList(
+                    testData.sampleBoard()
+                )
+        );
+
+        wrk.execute(new String[]{"boards"});
+
+        String output = getStdout();
+        Assertions.assertEquals(
+                "Open boards you've created:\n" +
+                        "  boardname | wrk1 | 456\n" +
+                        "    http://boardurl\n",
+                output
+        );
+
+        Mockito.verifyNoMoreInteractions(applicationContext.restTemplate);
+    }
+
     private String getStdout() {
         System.out.flush();
         return baos.toString();
-    }
-
-    private Card sampleCard() {
-        return new Card(
-                "123",
-                false,
-                "somedesc",
-                "bid",
-                emptyList(),
-                "lid",
-                Collections.emptyList(),
-                0,
-                Collections.emptyList(),
-                "trululu",
-                2,
-                "http://Someurl",
-                null,
-                false
-        );
     }
 
 }
