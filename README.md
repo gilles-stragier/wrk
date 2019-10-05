@@ -1,29 +1,32 @@
 Overview
 --------
 
-Wrk is a command line interface to Trello.
+This is a fork of Wrk, a command line interface to Trello.
+
+This version has some improvements :
+* Gradle is used as a build tool
+* Modern java versions are supported (tested with 11)
+
 
 Installation
 --------------
 
-Download the tar file [wrk.tar.gz](https://github.com/downloads/blangel/wrk/wrk-latest.tar.gz)
+Clone the git project to some directory, and build it :
 
-Un-package the tar file to a directory of your choosing (say `/opt/wrk`) and then make sure the following properties are set as environmental variables:
+```
+$ ./gradlew installDist
+
+```
+
+Then include then bin directtory in your path, and define the following variables :
 
 * `JAVA_HOME` -> (likely already set by your distro) set to the home directory of the java installation
-
 * `WRK_HOME` -> set to the directory of where ever you untar-ed wrk (i.e., `/opt/wrk`).
 
-Now add `${WRK_HOME}/bin` to your `$PATH`
-
-Finally, create file `~/.wrk/token` and save in it your Trello token.  For help in creating a token see [here](https://trello.com/docs/gettingstarted/index.html#getting-a-token-from-a-user) (using your own application key or this one `8d56bbd601877abfd13150a999a840d0`).
-
-Versions
------------
-
-`1.0` - initial release
-
-`1.0.1` - added search command
+Then, create file `~/.wrk/token` and save in it your Trello token.  
+Finally, create file `~/.wrk/usrkey` and put your application key in it.
+ 
+For help in creating a token see [here](https://trello.com/docs/gettingstarted/index.html#getting-a-token-from-a-user).
 
 Usage
 -------
