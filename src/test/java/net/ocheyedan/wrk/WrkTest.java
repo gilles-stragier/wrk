@@ -1,8 +1,10 @@
 package net.ocheyedan.wrk;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import net.ocheyedan.wrk.cmd.TypeReferences;
 import net.ocheyedan.wrk.output.DefaultOutputter;
 import net.ocheyedan.wrk.trello.SearchResult;
+import org.apache.commons.io.FileUtils;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -12,7 +14,11 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
 import java.io.PrintStream;
+import java.util.LinkedList;
+import java.util.Map;
 
 import static java.util.Collections.singletonList;
 import static org.mockito.Mockito.when;
@@ -28,7 +34,7 @@ class WrkTest {
     private ByteArrayOutputStream baos;
 
     @BeforeEach
-    void setUp() {
+    void setUp() throws IOException {
         applicationContext = new ApplicationContext(
                 Mockito.mock(RestTemplate.class),
                 new TypeReferences(),
@@ -44,8 +50,13 @@ class WrkTest {
         System.setProperty("wrk.trello.usr.token", "fakeToken");
         System.setProperty("wrk.trello.usr.key", "fakeKey");
         System.setProperty("wrk.editor", "/usr/bin/vim");
+        System.setProperty("user.home", "./build/");
 
-
+        File wrkDir = new File("build/.wrk");
+        if (wrkDir.exists()) {
+            FileUtils.deleteDirectory(wrkDir);
+        }
+        wrkDir.mkdir();
 
         baos = new ByteArrayOutputStream();
         PrintStream ps = new PrintStream(baos);
@@ -232,6 +243,11 @@ class WrkTest {
                         "    http://Someurl\n",
                 getStdout()
         );
+
+
+        LinkedList<Map<String, String>> wrkIds = readWrkIds();
+        Assertions.assertEquals("c:123", wrkIds.get(0).values().iterator().next());
+        Assertions.assertEquals("wrk1", wrkIds.get(0).keySet().iterator().next());
     }
 
     @Test
@@ -264,6 +280,7 @@ class WrkTest {
 
     @Test
     void testSearchOrganizations() {
+
         when(
                 applicationContext.restTemplate.get(
                         "https://trello.com/1/search?query=keyword&modelTypes=organizations&organizations_limit=1000&key=fakeKey&token=fakeToken",
@@ -288,6 +305,20 @@ class WrkTest {
                         "    http://someorgs\n",
                 getStdout()
         );
+
+        LinkedList<Map<String, String>> wrkIds = readWrkIds();
+        Assertions.assertEquals("o:abc", wrkIds.get(0).values().iterator().next());
+        Assertions.assertEquals("wrk1", wrkIds.get(0).keySet().iterator().next());
+
+    }
+
+    private LinkedList<Map<String, String>> readWrkIds() {
+        try {
+            return Json.mapper().readValue(new File("./build/.wrk/wrk-ids"), new TypeReference<LinkedList<Map<String, String>>>() {
+            });
+        } catch (IOException e) {
+            return null;
+        }
     }
 
     @Test
@@ -316,6 +347,11 @@ class WrkTest {
                         "    username somename\n",
                 getStdout()
         );
+
+
+        LinkedList<Map<String, String>> wrkIds = readWrkIds();
+        Assertions.assertEquals("m:637", wrkIds.get(0).values().iterator().next());
+        Assertions.assertEquals("wrk1", wrkIds.get(0).keySet().iterator().next());
     }
 
 
