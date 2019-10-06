@@ -9,7 +9,7 @@ import net.ocheyedan.wrk.ApplicationContext;
  *
  * Represents a command given to wrk from the user via the command line.
  */
-public abstract class Command implements Runnable {
+public abstract class Command {
 
     public final Args args;
     public final ApplicationContext applicationContext;
@@ -18,4 +18,6 @@ public abstract class Command implements Runnable {
         this.args = args;
         this.applicationContext = applicationContext;
     }
+
+    public abstract void run();
 }

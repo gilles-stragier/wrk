@@ -2,13 +2,12 @@ package net.ocheyedan.wrk.cmd.trello;
 
 import net.ocheyedan.wrk.ApplicationContext;
 import net.ocheyedan.wrk.cmd.Args;
+import net.ocheyedan.wrk.ids.WrkIdsManager;
 import net.ocheyedan.wrk.output.Output;
 import net.ocheyedan.wrk.trello.Card;
 import net.ocheyedan.wrk.trello.Label;
 import net.ocheyedan.wrk.trello.Trello;
 
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -53,22 +52,12 @@ public final class Cards extends IdCommand {
         Output.print(description);
 
         List<Card> cards = applicationContext.restTemplate.get(url, applicationContext.typeReferences.cardListType);
-        if ((cards == null) || cards.isEmpty()) {
-            Output.print("  ^black^None^r^");
-            return Collections.emptyMap();
-        }
-        Map<String, String> wrkIds = new HashMap<String, String>(cards.size());
-        int cardIndex = 1;
-        for (Card card : cards) {
-            String wrkId = "wrk" + cardIndex++;
-            wrkIds.put(wrkId, String.format("c:%s", card.getId()));
+        WrkIdsManager idsManager = new WrkIdsManager();
+        idsManager.registerTrelloIds(cards);
+        applicationContext.defaultOutputter.printCards(cards, idsManager);
 
-            String labels = buildLabel(card.getLabels());
-            String closed = ((card.getClosed() != null) && card.getClosed()) ? "^black^[closed] ^r^" : "^b^";
-            Output.print("  %s%s^r^%s ^black^| %s^r^ | %s", closed, card.getName(), labels, wrkId, card.getId());
-            Output.print("    ^black^%s^r^", getPrettyUrl(card));
-        }
-        return wrkIds;
+        return idsManager.idsMap();
+
     }
 
     @Override protected boolean valid() {
@@ -79,17 +68,6 @@ public final class Cards extends IdCommand {
         return "cards";
     }
 
-    Map<String, String> printCards(List<Card> cards, int indexBase) {
-        Map<String, String> wrkIds = new HashMap<String, String>(cards.size());
-        int cardIndex = indexBase;
-        for (Card card : cards) {
-            String wrkId = "wrk" + cardIndex++;
-            wrkIds.put(wrkId, String.format("c:%s", card.getId()));
-            applicationContext.defaultOutputter.printCard(wrkId, card);
-
-        }
-        return wrkIds;
-    }
 
     /**
      * The {@link Card#getUrl()} returns a url based off of board and card's short-id; translating to long-id so that

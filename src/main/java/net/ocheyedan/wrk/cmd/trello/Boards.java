@@ -2,12 +2,11 @@ package net.ocheyedan.wrk.cmd.trello;
 
 import net.ocheyedan.wrk.ApplicationContext;
 import net.ocheyedan.wrk.cmd.Args;
+import net.ocheyedan.wrk.ids.WrkIdsManager;
 import net.ocheyedan.wrk.output.Output;
 import net.ocheyedan.wrk.trello.Board;
 import net.ocheyedan.wrk.trello.Trello;
 
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -41,21 +40,12 @@ public final class Boards extends IdCommand {
     @Override protected Map<String, String> _run() {
         Output.print(description);
         List<Board> boards = applicationContext.restTemplate.get(url, applicationContext.typeReferences.boardListType);
-        if ((boards == null) || boards.isEmpty()) {
-            Output.print("  ^black^None^r^");
-            return Collections.emptyMap();
-        }
-        Map<String, String> wrkIds = new HashMap<String, String>(boards.size());
-        int boardIndex = 1;
-        for (Board board : boards) {
-            String wrkId = "wrk" + boardIndex++;
-            wrkIds.put(wrkId, String.format("b:%s", board.getId()));
 
-            String closed = ((board.getClosed() != null) && board.getClosed()) ? "^black^[closed] ^r^" : "^b^";
-            Output.print("  %s%s^r^ ^black^| %s^r^ | %s", closed, board.getName(), wrkId, board.getId());
-            Output.print("    ^black^%s^r^", board.getUrl());
-        }
-        return wrkIds;
+        WrkIdsManager idsManager = new WrkIdsManager();
+        idsManager.registerTrelloIds(boards);
+        applicationContext.defaultOutputter.printBoards(boards, idsManager);
+
+        return idsManager.idsMap();
     }
 
     @Override protected boolean valid() {
@@ -64,20 +54,6 @@ public final class Boards extends IdCommand {
 
     @Override protected String getCommandName() {
         return "boards";
-    }
-
-    static Map<String, String> printBoards(List<Board> boards, int indexBase) {
-        Map<String, String> wrkIds = new HashMap<String, String>(boards.size());
-        int boardIndex = indexBase;
-        for (Board board : boards) {
-            String wrkId = "wrk" + boardIndex++;
-            wrkIds.put(wrkId, String.format("b:%s", board.getId()));
-
-            String closed = ((board.getClosed() != null) && board.getClosed()) ? "^black^[closed] ^r^" : "^b^";
-            Output.print("  %s%s^r^ ^black^| %s^r^ | %s", closed, board.getName(), wrkId, board.getId());
-            Output.print("    ^black^%s^r^", board.getUrl());
-        }
-        return wrkIds;
     }
 
 }

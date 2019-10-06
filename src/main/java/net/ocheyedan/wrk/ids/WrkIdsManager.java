@@ -2,11 +2,12 @@ package net.ocheyedan.wrk.ids;
 
 import net.ocheyedan.wrk.trello.TrelloObject;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+
+import static java.util.Collections.unmodifiableMap;
 
 public class WrkIdsManager {
 
@@ -17,15 +18,17 @@ public class WrkIdsManager {
     }
 
     public <T extends TrelloObject> void registerTrelloIds(List<T> trelloObjects) {
-        int startIndex = addIds.size() + 1;
-        for (T trelloObject : trelloObjects) {
-            String wrkId = "wrk" + startIndex++;
-            addIds.put(wrkId, String.format(trelloObject.keyPrefix() + "%s", trelloObject.getId()));
+        if (trelloObjects != null && !trelloObjects.isEmpty()) {
+            int startIndex = addIds.size() + 1;
+            for (T trelloObject : trelloObjects) {
+                String wrkId = "wrk" + startIndex++;
+                addIds.put(wrkId, String.format(trelloObject.keyPrefix() + "%s", trelloObject.getId()));
+            }
         }
     }
 
     public Map<String, String> idsMap() {
-        return Collections.unmodifiableMap(addIds);
+        return unmodifiableMap(addIds);
     }
 
     public Map<String, String> invertedIdsMap() {

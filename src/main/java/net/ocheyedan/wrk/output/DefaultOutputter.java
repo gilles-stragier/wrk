@@ -15,6 +15,15 @@ public class DefaultOutputter {
         }
     }
 
+    public Boolean requiresNonNullNorEmpty(java.util.List<?> list) {
+        if ((list == null) || list.isEmpty()) {
+            Output.print("  ^black^None^r^");
+            return false;
+        } else {
+            return true;
+        }
+    }
+
     public void printList(String wrkId, List list) {
         String closed = ((list.getClosed() != null) && list.getClosed()) ? "^black^[closed] ^r^" : "^b^";
         Output.print("  %s%s^r^ ^black^| %s^r^ | %s", closed, list.getName(), wrkId, list.getId());
@@ -41,8 +50,10 @@ public class DefaultOutputter {
 
 
     public void printCards(java.util.List<Card> cards, WrkIdsManager idsManager) {
-        for (Card card : cards) {
-            printCard(idsManager.invertedIdsMap().get("c:" + card.getId()), card);
+        if (requiresNonNull(cards)) {
+            for (Card card : cards) {
+                printCard(idsManager.invertedIdsMap().get("c:" + card.getId()), card);
+            }
         }
     }
 
@@ -53,14 +64,18 @@ public class DefaultOutputter {
     }
 
     public void printBoards(java.util.List<Board> boards, WrkIdsManager idsManager) {
-        for (Board board : boards) {
-            printBoard(idsManager.invertedIdsMap().get("b:" + board.getId()), board);
+        if (requiresNonNull(boards)) {
+            for (Board board : boards) {
+                printBoard(idsManager.invertedIdsMap().get("b:" + board.getId()), board);
+            }
         }
     }
 
     public void printOrgs(java.util.List<Organization> organizations, WrkIdsManager idsManager) {
-        for (Organization organization : organizations) {
-            printOrganization(idsManager.invertedIdsMap().get("o:" + organization.getId()), organization);
+        if (requiresNonNull(organizations)) {
+            for (Organization organization : organizations) {
+                printOrganization(idsManager.invertedIdsMap().get("o:" + organization.getId()), organization);
+            }
         }
     }
 
@@ -71,7 +86,9 @@ public class DefaultOutputter {
     }
 
     public void printMembers(java.util.List<Member> members, WrkIdsManager idsManager) {
-        members.stream().forEach(m -> printMember(idsManager.invertedIdsMap().get("m:" + m.getId()), m));
+        if (requiresNonNull(members)) {
+            members.stream().forEach(m -> printMember(idsManager.invertedIdsMap().get("m:" + m.getId()), m));
+        }
     }
 
     public void printMember(String wrkId, Member member) {
