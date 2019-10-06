@@ -46,6 +46,7 @@ class WrkTest {
         System.setProperty("wrk.editor", "/usr/bin/vim");
 
 
+
         baos = new ByteArrayOutputStream();
         PrintStream ps = new PrintStream(baos);
         stdout = System.out;
@@ -232,6 +233,91 @@ class WrkTest {
                 getStdout()
         );
     }
+
+    @Test
+    void testSearchBoard() {
+        when(
+                applicationContext.restTemplate.get(
+                        "https://trello.com/1/search?query=keyword&modelTypes=boards&board_fields=name,url&boards_limit=1000&key=fakeKey&token=fakeToken",
+                        applicationContext.typeReferences.searchType
+                )).thenReturn(
+                new SearchResult(
+                        null,
+                        singletonList(testData.sampleBoard()),
+                        null,
+                        null,
+                        null,
+                        null
+                )
+        );
+
+        wrk.execute(new String[]{"search", "boards", "keyword"});
+
+        Assertions.assertEquals(
+                "Searching boards for keyword\n" +
+                        "Found 1 board.\n" +
+                        "  boardname | wrk1 | 456\n" +
+                        "    http://boardurl\n",
+                getStdout()
+        );
+    }
+
+    @Test
+    void testSearchOrganizations() {
+        when(
+                applicationContext.restTemplate.get(
+                        "https://trello.com/1/search?query=keyword&modelTypes=organizations&organizations_limit=1000&key=fakeKey&token=fakeToken",
+                        applicationContext.typeReferences.searchType
+                )).thenReturn(
+                new SearchResult(
+                        null,
+                        null,
+                        null,
+                        null,
+                        singletonList(testData.sampleOrganization()),
+                        null
+                )
+        );
+
+        wrk.execute(new String[]{"search", "orgs", "keyword"});
+
+        Assertions.assertEquals(
+                "Searching organizations for keyword\n" +
+                        "Found 1 organization.\n" +
+                        "  displayOrg | wrk1 | abc\n" +
+                        "    http://someorgs\n",
+                getStdout()
+        );
+    }
+
+    @Test
+    void testSearchMembers() {
+        when(
+                applicationContext.restTemplate.get(
+                        "https://trello.com/1/search?query=keyword&modelTypes=members&members_limit=1000&key=fakeKey&token=fakeToken",
+                        applicationContext.typeReferences.searchType
+                )).thenReturn(
+                new SearchResult(
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        singletonList(testData.sampleMember())
+                )
+        );
+
+        wrk.execute(new String[]{"search", "members", "keyword"});
+
+        Assertions.assertEquals(
+                "Searching members for keyword\n" +
+                        "Found 1 member.\n" +
+                        "  Some Name Full | wrk1\n" +
+                        "    username somename\n",
+                getStdout()
+        );
+    }
+
 
     private String getStdout() {
         System.out.flush();

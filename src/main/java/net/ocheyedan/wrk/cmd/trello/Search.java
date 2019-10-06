@@ -103,13 +103,13 @@ public final class Search extends IdCommand {
                     (searchResults.getCards().size() == 1 ? "" : "s"), (searchResults.getCards().size() == 1000 ? " (limited to 1000)" : ""));
             hadResults = true;
             List<Card> cards = searchResults.getCards();
+
             Map<String, String> cardWrkIds = new HashMap<String, String>(cards.size());
             int cardIndex = wrkIds.size() + 1;
             for (Card card : cards) {
                 String wrkId = "wrk" + cardIndex++;
                 cardWrkIds.put(wrkId, String.format("c:%s", card.getId()));
                 applicationContext.defaultOutputter.printCard(wrkId, card);
-
             }
             wrkIds.putAll(cardWrkIds);
         }

@@ -70,4 +70,14 @@ public class TestData {
                 null
         );
     }
+
+    public Member sampleMember() {
+        return new Member(
+                "637",
+                "somename",
+                "Some Name Full",
+                "SN",
+                "87546"
+        );
+    }
 }
