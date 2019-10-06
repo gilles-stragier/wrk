@@ -89,8 +89,7 @@ public final class Create extends IdCommand {
                 applicationContext.defaultOutputter.printList(wrkId, list);
                 return wrkIds;
             case Card:
-                Card card = applicationContext.restTemplate.post(url, new TypeReference<>() {
-                });
+                Card card = applicationContext.restTemplate.post(url, applicationContext.typeReferences.cardType);
                 if (card == null) {
                     Output.print("^red^Invalid id or insufficient privileges.^r^");
                     break;

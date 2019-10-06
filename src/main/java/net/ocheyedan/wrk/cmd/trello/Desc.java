@@ -114,8 +114,7 @@ public final class Desc extends IdCommand {
                 Output.print("  %s%s^r^ ^black^| %s^r^", closed, list.getName(), list.getId());
                 break;
             case Card:
-                Card card = applicationContext.restTemplate.get(url, new TypeReference<>() {
-                });
+                Card card = applicationContext.restTemplate.get(url, applicationContext.typeReferences.cardType);
                 if (card == null) {
                     Output.print("^red^Invalid id or not found.^r^");
                     break;

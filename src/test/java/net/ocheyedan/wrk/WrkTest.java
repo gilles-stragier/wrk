@@ -2,6 +2,7 @@ package net.ocheyedan.wrk;
 
 import net.ocheyedan.wrk.cmd.TypeReferences;
 import net.ocheyedan.wrk.output.DefaultOutputter;
+import net.ocheyedan.wrk.trello.SearchResult;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -63,10 +64,10 @@ class WrkTest {
     @Test
     void testAssignedCards() {
         when(
-            applicationContext.restTemplate.get(
-                "https://trello.com/1/members/my/cards?filter=open&key=fakeKey&token=fakeToken",
-                applicationContext.typeReferences.cardListType
-            )).thenReturn(
+                applicationContext.restTemplate.get(
+                        "https://trello.com/1/members/my/cards?filter=open&key=fakeKey&token=fakeToken",
+                        applicationContext.typeReferences.cardListType
+                )).thenReturn(
                 singletonList(
                         testData.sampleCard()
                 )
@@ -149,7 +150,7 @@ class WrkTest {
     }
 
     @Test
-    void testCreateCard() {
+    void testCreateList() {
         when(
                 applicationContext.restTemplate.post(
                         "https://trello.com/1/lists?name=Nom+de+la+liste&idBoard=34567&key=fakeKey&token=fakeToken",
@@ -162,6 +163,72 @@ class WrkTest {
         Assertions.assertEquals(
                 "Creating list in board 34567:\n" +
                         "  listname | wrk1 | 789\n",
+                getStdout()
+        );
+    }
+
+    @Test
+    void testCreateCard() {
+        when(
+                applicationContext.restTemplate.post(
+                        "https://trello.com/1/cards?name=Name+of+a+card&idList=34567&key=fakeKey&token=fakeToken",
+                        applicationContext.typeReferences.cardType
+                )).thenReturn(testData.sampleCard()
+        );
+
+        wrk.execute(new String[]{"create", "card", "in", "34567", "Name of a card"});
+
+        Assertions.assertEquals(
+                "Creating card in list 34567:\n" +
+                        "  somename  somelabel  | wrk1\n" +
+                        "    http://Someurl\n",
+                getStdout()
+        );
+    }
+
+    @Test
+    void testDescCard() {
+        when(
+                applicationContext.restTemplate.get(
+                        "https://trello.com/1/cards/123?key=fakeKey&token=fakeToken",
+                        applicationContext.typeReferences.cardType
+                )).thenReturn(testData.sampleCard());
+
+        wrk.execute(new String[]{"desc", "c:123"});
+
+        Assertions.assertEquals(
+                "Description of card 123:\n" +
+                        "  somename  somelabel  | 123\n" +
+                        "    somedesc\n" +
+                        "    http://Someurl\n",
+                getStdout()
+        );
+    }
+
+    @Test
+    void testSearchCard() {
+        when(
+                applicationContext.restTemplate.get(
+                        "https://trello.com/1/search?query=keyword&modelTypes=cards&cards_limit=1000&key=fakeKey&token=fakeToken",
+                        applicationContext.typeReferences.searchType
+                )).thenReturn(
+                new SearchResult(
+                        null,
+                        null,
+                        singletonList(testData.sampleCard()),
+                        null,
+                        null,
+                        null
+                )
+        );
+
+        wrk.execute(new String[]{"search", "cards", "keyword"});
+
+        Assertions.assertEquals(
+                "Searching cards for keyword\n" +
+                        "Found 1 card.\n" +
+                        "  somename  somelabel  | wrk1 | 123\n" +
+                        "    http://Someurl\n",
                 getStdout()
         );
     }

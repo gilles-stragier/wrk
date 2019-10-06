@@ -1,6 +1,5 @@
 package net.ocheyedan.wrk.cmd.trello;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import net.ocheyedan.wrk.ApplicationContext;
 import net.ocheyedan.wrk.cmd.Args;
 import net.ocheyedan.wrk.output.Output;
@@ -80,7 +79,7 @@ public final class Search extends IdCommand {
     @Override protected Map<String, String> _run() {
         Output.print(description);
         boolean hadResults = false;
-        SearchResult searchResults = applicationContext.restTemplate.get(url, new TypeReference<SearchResult>() { });
+        SearchResult searchResults = applicationContext.restTemplate.get(url, applicationContext.typeReferences.searchType);
         if (searchResults == null) {
             Output.print("^red^Invalid query.^r^");
             return Collections.emptyMap();
