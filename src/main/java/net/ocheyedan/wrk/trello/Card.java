@@ -27,7 +27,7 @@ import java.util.List;
  *  subscribed=true
  * }
  */
-public class Card {
+public class Card implements TrelloObject {
 
     private final String id;
 
@@ -134,5 +134,10 @@ public class Card {
 
     public Boolean getSubscribed() {
         return subscribed;
+    }
+
+    @Override
+    public String keyPrefix() {
+        return "c:";
     }
 }

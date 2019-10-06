@@ -1,6 +1,6 @@
 package net.ocheyedan.wrk.ids;
 
-import net.ocheyedan.wrk.trello.Card;
+import net.ocheyedan.wrk.trello.TrelloObject;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -10,19 +10,17 @@ import java.util.stream.Collectors;
 
 public class WrkIdsManager {
 
-    private final Map<String, String> wrkIds;
     private final Map<String, String> addIds;
 
-    public WrkIdsManager(Map<String, String> wrkIds) {
-        this.wrkIds = wrkIds;
+    public WrkIdsManager() {
         this.addIds = new HashMap<>();
     }
 
-    public void registerTrelloIds(List<Card> cards) {
-        int cardIndex = wrkIds.size() + 1;
-        for (Card card : cards) {
-            String wrkId = "wrk" + cardIndex++;
-            addIds.put(wrkId, String.format("c:%s", card.getId()));
+    public <T extends TrelloObject> void registerTrelloIds(List<T> trelloObjects) {
+        int startIndex = addIds.size() + 1;
+        for (T trelloObject : trelloObjects) {
+            String wrkId = "wrk" + startIndex++;
+            addIds.put(wrkId, String.format(trelloObject.keyPrefix() + "%s", trelloObject.getId()));
         }
     }
 

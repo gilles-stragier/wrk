@@ -36,7 +36,16 @@ public final class Orgs extends IdCommand {
             Output.print("  ^black^None^r^");
             return Collections.emptyMap();
         }
-        return printOrgs(orgs, 1);
+        Map<String, String> wrkIds = new HashMap<String, String>(orgs.size());
+        int orgIndex = 1;
+        for (Organization organization : orgs) {
+            String wrkId = "wrk" + orgIndex++;
+            wrkIds.put(wrkId, String.format("o:%s", organization.getId()));
+
+            Output.print("  ^b^%s^r^ ^black^| %s^r^ | %s", organization.getDisplayName(), wrkId, organization.getId());
+            Output.print("    ^black^%s^r^", organization.getUrl());
+        }
+        return wrkIds;
     }
 
     @Override protected boolean valid() {

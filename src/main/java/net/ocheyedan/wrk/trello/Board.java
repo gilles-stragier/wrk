@@ -24,7 +24,7 @@ import java.util.List;
  *  labelNames={}
  * }
  */
-public final class Board {
+public final class Board implements TrelloObject {
 
     private final String id;
 
@@ -117,5 +117,10 @@ public final class Board {
 
     public LabelNames getLabelNames() {
         return labelNames;
+    }
+
+    @Override
+    public String keyPrefix() {
+        return "b:";
     }
 }

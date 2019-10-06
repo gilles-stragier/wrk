@@ -23,7 +23,7 @@ import java.util.List;
  *  idBoards=[]
  * }
  */
-public final class Organization {
+public final class Organization implements TrelloObject {
 
     private final String id;
 
@@ -108,5 +108,10 @@ public final class Organization {
 
     public List<String> getIdBoards() {
         return idBoards;
+    }
+
+    @Override
+    public String keyPrefix() {
+        return "o:";
     }
 }

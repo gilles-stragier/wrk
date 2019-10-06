@@ -15,7 +15,7 @@ package net.ocheyedan.wrk.trello;
  *  avatarHash=0c12938cecec05456cf00a173a40eb4e
  * }
  */
-public final class Member {
+public final class Member implements TrelloObject {
 
     private final String id;
 
@@ -57,5 +57,10 @@ public final class Member {
 
     public String getAvatarHash() {
         return avatarHash;
+    }
+
+    @Override
+    public String keyPrefix() {
+        return "m:";
     }
 }

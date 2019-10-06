@@ -2,9 +2,7 @@ package net.ocheyedan.wrk.output;
 
 import net.ocheyedan.wrk.cmd.trello.Cards;
 import net.ocheyedan.wrk.ids.WrkIdsManager;
-import net.ocheyedan.wrk.trello.Board;
-import net.ocheyedan.wrk.trello.Card;
-import net.ocheyedan.wrk.trello.List;
+import net.ocheyedan.wrk.trello.*;
 
 public class DefaultOutputter {
 
@@ -52,6 +50,33 @@ public class DefaultOutputter {
         String closed = ((board.getClosed() != null) && board.getClosed()) ? "^black^[closed] ^r^" : "^b^";
         Output.print("  %s%s^r^ ^black^| %s^r^ | %s", closed, board.getName(), wrkId, board.getId());
         Output.print("    ^black^%s^r^", board.getUrl());
+    }
+
+    public void printBoards(java.util.List<Board> boards, WrkIdsManager idsManager) {
+        for (Board board : boards) {
+            printBoard(idsManager.invertedIdsMap().get("b:" + board.getId()), board);
+        }
+    }
+
+    public void printOrgs(java.util.List<Organization> organizations, WrkIdsManager idsManager) {
+        for (Organization organization : organizations) {
+            printOrganization(idsManager.invertedIdsMap().get("o:" + organization.getId()), organization);
+        }
+    }
+
+    public void printOrganization(String wrkId, Organization organization) {
+        Output.print("  ^b^%s^r^ ^black^| %s^r^ | %s", organization.getDisplayName(), wrkId, organization.getId());
+        Output.print("    ^black^%s^r^", organization.getUrl());
+
+    }
+
+    public void printMembers(java.util.List<Member> members, WrkIdsManager idsManager) {
+        members.stream().forEach(m -> printMember(idsManager.invertedIdsMap().get("m:" + m.getId()), m));
+    }
+
+    public void printMember(String wrkId, Member member) {
+        Output.print("  ^b^%s^r^ ^black^| %s^r^", member.getFullName(), wrkId);
+        Output.print("    ^black^username^r^ %s", member.getUsername());
     }
 
 }

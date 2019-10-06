@@ -45,7 +45,17 @@ public final class Boards extends IdCommand {
             Output.print("  ^black^None^r^");
             return Collections.emptyMap();
         }
-        return printBoards(boards, 1);
+        Map<String, String> wrkIds = new HashMap<String, String>(boards.size());
+        int boardIndex = 1;
+        for (Board board : boards) {
+            String wrkId = "wrk" + boardIndex++;
+            wrkIds.put(wrkId, String.format("b:%s", board.getId()));
+
+            String closed = ((board.getClosed() != null) && board.getClosed()) ? "^black^[closed] ^r^" : "^b^";
+            Output.print("  %s%s^r^ ^black^| %s^r^ | %s", closed, board.getName(), wrkId, board.getId());
+            Output.print("    ^black^%s^r^", board.getUrl());
+        }
+        return wrkIds;
     }
 
     @Override protected boolean valid() {
