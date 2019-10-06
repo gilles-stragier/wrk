@@ -17,6 +17,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Map;
 
@@ -276,6 +277,11 @@ class WrkTest {
                         "    http://boardurl\n",
                 getStdout()
         );
+
+
+        LinkedList<Map<String, String>> wrkIds = readWrkIds();
+        Assertions.assertEquals("b:456", wrkIds.get(0).values().iterator().next());
+        Assertions.assertEquals("wrk1", wrkIds.get(0).keySet().iterator().next());
     }
 
     @Test
@@ -354,6 +360,58 @@ class WrkTest {
         Assertions.assertEquals("wrk1", wrkIds.get(0).keySet().iterator().next());
     }
 
+
+    @Test
+    void testSearchCombined() {
+        when(
+                applicationContext.restTemplate.get(
+                        "https://trello.com/1/search?query=keyword&board_fields=name,url&boards_limit=1000&cards_limit=1000&organizations_limit=1000&members_limit=1000&key=fakeKey&token=fakeToken",
+                        applicationContext.typeReferences.searchType
+                )).thenReturn(
+                new SearchResult(
+                        null,
+                        singletonList(testData.sampleBoard()),
+                        singletonList(testData.sampleCard()),
+                        singletonList(testData.sampleAction()),
+                        singletonList(testData.sampleOrganization()),
+                        singletonList(testData.sampleMember())
+                )
+        );
+
+        wrk.execute(new String[]{"search", "keyword"});
+
+        Assertions.assertEquals(
+                "Searching for keyword\n" +
+                        "Found 1 organization.\n" +
+                        "  displayOrg | wrk1 | abc\n" +
+                        "    http://someorgs\n" +
+                        "Found 1 board.\n" +
+                        "  boardname | wrk2 | 456\n" +
+                        "    http://boardurl\n" +
+                        "Found 1 card.\n" +
+                        "  somename  somelabel  | wrk3 | 123\n" +
+                        "    http://Someurl\n" +
+                        "Found 1 member.\n" +
+                        "  Some Name Full | wrk4\n" +
+                        "    username somename\n",
+                getStdout()
+        );
+
+
+        LinkedList<Map<String, String>> wrkIds = readWrkIds();
+        Map<String, String> idsMap = wrkIds.get(0);
+        Iterator<String> trelloIds = idsMap.values().iterator();
+        Assertions.assertEquals("m:637", trelloIds.next());
+        Assertions.assertEquals("c:123", trelloIds.next());
+        Assertions.assertEquals("b:456", trelloIds.next());
+        Assertions.assertEquals("o:abc", trelloIds.next());
+
+        Iterator<String> internalIds = idsMap.keySet().iterator();
+        Assertions.assertEquals("wrk4", internalIds.next());
+        Assertions.assertEquals("wrk3", internalIds.next());
+        Assertions.assertEquals("wrk2", internalIds.next());
+        Assertions.assertEquals("wrk1", internalIds.next());
+    }
 
     private String getStdout() {
         System.out.flush();

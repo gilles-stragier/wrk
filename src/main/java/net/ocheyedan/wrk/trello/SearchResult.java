@@ -131,4 +131,8 @@ public final class SearchResult {
     public List<Member> getMembers() {
         return (members == null ? Collections.<Member>emptyList() : members);
     }
+
+    public Boolean hadResults() {
+        return !getMembers().isEmpty() || !getOrganizations().isEmpty() || !getActions().isEmpty() || !getCards().isEmpty() || !getBoards().isEmpty();
+    }
 }

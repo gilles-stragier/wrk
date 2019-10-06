@@ -2,6 +2,7 @@ package net.ocheyedan.wrk.cmd.trello;
 
 import net.ocheyedan.wrk.ApplicationContext;
 import net.ocheyedan.wrk.cmd.Args;
+import net.ocheyedan.wrk.ids.WrkIdsManager;
 import net.ocheyedan.wrk.output.Output;
 import net.ocheyedan.wrk.trello.Card;
 import net.ocheyedan.wrk.trello.SearchResult;
@@ -79,7 +80,6 @@ public final class Search extends IdCommand {
 
     @Override protected Map<String, String> _run() {
         Output.print(description);
-        boolean hadResults = false;
         SearchResult searchResults = applicationContext.restTemplate.get(url, applicationContext.typeReferences.searchType);
         if (searchResults == null) {
             Output.print("^red^Invalid query.^r^");
@@ -89,42 +89,38 @@ public final class Search extends IdCommand {
         if (!searchResults.getOrganizations().isEmpty()) {
             Output.print("Found ^b^%d organization%s%s^r^.", searchResults.getOrganizations().size(),
                          (searchResults.getOrganizations().size() == 1 ? "" : "s"), (searchResults.getOrganizations().size() == 1000 ? " (limited to 1000)" : ""));
-            hadResults = true;
             wrkIds.putAll(Orgs.printOrgs(searchResults.getOrganizations(), wrkIds.size() + 1));
         }
         if (!searchResults.getBoards().isEmpty()) {
             Output.print("Found ^b^%d board%s%s^r^.", searchResults.getBoards().size(),
                     (searchResults.getBoards().size() == 1 ? "" : "s"), (searchResults.getBoards().size() == 1000 ? " (limited to 1000)" : ""));
-            hadResults = true;
             wrkIds.putAll(Boards.printBoards(searchResults.getBoards(), wrkIds.size() + 1));
         }
         if (!searchResults.getCards().isEmpty()) {
             Output.print("Found ^b^%d card%s%s^r^.", searchResults.getCards().size(),
                     (searchResults.getCards().size() == 1 ? "" : "s"), (searchResults.getCards().size() == 1000 ? " (limited to 1000)" : ""));
-            hadResults = true;
+
             List<Card> cards = searchResults.getCards();
 
-            Map<String, String> cardWrkIds = new HashMap<String, String>(cards.size());
-            int cardIndex = wrkIds.size() + 1;
-            for (Card card : cards) {
-                String wrkId = "wrk" + cardIndex++;
-                cardWrkIds.put(wrkId, String.format("c:%s", card.getId()));
-                applicationContext.defaultOutputter.printCard(wrkId, card);
-            }
-            wrkIds.putAll(cardWrkIds);
+            WrkIdsManager idsManager = new WrkIdsManager(wrkIds);
+            idsManager.registerTrelloIds(cards);
+
+            applicationContext.defaultOutputter.printCards(cards, idsManager);
+
+            wrkIds.putAll(idsManager.idsMap());
         }
         if (!searchResults.getMembers().isEmpty()) {
             Output.print("Found ^b^%d member%s%s^r^.", searchResults.getMembers().size(),
                     (searchResults.getMembers().size() == 1 ? "" : "s"), (searchResults.getMembers().size() == 1000 ? " (limited to 1000)" : ""));
-            hadResults = true;
             wrkIds.putAll(Members.printMembers(searchResults.getMembers(), wrkIds.size() + 1));
         }
         // TODO - actions?
-        if (!hadResults) {
+        if (!searchResults.hadResults()) {
             Output.print("^black^No results.^r^");
         }
         return wrkIds;
     }
+
 
     @Override protected boolean valid() {
         return (url != null);

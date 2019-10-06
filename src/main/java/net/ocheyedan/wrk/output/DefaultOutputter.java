@@ -1,6 +1,7 @@
 package net.ocheyedan.wrk.output;
 
 import net.ocheyedan.wrk.cmd.trello.Cards;
+import net.ocheyedan.wrk.ids.WrkIdsManager;
 import net.ocheyedan.wrk.trello.Board;
 import net.ocheyedan.wrk.trello.Card;
 import net.ocheyedan.wrk.trello.List;
@@ -38,6 +39,13 @@ public class DefaultOutputter {
         String closed = ((card.getClosed() != null) && card.getClosed()) ? "^black^[closed] ^r^" : "^b^";
         Output.print("  %s%s^r^%s ^black^| %s^r^ | %s", closed, card.getName(), labels, wrkId, card.getId());
         Output.print("    ^black^%s^r^", Cards.getPrettyUrl(card));
+    }
+
+
+    public void printCards(java.util.List<Card> cards, WrkIdsManager idsManager) {
+        for (Card card : cards) {
+            printCard(idsManager.invertedIdsMap().get("c:" + card.getId()), card);
+        }
     }
 
     public void printBoard(String wrkId, Board board) {

@@ -80,4 +80,15 @@ public class TestData {
                 "87546"
         );
     }
+
+    public Action sampleAction() {
+        return new Action(
+                "a34",
+                "memid",
+                new ActionData("someaction", sampleBoard(), sampleCard()),
+                "doAStuffAction",
+                "yesterday",
+                sampleMember()
+        );
+    }
 }
