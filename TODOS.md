@@ -13,5 +13,5 @@ $ wrk orgs close
 * Checklist management
 * Manage multiple accounts
 * User input required attributes
-
+* Release to github on commit or not
 
