@@ -81,7 +81,7 @@ public final class Create extends IdCommand {
                 Output.print("    ^black^%s^r^", board.getUrl());
                 return wrkIds;
             case List:
-                net.ocheyedan.wrk.trello.List list = applicationContext.restTemplate.post(url, new TypeReference<net.ocheyedan.wrk.trello.List>() { });
+                net.ocheyedan.wrk.trello.List list = applicationContext.restTemplate.post(url, applicationContext.typeReferences.listType);
                 if (list == null) {
                     Output.print("^red^Invalid id or insufficient privileges.^r^");
                     break;

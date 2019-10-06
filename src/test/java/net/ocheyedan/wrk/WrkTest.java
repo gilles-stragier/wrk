@@ -144,6 +144,23 @@ class WrkTest {
         );
     }
 
+    @Test
+    public void testCreateCard() {
+        when(
+                applicationContext.restTemplate.post(
+                        "https://trello.com/1/lists?name=Nom+de+la+liste&idBoard=34567&key=fakeKey&token=fakeToken",
+                        applicationContext.typeReferences.listType
+                )).thenReturn(testData.sampleList()
+        );
+
+        wrk.execute(new String[]{"create", "list", "in", "34567", "Nom de la liste"});
+
+        Assertions.assertEquals(
+                "Creating list in board 34567:\n" +
+                        "  listname | wrk1\n",
+                getStdout()
+        );
+    }
 
 
     private String getStdout() {

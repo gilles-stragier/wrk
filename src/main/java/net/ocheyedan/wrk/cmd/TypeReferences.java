@@ -14,6 +14,8 @@ public class TypeReferences {
 
     public TypeReference<List<net.ocheyedan.wrk.trello.List>> listsListType = new TypeReference<>() {};
 
+    public TypeReference<net.ocheyedan.wrk.trello.List> listType = new TypeReference<>() {};
+
     public TypeReference<List<Organization>> orgsListType = new TypeReference<>() {};
 
 
