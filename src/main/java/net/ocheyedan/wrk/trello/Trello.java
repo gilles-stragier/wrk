@@ -1,8 +1,8 @@
 package net.ocheyedan.wrk.trello;
 
-import net.ocheyedan.wrk.Output;
-import net.ocheyedan.wrk.RestTemplate;
 import com.fasterxml.jackson.core.type.TypeReference;
+import net.ocheyedan.wrk.RestTemplate;
+import net.ocheyedan.wrk.output.Output;
 
 import java.io.File;
 import java.io.FileWriter;

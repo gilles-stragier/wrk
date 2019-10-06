@@ -1,7 +1,6 @@
 package net.ocheyedan.wrk.cmd;
 
 import net.ocheyedan.wrk.ApplicationContext;
-import net.ocheyedan.wrk.RestTemplate;
 
 /**
  * User: blangel

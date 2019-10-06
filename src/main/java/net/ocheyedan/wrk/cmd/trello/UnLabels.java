@@ -1,13 +1,11 @@
 package net.ocheyedan.wrk.cmd.trello;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import net.ocheyedan.wrk.ApplicationContext;
-import net.ocheyedan.wrk.Output;
-import net.ocheyedan.wrk.RestTemplate;
 import net.ocheyedan.wrk.cmd.Args;
-import net.ocheyedan.wrk.cmd.Usage;
+import net.ocheyedan.wrk.output.Output;
 import net.ocheyedan.wrk.trello.Label;
 import net.ocheyedan.wrk.trello.Trello;
-import com.fasterxml.jackson.core.type.TypeReference;
 
 import java.util.Collections;
 import java.util.List;
@@ -48,7 +46,8 @@ public final class UnLabels extends IdCommand {
 
     @Override protected Map<String, String> _run() {
         Output.print(description);
-        List<Label> result = applicationContext.restTemplate.delete(url, new TypeReference<List<Label>>() { });
+        List<Label> result = applicationContext.restTemplate.delete(url, new TypeReference<>() {
+        });
         if (result == null) {
             Output.print("  ^red^Invalid id or insufficient privileges.^r^");
         } else {

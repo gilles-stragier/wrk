@@ -1,12 +1,9 @@
 package net.ocheyedan.wrk.cmd.trello;
 
 import net.ocheyedan.wrk.ApplicationContext;
-import net.ocheyedan.wrk.Output;
-import net.ocheyedan.wrk.RestTemplate;
 import net.ocheyedan.wrk.cmd.Args;
-import net.ocheyedan.wrk.cmd.Usage;
+import net.ocheyedan.wrk.output.Output;
 import net.ocheyedan.wrk.trello.Trello;
-import com.fasterxml.jackson.core.type.TypeReference;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -54,14 +51,13 @@ public final class Lists extends IdCommand {
         return "lists";
     }
 
-    static Map<String, String> printLists(List<net.ocheyedan.wrk.trello.List> lists, int baseIndex) {
-        Map<String, String> wrkIds = new HashMap<String, String>(lists.size());
+    private Map<String, String> printLists(List<net.ocheyedan.wrk.trello.List> lists, int baseIndex) {
+        Map<String, String> wrkIds = new HashMap<>(lists.size());
         for (net.ocheyedan.wrk.trello.List list : lists) {
             String wrkId = "wrk" + baseIndex++;
             wrkIds.put(wrkId, String.format("l:%s", list.getId()));
 
-            String closed = ((list.getClosed() != null) && list.getClosed()) ? "^black^[closed] ^r^" : "^b^";
-            Output.print("  %s%s^r^ ^black^| %s^r^ | %s", closed, list.getName(), wrkId, list.getId());
+            applicationContext.defaultOutputter.printList(wrkId, list);
         }
         return wrkIds;
     }

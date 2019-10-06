@@ -1,14 +1,12 @@
 package net.ocheyedan.wrk.cmd.trello;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import net.ocheyedan.wrk.ApplicationContext;
-import net.ocheyedan.wrk.Output;
-import net.ocheyedan.wrk.RestTemplate;
 import net.ocheyedan.wrk.cmd.Args;
-import net.ocheyedan.wrk.cmd.Usage;
+import net.ocheyedan.wrk.output.Output;
 import net.ocheyedan.wrk.trello.Board;
 import net.ocheyedan.wrk.trello.Card;
 import net.ocheyedan.wrk.trello.Trello;
-import com.fasterxml.jackson.core.type.TypeReference;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -21,7 +19,7 @@ import java.util.Map;
  */
 public final class Create extends IdCommand {
 
-    private static enum Type {
+    private enum Type {
         Board, List, Card
     }
 
@@ -67,11 +65,12 @@ public final class Create extends IdCommand {
 
     @Override protected Map<String, String> _run() {
         Output.print(description);
-        Map<String, String> wrkIds = new HashMap<String, String>(1, 1.0f);
+        Map<String, String> wrkIds = new HashMap<>(1, 1.0f);
         String wrkId = "wrk1";
         switch (type) {
             case Board:
-                Board board = applicationContext.restTemplate.post(url, new TypeReference<Board>() { });
+                Board board = applicationContext.restTemplate.post(url, new TypeReference<>() {
+                });
                 if (board == null) {
                     Output.print("^red^Invalid id or insufficient privileges.^r^");
                     break;
@@ -87,10 +86,11 @@ public final class Create extends IdCommand {
                     break;
                 }
                 wrkIds.put(wrkId, String.format("l:%s", list.getId()));
-                Output.print("  ^b^%s^r^ ^black^| %s^r^", list.getName(), wrkId);
+                applicationContext.defaultOutputter.printList(wrkId, list);
                 return wrkIds;
             case Card:
-                Card card = applicationContext.restTemplate.post(url, new TypeReference<Card>() { });
+                Card card = applicationContext.restTemplate.post(url, new TypeReference<>() {
+                });
                 if (card == null) {
                     Output.print("^red^Invalid id or insufficient privileges.^r^");
                     break;
@@ -103,6 +103,7 @@ public final class Create extends IdCommand {
         }
         return Collections.emptyMap();
     }
+
 
     @Override protected boolean valid() {
         return (url != null);

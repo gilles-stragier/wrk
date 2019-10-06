@@ -1,7 +1,11 @@
 package net.ocheyedan.wrk;
 
 import net.ocheyedan.wrk.cmd.TypeReferences;
-import org.junit.jupiter.api.*;
+import net.ocheyedan.wrk.output.DefaultOutputter;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -9,8 +13,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 
-import static java.util.Arrays.asList;
-import static org.mockito.Mockito.mock;
+import static java.util.Collections.singletonList;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -27,7 +30,8 @@ class WrkTest {
     void setUp() {
         applicationContext = new ApplicationContext(
                 Mockito.mock(RestTemplate.class),
-                new TypeReferences()
+                new TypeReferences(),
+                new DefaultOutputter()
         );
 
         wrk = new Wrk(
@@ -57,13 +61,13 @@ class WrkTest {
     }
 
     @Test
-    public void testAssignedCards() {
+    void testAssignedCards() {
         when(
             applicationContext.restTemplate.get(
                 "https://trello.com/1/members/my/cards?filter=open&key=fakeKey&token=fakeToken",
                 applicationContext.typeReferences.cardListType
             )).thenReturn(
-                asList(
+                singletonList(
                         testData.sampleCard()
                 )
         );
@@ -79,14 +83,14 @@ class WrkTest {
     }
 
     @Test
-    public void testBoards() {
+    void testBoards() {
         when(
                 applicationContext.restTemplate.get(
                         "https://trello.com/1/members/my/boards?filter=open&key=fakeKey&token=fakeToken",
                         applicationContext.typeReferences.boardListType
                 )).thenReturn(
-                asList(
-                    testData.sampleBoard()
+                singletonList(
+                        testData.sampleBoard()
                 )
         );
 
@@ -102,13 +106,13 @@ class WrkTest {
     }
 
     @Test
-    public void testLists() {
+    void testLists() {
         when(
                 applicationContext.restTemplate.get(
                         "https://trello.com/1/boards/456/lists?filter=open&key=fakeKey&token=fakeToken",
                         applicationContext.typeReferences.listsListType
                 )).thenReturn(
-                asList(
+                singletonList(
                         testData.sampleList()
                 )
         );
@@ -123,13 +127,13 @@ class WrkTest {
     }
 
     @Test
-    public void testOrgs() {
+    void testOrgs() {
         when(
                 applicationContext.restTemplate.get(
                         "https://trello.com/1/members/my/organizations?key=fakeKey&token=fakeToken",
                         applicationContext.typeReferences.orgsListType
                 )).thenReturn(
-                asList(
+                singletonList(
                         testData.sampleOrganization()
                 )
         );
@@ -145,7 +149,7 @@ class WrkTest {
     }
 
     @Test
-    public void testCreateCard() {
+    void testCreateCard() {
         when(
                 applicationContext.restTemplate.post(
                         "https://trello.com/1/lists?name=Nom+de+la+liste&idBoard=34567&key=fakeKey&token=fakeToken",
@@ -157,11 +161,10 @@ class WrkTest {
 
         Assertions.assertEquals(
                 "Creating list in board 34567:\n" +
-                        "  listname | wrk1\n",
+                        "  listname | wrk1 | 789\n",
                 getStdout()
         );
     }
-
 
     private String getStdout() {
         System.out.flush();

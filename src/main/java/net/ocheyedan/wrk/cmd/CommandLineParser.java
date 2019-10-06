@@ -1,11 +1,9 @@
 package net.ocheyedan.wrk.cmd;
 
 import net.ocheyedan.wrk.ApplicationContext;
-import net.ocheyedan.wrk.RestTemplate;
 import net.ocheyedan.wrk.cmd.trello.*;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 /**

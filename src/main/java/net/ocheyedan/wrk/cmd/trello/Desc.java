@@ -1,12 +1,10 @@
 package net.ocheyedan.wrk.cmd.trello;
 
-import net.ocheyedan.wrk.ApplicationContext;
-import net.ocheyedan.wrk.Output;
-import net.ocheyedan.wrk.RestTemplate;
-import net.ocheyedan.wrk.cmd.Args;
-import net.ocheyedan.wrk.cmd.Usage;
-import net.ocheyedan.wrk.trello.*;
 import com.fasterxml.jackson.core.type.TypeReference;
+import net.ocheyedan.wrk.ApplicationContext;
+import net.ocheyedan.wrk.cmd.Args;
+import net.ocheyedan.wrk.output.Output;
+import net.ocheyedan.wrk.trello.*;
 
 import java.util.Collections;
 import java.util.Map;
@@ -18,7 +16,7 @@ import java.util.Map;
  */
 public final class Desc extends IdCommand {
 
-    private static enum Type {
+    private enum Type {
         Org, Board, List, Card, Member
     }
 
@@ -77,7 +75,8 @@ public final class Desc extends IdCommand {
         String desc;
         switch (type) {
             case Org:
-                Organization org = applicationContext.restTemplate.get(url, new TypeReference<Organization>() { });
+                Organization org = applicationContext.restTemplate.get(url, new TypeReference<>() {
+                });
                 if (org == null) {
                     Output.print("^red^Invalid id or not found.^r^");
                     break;
@@ -90,7 +89,8 @@ public final class Desc extends IdCommand {
                 Output.print("    ^black^%s^r^", org.getUrl());
                 break;
             case Board:
-                Board board = applicationContext.restTemplate.get(url, new TypeReference<Board>() { });
+                Board board = applicationContext.restTemplate.get(url, new TypeReference<>() {
+                });
                 if (board == null) {
                     Output.print("^red^Invalid id or not found.^r^");
                     break;
@@ -104,7 +104,8 @@ public final class Desc extends IdCommand {
                 Output.print("    ^black^%s^r^", board.getUrl());
                 break;
             case List:
-                net.ocheyedan.wrk.trello.List list = applicationContext.restTemplate.get(url, new TypeReference<net.ocheyedan.wrk.trello.List>() { });
+                net.ocheyedan.wrk.trello.List list = applicationContext.restTemplate.get(url, new TypeReference<>() {
+                });
                 if (list == null) {
                     Output.print("^red^Invalid id or not found.^r^");
                     break;
@@ -113,7 +114,8 @@ public final class Desc extends IdCommand {
                 Output.print("  %s%s^r^ ^black^| %s^r^", closed, list.getName(), list.getId());
                 break;
             case Card:
-                Card card = applicationContext.restTemplate.get(url, new TypeReference<Card>() { });
+                Card card = applicationContext.restTemplate.get(url, new TypeReference<>() {
+                });
                 if (card == null) {
                     Output.print("^red^Invalid id or not found.^r^");
                     break;
@@ -128,7 +130,8 @@ public final class Desc extends IdCommand {
                 Output.print("    ^black^%s^r^", Cards.getPrettyUrl(card));
                 break;
             case Member:
-                Member member = applicationContext.restTemplate.get(url, new TypeReference<Member>() { });
+                Member member = applicationContext.restTemplate.get(url, new TypeReference<>() {
+                });
                 if (member == null) {
                     Output.print("^red^Invalid id or not found.^r^");
                     break;

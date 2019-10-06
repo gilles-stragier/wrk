@@ -1,10 +1,7 @@
 package net.ocheyedan.wrk.cmd.trello;
 
 import net.ocheyedan.wrk.ApplicationContext;
-import net.ocheyedan.wrk.Output;
-import net.ocheyedan.wrk.RestTemplate;
 import net.ocheyedan.wrk.cmd.Args;
-import net.ocheyedan.wrk.cmd.Usage;
 
 import java.util.Collections;
 import java.util.Map;

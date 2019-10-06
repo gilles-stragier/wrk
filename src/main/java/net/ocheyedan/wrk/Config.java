@@ -1,5 +1,7 @@
 package net.ocheyedan.wrk;
 
+import net.ocheyedan.wrk.output.Output;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.concurrent.atomic.AtomicReference;

@@ -1,4 +1,4 @@
-package net.ocheyedan.wrk;
+package net.ocheyedan.wrk.output;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -115,7 +115,7 @@ public final class Output {
      */
     private static final Map<String, TermCode> TERM_CODES = new HashMap<String, TermCode>();
 
-    static void init(boolean coloredOutput) {
+    public static void init(boolean coloredOutput) {
         String terminal = System.getenv("TERM");
         withinTerminal.set(terminal != null);
         String piped = System.getProperty("wrk.piped");

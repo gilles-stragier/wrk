@@ -1,6 +1,7 @@
 package net.ocheyedan.wrk;
 
 import com.fasterxml.jackson.core.type.TypeReference;
+import net.ocheyedan.wrk.output.Output;
 
 import java.io.*;
 import java.net.HttpURLConnection;

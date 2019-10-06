@@ -1,18 +1,18 @@
 package net.ocheyedan.wrk.cmd.trello;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import net.ocheyedan.wrk.ApplicationContext;
 import net.ocheyedan.wrk.Json;
-import net.ocheyedan.wrk.Output;
-import net.ocheyedan.wrk.RestTemplate;
 import net.ocheyedan.wrk.cmd.Args;
 import net.ocheyedan.wrk.cmd.Command;
 import net.ocheyedan.wrk.cmd.Usage;
-import com.fasterxml.jackson.core.type.TypeReference;
+import net.ocheyedan.wrk.output.Output;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 /**
@@ -37,23 +37,68 @@ abstract class IdCommand extends Command {
     }
 
     @SuppressWarnings("serial")
-    protected static final Set<String> orgPrefix = new HashSet<String>(1) { { add("o:"); } };
+    static final Set<String> orgPrefix = new HashSet<>(1) {
+        {
+            add("o:");
+        }
+    };
     @SuppressWarnings("serial")
-    protected static final Set<String> boardsPrefix = new HashSet<String>(1) { { add("b:"); } };
+    static final Set<String> boardsPrefix = new HashSet<>(1) {
+        {
+            add("b:");
+        }
+    };
     @SuppressWarnings("serial")
-    protected static final Set<String> listsPrefix = new HashSet<String>(1) { { add("l:"); } };
+    static final Set<String> listsPrefix = new HashSet<>(1) {
+        {
+            add("l:");
+        }
+    };
     @SuppressWarnings("serial")
-    protected static final Set<String> cardsPrefix = new HashSet<String>(1) { { add("c:"); } };
+    static final Set<String> cardsPrefix = new HashSet<>(1) {
+        {
+            add("c:");
+        }
+    };
     @SuppressWarnings("serial")
-    protected static final Set<String> membersPrefix = new HashSet<String>(1) { { add("m:"); } };
+    static final Set<String> membersPrefix = new HashSet<>(1) {
+        {
+            add("m:");
+        }
+    };
     @SuppressWarnings("serial")
-    protected static final Set<String> boardsListsPrefix = new HashSet<String>(1) { { add("b:"); add("l:"); } };
+    static final Set<String> boardsListsPrefix = new HashSet<>(1) {
+        {
+            add("b:");
+            add("l:");
+        }
+    };
     @SuppressWarnings("serial")
-    protected static final Set<String> boardsListsCardsPrefix = new HashSet<String>(1) { { add("b:"); add("l:"); add("c:"); } };
+    static final Set<String> boardsListsCardsPrefix = new HashSet<>(1) {
+        {
+            add("b:");
+            add("l:");
+            add("c:");
+        }
+    };
     @SuppressWarnings("serial")
-    protected static final Set<String> orgsBoardsCardsPrefix = new HashSet<String>(1) { { add("o:"); add("b:"); add("c:"); } };
+    static final Set<String> orgsBoardsCardsPrefix = new HashSet<>(1) {
+        {
+            add("o:");
+            add("b:");
+            add("c:");
+        }
+    };
     @SuppressWarnings("serial")
-    protected static final Set<String> allPrefix = new HashSet<String>(1) { { add("o:"); add("b:"); add("l:"); add("c:"); add("m:"); } };
+    static final Set<String> allPrefix = new HashSet<>(1) {
+        {
+            add("o:");
+            add("b:");
+            add("l:");
+            add("c:");
+            add("m:");
+        }
+    };
 
     private final File wrkIdsFile;
 
@@ -63,7 +108,7 @@ abstract class IdCommand extends Command {
 
     protected IdCommand(Args args, ApplicationContext applicationContext) {
         super(args, applicationContext);
-        LinkedList<Map<String, String>> existing = new LinkedList<Map<String, String>>();
+        LinkedList<Map<String, String>> existing = new LinkedList<>();
         wrkIdsFile = new File(String.format("%s%s%s%s%s", System.getProperty("user.home"), File.separator, ".wrk", File.separator, "wrk-ids"));
         try {
             if (wrkIdsFile.exists()) {
@@ -76,7 +121,7 @@ abstract class IdCommand extends Command {
         }
         this.existingWrkIds = existing;
         Map<String, String> existingHead = existingWrkIds.peek();
-        existingHead = (existingHead == null ? Collections.<String, String>emptyMap() : existingHead);
+        existingHead = (existingHead == null ? Collections.emptyMap() : existingHead);
         this.existingHead = existingHead;
     }
 
@@ -105,7 +150,7 @@ abstract class IdCommand extends Command {
         }
     }
 
-    protected void pop(int times) {
+    void pop(int times) {
         for (int i = 0; i < times; i++) {
             if (!this.existingWrkIds.isEmpty()) {
                 this.existingWrkIds.pop();
@@ -142,12 +187,7 @@ abstract class IdCommand extends Command {
     }
 
     static String encode(String comment) {
-        try {
-            return URLEncoder.encode(comment, "UTF-8");
-        } catch (IOException ioe) {
-            Output.print(ioe);
-        }
-        return comment;
+        return URLEncoder.encode(comment, StandardCharsets.UTF_8);
     }
 
     protected TrelloId parseWrkId(String wrkId, Set<String> desiredPrefixes) {
