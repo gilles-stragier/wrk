@@ -57,20 +57,8 @@ public final class Cards extends IdCommand {
             Output.print("  ^black^None^r^");
             return Collections.emptyMap();
         }
-        return printCards(cards, 1);
-    }
-
-    @Override protected boolean valid() {
-        return (url != null);
-    }
-
-    @Override protected String getCommandName() {
-        return "cards";
-    }
-
-    static Map<String, String> printCards(List<Card> cards, int indexBase) {
         Map<String, String> wrkIds = new HashMap<String, String>(cards.size());
-        int cardIndex = indexBase;
+        int cardIndex = 1;
         for (Card card : cards) {
             String wrkId = "wrk" + cardIndex++;
             wrkIds.put(wrkId, String.format("c:%s", card.getId()));
@@ -83,6 +71,26 @@ public final class Cards extends IdCommand {
         return wrkIds;
     }
 
+    @Override protected boolean valid() {
+        return (url != null);
+    }
+
+    @Override protected String getCommandName() {
+        return "cards";
+    }
+
+    Map<String, String> printCards(List<Card> cards, int indexBase) {
+        Map<String, String> wrkIds = new HashMap<String, String>(cards.size());
+        int cardIndex = indexBase;
+        for (Card card : cards) {
+            String wrkId = "wrk" + cardIndex++;
+            wrkIds.put(wrkId, String.format("c:%s", card.getId()));
+            applicationContext.defaultOutputter.printCard(wrkId, card);
+
+        }
+        return wrkIds;
+    }
+
     /**
      * The {@link Card#getUrl()} returns a url based off of board and card's short-id; translating to long-id so that
      * users can copy and paste id printed via url.  Additionally removing the card name from the url to shorten the
@@ -90,7 +98,7 @@ public final class Cards extends IdCommand {
      * @param card to get long url
      * @return the long url (using {@link Card#getId()} instead of {@link Card#getIdShort()}
      */
-    static String getPrettyUrl(Card card) {
+    public static String getPrettyUrl(Card card) {
         String originalUrl = card.getUrl();
         int firstIndex = originalUrl.indexOf("card/");
         if (firstIndex == -1) {
@@ -100,7 +108,7 @@ public final class Cards extends IdCommand {
         return originalUrl.replace(toRemove, card.getIdBoard() + "/" + card.getId());
     }
 
-    static String buildLabel(List<Label> labels) {
+    public static String buildLabel(List<Label> labels) {
         StringBuilder buffer = new StringBuilder();
         boolean colored = Output.isColoredOutput();
         for (Label label : labels) {

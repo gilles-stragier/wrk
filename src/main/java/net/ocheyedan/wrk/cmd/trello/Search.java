@@ -3,6 +3,7 @@ package net.ocheyedan.wrk.cmd.trello;
 import net.ocheyedan.wrk.ApplicationContext;
 import net.ocheyedan.wrk.cmd.Args;
 import net.ocheyedan.wrk.output.Output;
+import net.ocheyedan.wrk.trello.Card;
 import net.ocheyedan.wrk.trello.SearchResult;
 import net.ocheyedan.wrk.trello.Trello;
 
@@ -101,7 +102,16 @@ public final class Search extends IdCommand {
             Output.print("Found ^b^%d card%s%s^r^.", searchResults.getCards().size(),
                     (searchResults.getCards().size() == 1 ? "" : "s"), (searchResults.getCards().size() == 1000 ? " (limited to 1000)" : ""));
             hadResults = true;
-            wrkIds.putAll(Cards.printCards(searchResults.getCards(), wrkIds.size() + 1));
+            List<Card> cards = searchResults.getCards();
+            Map<String, String> cardWrkIds = new HashMap<String, String>(cards.size());
+            int cardIndex = wrkIds.size() + 1;
+            for (Card card : cards) {
+                String wrkId = "wrk" + cardIndex++;
+                cardWrkIds.put(wrkId, String.format("c:%s", card.getId()));
+                applicationContext.defaultOutputter.printCard(wrkId, card);
+
+            }
+            wrkIds.putAll(cardWrkIds);
         }
         if (!searchResults.getMembers().isEmpty()) {
             Output.print("Found ^b^%d member%s%s^r^.", searchResults.getMembers().size(),

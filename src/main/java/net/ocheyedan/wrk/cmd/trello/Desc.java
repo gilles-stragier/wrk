@@ -115,18 +115,7 @@ public final class Desc extends IdCommand {
                 break;
             case Card:
                 Card card = applicationContext.restTemplate.get(url, applicationContext.typeReferences.cardType);
-                if (card == null) {
-                    Output.print("^red^Invalid id or not found.^r^");
-                    break;
-                }
-                String labels = Cards.buildLabel(card.getLabels());
-                String cardClosed = ((card.getClosed() != null) && card.getClosed()) ? "^black^[closed] ^r^" : "^b^";
-                Output.print("  %s%s^r^%s ^black^| %s^r^", cardClosed, card.getName(), labels, card.getId());
-                desc = (card.getDesc() == null ? "" : card.getDesc());
-                if (!desc.isEmpty()) {
-                    Output.print("    %s", desc);
-                }
-                Output.print("    ^black^%s^r^", Cards.getPrettyUrl(card));
+                applicationContext.defaultOutputter.describeCard(card);
                 break;
             case Member:
                 Member member = applicationContext.restTemplate.get(url, new TypeReference<>() {
