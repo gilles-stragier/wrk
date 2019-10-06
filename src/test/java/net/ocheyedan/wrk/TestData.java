@@ -1,9 +1,6 @@
 package net.ocheyedan.wrk;
 
-import net.ocheyedan.wrk.trello.Board;
-import net.ocheyedan.wrk.trello.Card;
-import net.ocheyedan.wrk.trello.Label;
-import net.ocheyedan.wrk.trello.List;
+import net.ocheyedan.wrk.trello.*;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -55,6 +52,22 @@ public class TestData {
             false,
             "456",
             1
+        );
+    }
+
+    Organization sampleOrganization() {
+        return new Organization(
+                "abc",
+                "someorg",
+                "displayOrg",
+                "somedesc",
+                false,
+                null,
+                null,
+                null,
+                "http://someorgs",
+                "http://thewebsite",
+                null
         );
     }
 }

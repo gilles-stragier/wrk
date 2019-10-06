@@ -122,6 +122,29 @@ class WrkTest {
         );
     }
 
+    @Test
+    public void testOrgs() {
+        when(
+                applicationContext.restTemplate.get(
+                        "https://trello.com/1/members/my/organizations?key=fakeKey&token=fakeToken",
+                        applicationContext.typeReferences.orgsListType
+                )).thenReturn(
+                asList(
+                        testData.sampleOrganization()
+                )
+        );
+
+        wrk.execute(new String[]{"orgs"});
+
+        Assertions.assertEquals(
+                "Your organizations:\n" +
+                        "  displayOrg | wrk1 | abc\n" +
+                        "    http://someorgs\n",
+                getStdout()
+        );
+    }
+
+
 
     private String getStdout() {
         System.out.flush();

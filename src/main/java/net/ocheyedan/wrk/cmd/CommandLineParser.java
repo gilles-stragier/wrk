@@ -18,11 +18,6 @@ import java.util.List;
 public final class CommandLineParser {
 
     /**
-     * A singleton, empty {@link Args} object.
-     */
-    final static Args NIL = new Args(Collections.<String>emptyList());
-
-    /**
      * @param args to parse
      * @return a {@link Command} parsed from {@code args}.
      */

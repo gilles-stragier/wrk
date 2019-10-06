@@ -33,7 +33,7 @@ public final class Orgs extends IdCommand {
 
     @Override protected Map<String, String> _run() {
         Output.print(description);
-        List<Organization> orgs = applicationContext.restTemplate.get(url, new TypeReference<List<Organization>>() { });
+        List<Organization> orgs = applicationContext.restTemplate.get(url, applicationContext.typeReferences.orgsListType);
         if ((orgs == null) || orgs.isEmpty()) {
             Output.print("  ^black^None^r^");
             return Collections.emptyMap();
@@ -56,7 +56,7 @@ public final class Orgs extends IdCommand {
             String wrkId = "wrk" + orgIndex++;
             wrkIds.put(wrkId, String.format("o:%s", organization.getId()));
 
-            Output.print("  ^b^%s^r^ ^black^| %s^r^", organization.getDisplayName(), wrkId);
+            Output.print("  ^b^%s^r^ ^black^| %s^r^ | %s", organization.getDisplayName(), wrkId, organization.getId());
             Output.print("    ^black^%s^r^", organization.getUrl());
         }
         return wrkIds;
