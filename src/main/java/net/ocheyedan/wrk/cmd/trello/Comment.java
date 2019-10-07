@@ -9,7 +9,6 @@ import net.ocheyedan.wrk.trello.Trello;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Collections;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -77,7 +76,8 @@ public final class Comment extends IdCommand {
         System.exit(1); return null;
     }
 
-    @Override protected Map<String, String> _run() {
+    @Override
+    protected void _run() {
         Output.print(description);
         Map<String, Object> result = applicationContext.restTemplate.post(url, new TypeReference<Map<String, Object>>() {
         });
@@ -86,7 +86,6 @@ public final class Comment extends IdCommand {
         } else {
             Output.print("  ^b^Commented!^r^", result);
         }
-        return Collections.emptyMap();
     }
 
     @Override protected boolean valid() {

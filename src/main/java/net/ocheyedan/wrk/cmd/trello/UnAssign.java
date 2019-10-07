@@ -7,9 +7,7 @@ import net.ocheyedan.wrk.output.Output;
 import net.ocheyedan.wrk.trello.Member;
 import net.ocheyedan.wrk.trello.Trello;
 
-import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 /**
  * User: blangel
@@ -40,7 +38,8 @@ public final class UnAssign extends IdCommand {
         }
     }
 
-    @Override protected Map<String, String> _run() {
+    @Override
+    protected void _run() {
         Output.print(description);
         List<Member> members = applicationContext.restTemplate.delete(url, new TypeReference<List<Member>>() {
         });
@@ -49,7 +48,6 @@ public final class UnAssign extends IdCommand {
         } else {
             Output.print("  ^b^Un-assigned!^r^");
         }
-        return Collections.emptyMap();
     }
 
     @Override protected boolean valid() {

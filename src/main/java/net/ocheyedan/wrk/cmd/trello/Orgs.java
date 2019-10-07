@@ -2,15 +2,11 @@ package net.ocheyedan.wrk.cmd.trello;
 
 import net.ocheyedan.wrk.ApplicationContext;
 import net.ocheyedan.wrk.cmd.Args;
-import net.ocheyedan.wrk.ids.WrkIdsManager;
 import net.ocheyedan.wrk.output.Output;
 import net.ocheyedan.wrk.trello.Organization;
 import net.ocheyedan.wrk.trello.Trello;
 
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * User: blangel
@@ -30,13 +26,12 @@ public final class Orgs extends IdCommand {
         description = "Your organizations:";
     }
 
-    @Override protected Map<String, String> _run() {
+    @Override
+    protected void _run() {
         Output.print(description);
         List<Organization> orgs = applicationContext.restTemplate.get(url, applicationContext.typeReferences.orgsListType);
-        WrkIdsManager idsManager = new WrkIdsManager();
-        idsManager.registerTrelloIds(orgs);
-        applicationContext.defaultOutputter.printOrgs(orgs, idsManager);
-        return idsManager.idsMap();
+        applicationContext.wrkIdsManager.registerTrelloIds(orgs);
+        applicationContext.defaultOutputter.printOrgs(orgs, applicationContext.wrkIdsManager);
     }
 
     @Override protected boolean valid() {

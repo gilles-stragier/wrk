@@ -7,9 +7,7 @@ import net.ocheyedan.wrk.output.Output;
 import net.ocheyedan.wrk.trello.Label;
 import net.ocheyedan.wrk.trello.Trello;
 
-import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 /**
  * User: blangel
@@ -44,7 +42,8 @@ public final class Labels extends IdCommand {
         System.exit(1); return null;
     }
 
-    @Override protected Map<String, String> _run() {
+    @Override
+    protected void _run() {
         Output.print(description);
         List<Label> result = applicationContext.restTemplate.post(url, new TypeReference<List<Label>>() { });
         if (result == null) {
@@ -52,7 +51,6 @@ public final class Labels extends IdCommand {
         } else {
             Output.print("  ^b^Labeled!^r^", result);
         }
-        return Collections.emptyMap();
     }
 
     @Override protected boolean valid() {

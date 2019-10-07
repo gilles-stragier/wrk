@@ -2,13 +2,11 @@ package net.ocheyedan.wrk.cmd.trello;
 
 import net.ocheyedan.wrk.ApplicationContext;
 import net.ocheyedan.wrk.cmd.Args;
-import net.ocheyedan.wrk.ids.WrkIdsManager;
 import net.ocheyedan.wrk.output.Output;
 import net.ocheyedan.wrk.trello.Board;
 import net.ocheyedan.wrk.trello.Trello;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * User: blangel
@@ -37,19 +35,19 @@ public final class Boards extends IdCommand {
         }
     }
 
-    @Override protected Map<String, String> _run() {
+    @Override
+    protected boolean valid() {
+        return (url != null);
+    }
+
+    @Override
+    protected void _run() {
         Output.print(description);
         List<Board> boards = applicationContext.restTemplate.get(url, applicationContext.typeReferences.boardListType);
 
-        WrkIdsManager idsManager = new WrkIdsManager();
-        idsManager.registerTrelloIds(boards);
-        applicationContext.defaultOutputter.printBoards(boards, idsManager);
+        applicationContext.wrkIdsManager.registerTrelloIds(boards);
+        applicationContext.defaultOutputter.printBoards(boards, applicationContext.wrkIdsManager);
 
-        return idsManager.idsMap();
-    }
-
-    @Override protected boolean valid() {
-        return (url != null);
     }
 
     @Override protected String getCommandName() {

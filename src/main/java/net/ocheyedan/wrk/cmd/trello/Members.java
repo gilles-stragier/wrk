@@ -1,17 +1,12 @@
 package net.ocheyedan.wrk.cmd.trello;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import net.ocheyedan.wrk.ApplicationContext;
 import net.ocheyedan.wrk.cmd.Args;
-import net.ocheyedan.wrk.ids.WrkIdsManager;
 import net.ocheyedan.wrk.output.Output;
 import net.ocheyedan.wrk.trello.Member;
 import net.ocheyedan.wrk.trello.Trello;
 
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * User: blangel
@@ -51,20 +46,22 @@ public final class Members extends IdCommand {
         }
     }
 
-    @Override protected Map<String, String> _run() {
+    @Override
+    protected void _run() {
         Output.print(description);
         List<Member> members = applicationContext.restTemplate.get(url, applicationContext.typeReferences.memberListType);
-        WrkIdsManager wrkIdsManager = new WrkIdsManager();
-        wrkIdsManager.registerTrelloIds(members);
-        applicationContext.defaultOutputter.printMembers(members, wrkIdsManager);
-        return wrkIdsManager.idsMap();
+
+        applicationContext.wrkIdsManager.registerTrelloIds(members);
+        applicationContext.defaultOutputter.printMembers(members, applicationContext.wrkIdsManager);
     }
 
-    @Override protected boolean valid() {
+    @Override
+    protected boolean valid() {
         return (url != null);
     }
 
-    @Override protected String getCommandName() {
+    @Override
+    protected String getCommandName() {
         return "members";
     }
 

@@ -2,14 +2,12 @@ package net.ocheyedan.wrk.cmd.trello;
 
 import net.ocheyedan.wrk.ApplicationContext;
 import net.ocheyedan.wrk.cmd.Args;
-import net.ocheyedan.wrk.ids.WrkIdsManager;
 import net.ocheyedan.wrk.output.Output;
 import net.ocheyedan.wrk.trello.Card;
 import net.ocheyedan.wrk.trello.Label;
 import net.ocheyedan.wrk.trello.Trello;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * User: blangel
@@ -48,15 +46,13 @@ public final class Cards extends IdCommand {
         }
     }
 
-    @Override protected Map<String, String> _run() {
+    @Override
+    protected void _run() {
         Output.print(description);
 
         List<Card> cards = applicationContext.restTemplate.get(url, applicationContext.typeReferences.cardListType);
-        WrkIdsManager idsManager = new WrkIdsManager();
-        idsManager.registerTrelloIds(cards);
-        applicationContext.defaultOutputter.printCards(cards, idsManager);
-
-        return idsManager.idsMap();
+        applicationContext.wrkIdsManager.registerTrelloIds(cards);
+        applicationContext.defaultOutputter.printCards(cards, applicationContext.wrkIdsManager);
 
     }
 

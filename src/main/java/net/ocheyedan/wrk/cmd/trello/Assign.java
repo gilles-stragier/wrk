@@ -7,9 +7,7 @@ import net.ocheyedan.wrk.output.Output;
 import net.ocheyedan.wrk.trello.Member;
 import net.ocheyedan.wrk.trello.Trello;
 
-import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 /**
  * User: blangel
@@ -40,7 +38,8 @@ public final class Assign extends IdCommand {
         }
     }
 
-    @Override protected Map<String, String> _run() {
+    @Override
+    protected void _run() {
         Output.print(description);
         List<Member> members = applicationContext.restTemplate.post(url, new TypeReference<List<Member>>() { });
         if ((members == null) || members.isEmpty()) {
@@ -48,7 +47,6 @@ public final class Assign extends IdCommand {
         } else {
             Output.print("  ^b^Added!^r^");
         }
-        return Collections.emptyMap();
     }
 
     @Override protected boolean valid() {

@@ -3,9 +3,6 @@ package net.ocheyedan.wrk.cmd.trello;
 import net.ocheyedan.wrk.ApplicationContext;
 import net.ocheyedan.wrk.cmd.Args;
 
-import java.util.Collections;
-import java.util.Map;
-
 /**
  * User: blangel
  * Date: 6/30/12
@@ -38,9 +35,9 @@ public final class Pop extends IdCommand {
         }
     }
 
-    @Override protected Map<String, String> _run() {
+    @Override
+    protected void _run() {
         pop(times);
-        return Collections.emptyMap();
     }
 
     @Override protected boolean valid() {

@@ -7,9 +7,7 @@ import net.ocheyedan.wrk.output.Output;
 import net.ocheyedan.wrk.trello.Label;
 import net.ocheyedan.wrk.trello.Trello;
 
-import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 /**
  * User: blangel
@@ -44,7 +42,8 @@ public final class UnLabels extends IdCommand {
         System.exit(1); return null;
     }
 
-    @Override protected Map<String, String> _run() {
+    @Override
+    protected void _run() {
         Output.print(description);
         List<Label> result = applicationContext.restTemplate.delete(url, new TypeReference<>() {
         });
@@ -53,7 +52,6 @@ public final class UnLabels extends IdCommand {
         } else {
             Output.print("  ^b^Un-labeled!^r^", result);
         }
-        return Collections.emptyMap();
     }
 
     @Override protected boolean valid() {

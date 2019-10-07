@@ -6,7 +6,6 @@ import net.ocheyedan.wrk.cmd.Args;
 import net.ocheyedan.wrk.output.Output;
 import net.ocheyedan.wrk.trello.Trello;
 
-import java.util.Collections;
 import java.util.Map;
 
 /**
@@ -33,7 +32,8 @@ public final class Move extends IdCommand {
         }
     }
 
-    @Override protected Map<String, String> _run() {
+    @Override
+    protected void _run() {
         Output.print(description);
         Map<String, Object> result = applicationContext.restTemplate.put(url, new TypeReference<Map<String, Object>>() {
         });
@@ -42,7 +42,7 @@ public final class Move extends IdCommand {
         } else {
             Output.print("  ^b^Moved!^r^", result);
         }
-        return Collections.emptyMap();
+        ;
     }
 
     @Override protected boolean valid() {

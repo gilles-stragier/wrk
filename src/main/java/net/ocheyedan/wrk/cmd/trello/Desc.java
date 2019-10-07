@@ -1,15 +1,9 @@
 package net.ocheyedan.wrk.cmd.trello;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import net.ocheyedan.wrk.ApplicationContext;
 import net.ocheyedan.wrk.cmd.Args;
 import net.ocheyedan.wrk.output.Output;
 import net.ocheyedan.wrk.trello.*;
-
-import java.util.Collections;
-import java.util.Map;
-
-import static java.util.Collections.emptyMap;
 
 /**
  * User: blangel
@@ -72,7 +66,8 @@ public final class Desc extends IdCommand {
         }
     }
 
-    @Override protected Map<String, String> _run() {
+    @Override
+    protected void _run() {
         Output.print(description);
 
         switch (type) {
@@ -97,7 +92,6 @@ public final class Desc extends IdCommand {
                 applicationContext.defaultOutputter.describeMember(member);
                 break;
         }
-        return emptyMap();
     }
 
     @Override protected boolean valid() {

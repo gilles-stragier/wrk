@@ -2,14 +2,11 @@ package net.ocheyedan.wrk.cmd.trello;
 
 import net.ocheyedan.wrk.ApplicationContext;
 import net.ocheyedan.wrk.cmd.Args;
-import net.ocheyedan.wrk.ids.WrkIdsManager;
 import net.ocheyedan.wrk.output.Output;
 import net.ocheyedan.wrk.trello.SearchResult;
 import net.ocheyedan.wrk.trello.Trello;
 
-import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 /**
  * User: blangel
@@ -76,49 +73,47 @@ public final class Search extends IdCommand {
         return buffer.toString();
     }
 
-    @Override protected Map<String, String> _run() {
+    @Override
+    protected void _run() {
         Output.print(description);
         SearchResult searchResults = applicationContext.restTemplate.get(url, applicationContext.typeReferences.searchType);
         if (searchResults == null) {
             Output.print("^red^Invalid query.^r^");
-            return Collections.emptyMap();
+            return;
         }
-        WrkIdsManager idsManager = new WrkIdsManager();
-
         if (!searchResults.getOrganizations().isEmpty()) {
             Output.print("Found ^b^%d organization%s%s^r^.", searchResults.getOrganizations().size(),
                          (searchResults.getOrganizations().size() == 1 ? "" : "s"), (searchResults.getOrganizations().size() == 1000 ? " (limited to 1000)" : ""));
 
-            idsManager.registerTrelloIds(searchResults.getOrganizations());
-            applicationContext.defaultOutputter.printOrgs(searchResults.getOrganizations(), idsManager);
+            applicationContext.wrkIdsManager.registerTrelloIds(searchResults.getOrganizations());
+            applicationContext.defaultOutputter.printOrgs(searchResults.getOrganizations(), applicationContext.wrkIdsManager);
         }
         if (!searchResults.getBoards().isEmpty()) {
             Output.print("Found ^b^%d board%s%s^r^.", searchResults.getBoards().size(),
                     (searchResults.getBoards().size() == 1 ? "" : "s"), (searchResults.getBoards().size() == 1000 ? " (limited to 1000)" : ""));
 
-            idsManager.registerTrelloIds(searchResults.getBoards());
-            applicationContext.defaultOutputter.printBoards(searchResults.getBoards(), idsManager);
+            applicationContext.wrkIdsManager.registerTrelloIds(searchResults.getBoards());
+            applicationContext.defaultOutputter.printBoards(searchResults.getBoards(), applicationContext.wrkIdsManager);
         }
         if (!searchResults.getCards().isEmpty()) {
             Output.print("Found ^b^%d card%s%s^r^.", searchResults.getCards().size(),
                     (searchResults.getCards().size() == 1 ? "" : "s"), (searchResults.getCards().size() == 1000 ? " (limited to 1000)" : ""));
 
-            idsManager.registerTrelloIds(searchResults.getCards());
-            applicationContext.defaultOutputter.printCards(searchResults.getCards(), idsManager);
+            applicationContext.wrkIdsManager.registerTrelloIds(searchResults.getCards());
+            applicationContext.defaultOutputter.printCards(searchResults.getCards(), applicationContext.wrkIdsManager);
 
         }
         if (!searchResults.getMembers().isEmpty()) {
             Output.print("Found ^b^%d member%s%s^r^.", searchResults.getMembers().size(),
                     (searchResults.getMembers().size() == 1 ? "" : "s"), (searchResults.getMembers().size() == 1000 ? " (limited to 1000)" : ""));
 
-            idsManager.registerTrelloIds(searchResults.getMembers());
-            applicationContext.defaultOutputter.printMembers(searchResults.getMembers(), idsManager);
+            applicationContext.wrkIdsManager.registerTrelloIds(searchResults.getMembers());
+            applicationContext.defaultOutputter.printMembers(searchResults.getMembers(), applicationContext.wrkIdsManager);
         }
         // TODO - actions?
         if (!searchResults.hadResults()) {
             Output.print("^black^No results.^r^");
         }
-        return idsManager.idsMap();
     }
 
 

@@ -9,7 +9,6 @@ import net.ocheyedan.wrk.trello.Trello;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 /**
  * User: blangel
@@ -34,12 +33,13 @@ public final class Comments extends IdCommand {
         }
     }
 
-    @Override protected Map<String, String> _run() {
+    @Override
+    protected void _run() {
         Output.print(description);
         List<Action> comments = applicationContext.restTemplate.get(url, new TypeReference<List<Action>>() { });
         if ((comments == null) || comments.isEmpty()) {
             Output.print("  ^black^None^r^");
-            return Collections.emptyMap();
+            return;
         }
         Collections.reverse(comments); // reverse order of comments so most recent appear on bottom
         String color = "white";
@@ -58,7 +58,6 @@ public final class Comments extends IdCommand {
                 color = "white";
             }
         }
-        return Collections.emptyMap();
     }
 
     @Override protected boolean valid() {

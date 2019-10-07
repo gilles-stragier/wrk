@@ -135,7 +135,11 @@ abstract class IdCommand extends Command {
             new Usage(getCommandName(), applicationContext).run();
             return;
         }
-        Map<String, String> wrkids = _run();
+        _run();
+        push(applicationContext.wrkIdsManager.idsMap());
+    }
+
+    private void push(Map<String, String> wrkids) {
         if (wrkids.isEmpty()) {
             return; // don't push an empty
         }
@@ -237,5 +241,5 @@ abstract class IdCommand extends Command {
         return buffer.toString();
     }
 
-    protected abstract Map<String, String> _run();
+    protected abstract void _run();
 }

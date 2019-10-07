@@ -2,14 +2,12 @@ package net.ocheyedan.wrk.cmd.trello;
 
 import net.ocheyedan.wrk.ApplicationContext;
 import net.ocheyedan.wrk.cmd.Args;
-import net.ocheyedan.wrk.ids.WrkIdsManager;
 import net.ocheyedan.wrk.output.Output;
 import net.ocheyedan.wrk.trello.Board;
 import net.ocheyedan.wrk.trello.Card;
 import net.ocheyedan.wrk.trello.Trello;
 
 import java.util.Collections;
-import java.util.Map;
 
 /**
  * User: blangel
@@ -62,28 +60,27 @@ public final class Create extends IdCommand {
         }
     }
 
-    @Override protected Map<String, String> _run() {
+    @Override
+    protected void _run() {
         Output.print(description);
-        WrkIdsManager idsManager = new WrkIdsManager();
         String wrkId = "wrk1";
         switch (type) {
             case Board:
                 Board board = applicationContext.restTemplate.post(url, applicationContext.typeReferences.boardType);
-                idsManager.registerTrelloIds(Collections.singletonList(board));
+                applicationContext.wrkIdsManager.registerTrelloIds(Collections.singletonList(board));
                 applicationContext.defaultOutputter.printBoard(wrkId, board);
-                return idsManager.idsMap();
+                break;
             case List:
                 net.ocheyedan.wrk.trello.List list = applicationContext.restTemplate.post(url, applicationContext.typeReferences.listType);
-                idsManager.registerTrelloIds(Collections.singletonList(list));
+                applicationContext.wrkIdsManager.registerTrelloIds(Collections.singletonList(list));
                 applicationContext.defaultOutputter.printList(wrkId, list);
-                return idsManager.idsMap();
+                break;
             case Card:
                 Card card = applicationContext.restTemplate.post(url, applicationContext.typeReferences.cardType);
-                idsManager.registerTrelloIds(Collections.singletonList(card));
+                applicationContext.wrkIdsManager.registerTrelloIds(Collections.singletonList(card));
                 applicationContext.defaultOutputter.printCard(wrkId, card);
-                return idsManager.idsMap();
+                break;
         }
-        return Collections.emptyMap();
     }
 
 

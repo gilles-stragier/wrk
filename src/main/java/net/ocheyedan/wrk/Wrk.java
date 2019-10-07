@@ -3,6 +3,7 @@ package net.ocheyedan.wrk;
 import net.ocheyedan.wrk.cmd.Command;
 import net.ocheyedan.wrk.cmd.CommandLineParser;
 import net.ocheyedan.wrk.cmd.TypeReferences;
+import net.ocheyedan.wrk.ids.WrkIdsManager;
 import net.ocheyedan.wrk.output.DefaultOutputter;
 import net.ocheyedan.wrk.output.Output;
 import net.ocheyedan.wrk.trello.Trello;
@@ -26,7 +27,8 @@ public final class Wrk {
         ApplicationContext applicationContext = new ApplicationContext(
                 new RestTemplate(),
                 new TypeReferences(),
-                new DefaultOutputter()
+                new DefaultOutputter(),
+                new WrkIdsManager()
         );
         Wrk wrk = new Wrk(applicationContext);
         wrk.execute(args);
