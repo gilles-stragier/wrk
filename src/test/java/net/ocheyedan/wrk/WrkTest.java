@@ -219,6 +219,79 @@ class WrkTest {
     }
 
     @Test
+    void testDescMember() {
+        when(
+                applicationContext.restTemplate.get(
+                        "https://trello.com/1/members/123?key=fakeKey&token=fakeToken",
+                        applicationContext.typeReferences.memberType
+                )).thenReturn(testData.sampleMember());
+
+        wrk.execute(new String[]{"desc", "m:123"});
+
+        Assertions.assertEquals(
+                "Description of member 123:\n" +
+                        "  Some Name Full | 637\n" +
+                        "    username somename\n",
+                getStdout()
+        );
+    }
+
+    @Test
+    void testDescOrg() {
+        when(
+                applicationContext.restTemplate.get(
+                        "https://trello.com/1/organizations/123?key=fakeKey&token=fakeToken",
+                        applicationContext.typeReferences.orgType
+                )).thenReturn(testData.sampleOrganization());
+
+        wrk.execute(new String[]{"desc", "o:123"});
+
+        Assertions.assertEquals(
+                "Description of organization 123:\n" +
+                        "  displayOrg | abc\n" +
+                        "    somedesc\n" +
+                        "    http://someorgs\n",
+                getStdout()
+        );
+    }
+
+    @Test
+    void testDescBoard() {
+        when(
+                applicationContext.restTemplate.get(
+                        "https://trello.com/1/boards/123?key=fakeKey&token=fakeToken",
+                        applicationContext.typeReferences.boardType
+                )).thenReturn(testData.sampleBoard());
+
+        wrk.execute(new String[]{"desc", "b:123"});
+
+        Assertions.assertEquals(
+                "Description of board 123:\n" +
+                        "  boardname | 456\n" +
+                        "    boarddesc\n" +
+                        "    http://boardurl\n",
+                getStdout()
+        );
+    }
+
+    @Test
+    void testDescList() {
+        when(
+                applicationContext.restTemplate.get(
+                        "https://trello.com/1/lists/123?key=fakeKey&token=fakeToken",
+                        applicationContext.typeReferences.listType
+                )).thenReturn(testData.sampleList());
+
+        wrk.execute(new String[]{"desc", "l:123"});
+
+        Assertions.assertEquals(
+                "Description of list 123:\n" +
+                        "  listname | 789\n",
+                getStdout()
+        );
+    }
+
+    @Test
     void testSearchCard() {
         when(
                 applicationContext.restTemplate.get(

@@ -9,6 +9,8 @@ import net.ocheyedan.wrk.trello.*;
 import java.util.Collections;
 import java.util.Map;
 
+import static java.util.Collections.emptyMap;
+
 /**
  * User: blangel
  * Date: 7/1/12
@@ -72,63 +74,30 @@ public final class Desc extends IdCommand {
 
     @Override protected Map<String, String> _run() {
         Output.print(description);
-        String desc;
+
         switch (type) {
             case Org:
-                Organization org = applicationContext.restTemplate.get(url, new TypeReference<>() {
-                });
-                if (org == null) {
-                    Output.print("^red^Invalid id or not found.^r^");
-                    break;
-                }
-                Output.print("  ^b^%s^r^ ^black^| %s^r^", org.getDisplayName(), org.getId());
-                desc = (org.getDesc() == null ? "" : org.getDesc());
-                if (!desc.isEmpty()) {
-                    Output.print("    %s", desc);
-                }
-                Output.print("    ^black^%s^r^", org.getUrl());
+                Organization org = applicationContext.restTemplate.get(url, applicationContext.typeReferences.orgType);
+                applicationContext.defaultOutputter.describeOrg(org);
                 break;
             case Board:
-                Board board = applicationContext.restTemplate.get(url, new TypeReference<>() {
-                });
-                if (board == null) {
-                    Output.print("^red^Invalid id or not found.^r^");
-                    break;
-                }
-                String boardClosed = ((board.getClosed() != null) && board.getClosed()) ? "^black^[closed] ^r^" : "^b^";
-                Output.print("  %s%s^r^ ^black^| %s^r^", boardClosed, board.getName(), board.getId());
-                desc = (board.getDesc() == null ? "" : board.getDesc());
-                if (!desc.isEmpty()) {
-                    Output.print("    %s", desc);
-                }
-                Output.print("    ^black^%s^r^", board.getUrl());
+                Board board = applicationContext.restTemplate.get(url, applicationContext.typeReferences.boardType);
+                applicationContext.defaultOutputter.describeBoard(board);
                 break;
             case List:
-                net.ocheyedan.wrk.trello.List list = applicationContext.restTemplate.get(url, new TypeReference<>() {
-                });
-                if (list == null) {
-                    Output.print("^red^Invalid id or not found.^r^");
-                    break;
-                }
-                String closed = ((list.getClosed() != null) && list.getClosed()) ? "^black^[closed] ^r^" : "^b^";
-                Output.print("  %s%s^r^ ^black^| %s^r^", closed, list.getName(), list.getId());
+                net.ocheyedan.wrk.trello.List list = applicationContext.restTemplate.get(url, applicationContext.typeReferences.listType);
+                applicationContext.defaultOutputter.describeList(list);
                 break;
             case Card:
                 Card card = applicationContext.restTemplate.get(url, applicationContext.typeReferences.cardType);
                 applicationContext.defaultOutputter.describeCard(card);
                 break;
             case Member:
-                Member member = applicationContext.restTemplate.get(url, new TypeReference<>() {
-                });
-                if (member == null) {
-                    Output.print("^red^Invalid id or not found.^r^");
-                    break;
-                }
-                Output.print("  ^b^%s^r^ ^black^| %s^r^", member.getFullName(), member.getId());
-                Output.print("    ^black^username^r^ %s", member.getUsername());
+                Member member = applicationContext.restTemplate.get(url, applicationContext.typeReferences.memberType);
+                applicationContext.defaultOutputter.describeMember(member);
                 break;
         }
-        return Collections.emptyMap();
+        return emptyMap();
     }
 
     @Override protected boolean valid() {

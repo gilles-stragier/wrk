@@ -1,10 +1,7 @@
 package net.ocheyedan.wrk.cmd;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import net.ocheyedan.wrk.trello.Board;
-import net.ocheyedan.wrk.trello.Card;
-import net.ocheyedan.wrk.trello.Organization;
-import net.ocheyedan.wrk.trello.SearchResult;
+import net.ocheyedan.wrk.trello.*;
 
 import java.util.List;
 
@@ -22,9 +19,9 @@ public class TypeReferences {
 
     public TypeReference<List<Organization>> orgsListType = new TypeReference<>() {};
 
-    public TypeReference<SearchResult> searchType = new TypeReference<>() {
-    };
+    public TypeReference<SearchResult> searchType = new TypeReference<>() {};
 
-    public TypeReference<Board> boardType = new TypeReference<>() {
-    };
+    public TypeReference<Board> boardType = new TypeReference<>() {};
+    public TypeReference<Member> memberType = new TypeReference<>() {};
+    public TypeReference<Organization> orgType = new TypeReference<>() {};
 }

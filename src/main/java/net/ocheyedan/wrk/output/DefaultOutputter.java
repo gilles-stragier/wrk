@@ -41,6 +41,13 @@ public class DefaultOutputter {
         }
     }
 
+    public void describeMember(Member member) {
+        if (requiresNonNull(member)) {
+            Output.print("  ^b^%s^r^ ^black^| %s^r^", member.getFullName(), member.getId());
+            Output.print("    ^black^username^r^ %s", member.getUsername());
+        }
+    }
+
     public void printCard(String wrkId, Card card) {
         String labels = Cards.buildLabel(card.getLabels());
         String closed = ((card.getClosed() != null) && card.getClosed()) ? "^black^[closed] ^r^" : "^b^";
@@ -98,4 +105,34 @@ public class DefaultOutputter {
         Output.print("    ^black^username^r^ %s", member.getUsername());
     }
 
+    public void describeList(List list) {
+        if (requiresNonNull(list)) {
+            String closed = ((list.getClosed() != null) && list.getClosed()) ? "^black^[closed] ^r^" : "^b^";
+            Output.print("  %s%s^r^ ^black^| %s^r^", closed, list.getName(), list.getId());
+        }
+
+    }
+
+    public void describeBoard(Board board) {
+        if (requiresNonNull(board)) {
+            String boardClosed = ((board.getClosed() != null) && board.getClosed()) ? "^black^[closed] ^r^" : "^b^";
+            Output.print("  %s%s^r^ ^black^| %s^r^", boardClosed, board.getName(), board.getId());
+            if (board.getDesc() != null && !board.getDesc().isEmpty()) {
+                Output.print("    %s", board.getDesc());
+            }
+            Output.print("    ^black^%s^r^", board.getUrl());
+        }
+
+    }
+
+    public void describeOrg(Organization org) {
+        if (requiresNonNull(org)) {
+            Output.print("  ^b^%s^r^ ^black^| %s^r^", org.getDisplayName(), org.getId());
+            if (org.getDesc() != null && !org.getDesc().isEmpty()) {
+                Output.print("    %s", org.getDesc());
+            }
+            Output.print("    ^black^%s^r^", org.getUrl());
+
+        }
+    }
 }
