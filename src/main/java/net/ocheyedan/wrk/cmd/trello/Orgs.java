@@ -2,6 +2,7 @@ package net.ocheyedan.wrk.cmd.trello;
 
 import net.ocheyedan.wrk.ApplicationContext;
 import net.ocheyedan.wrk.cmd.Args;
+import net.ocheyedan.wrk.ids.WrkIdsManager;
 import net.ocheyedan.wrk.output.Output;
 import net.ocheyedan.wrk.trello.Organization;
 import net.ocheyedan.wrk.trello.Trello;
@@ -32,20 +33,10 @@ public final class Orgs extends IdCommand {
     @Override protected Map<String, String> _run() {
         Output.print(description);
         List<Organization> orgs = applicationContext.restTemplate.get(url, applicationContext.typeReferences.orgsListType);
-        if ((orgs == null) || orgs.isEmpty()) {
-            Output.print("  ^black^None^r^");
-            return Collections.emptyMap();
-        }
-        Map<String, String> wrkIds = new HashMap<String, String>(orgs.size());
-        int orgIndex = 1;
-        for (Organization organization : orgs) {
-            String wrkId = "wrk" + orgIndex++;
-            wrkIds.put(wrkId, String.format("o:%s", organization.getId()));
-
-            Output.print("  ^b^%s^r^ ^black^| %s^r^ | %s", organization.getDisplayName(), wrkId, organization.getId());
-            Output.print("    ^black^%s^r^", organization.getUrl());
-        }
-        return wrkIds;
+        WrkIdsManager idsManager = new WrkIdsManager();
+        idsManager.registerTrelloIds(orgs);
+        applicationContext.defaultOutputter.printOrgs(orgs, idsManager);
+        return idsManager.idsMap();
     }
 
     @Override protected boolean valid() {
@@ -56,17 +47,5 @@ public final class Orgs extends IdCommand {
         return "orgs";
     }
 
-    static Map<String, String> printOrgs(List<Organization> orgs, int indexBase) {
-        Map<String, String> wrkIds = new HashMap<String, String>(orgs.size());
-        int orgIndex = indexBase;
-        for (Organization organization : orgs) {
-            String wrkId = "wrk" + orgIndex++;
-            wrkIds.put(wrkId, String.format("o:%s", organization.getId()));
-
-            Output.print("  ^b^%s^r^ ^black^| %s^r^ | %s", organization.getDisplayName(), wrkId, organization.getId());
-            Output.print("    ^black^%s^r^", organization.getUrl());
-        }
-        return wrkIds;
-    }
 
 }
