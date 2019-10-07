@@ -61,6 +61,6 @@ public final class List implements TrelloObject {
 
     @Override
     public String keyPrefix() {
-        return null;
+        return "l:";
     }
 }

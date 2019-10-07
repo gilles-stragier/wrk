@@ -2,6 +2,7 @@ package net.ocheyedan.wrk.cmd.trello;
 
 import net.ocheyedan.wrk.ApplicationContext;
 import net.ocheyedan.wrk.cmd.Args;
+import net.ocheyedan.wrk.ids.WrkIdsManager;
 import net.ocheyedan.wrk.output.Output;
 import net.ocheyedan.wrk.trello.Trello;
 
@@ -36,11 +37,10 @@ public final class Lists extends IdCommand {
     @Override protected Map<String, String> _run() {
         Output.print(description);
         List<net.ocheyedan.wrk.trello.List> lists = applicationContext.restTemplate.get(url, applicationContext.typeReferences.listsListType);
-        if ((lists == null) || lists.isEmpty()) {
-            Output.print("  ^black^None^r^");
-            return Collections.emptyMap();
-        }
-        return printLists(lists, 1);
+        WrkIdsManager wrkIdsManager = new WrkIdsManager();
+        wrkIdsManager.registerTrelloIds(lists);
+        applicationContext.defaultOutputter.printLists(lists, wrkIdsManager);
+        return wrkIdsManager.idsMap();
     }
 
     @Override protected boolean valid() {

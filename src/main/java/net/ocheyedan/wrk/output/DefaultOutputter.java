@@ -6,7 +6,7 @@ import net.ocheyedan.wrk.trello.*;
 
 public class DefaultOutputter {
 
-    public Boolean requiresNonNull(Object required) {
+    private Boolean requiresNonNull(Object required) {
         if (required == null) {
             Output.print("^red^Invalid id or not found.^r^");
             return false;
@@ -27,6 +27,12 @@ public class DefaultOutputter {
     public void printList(String wrkId, List list) {
         String closed = ((list.getClosed() != null) && list.getClosed()) ? "^black^[closed] ^r^" : "^b^";
         Output.print("  %s%s^r^ ^black^| %s^r^ | %s", closed, list.getName(), wrkId, list.getId());
+    }
+
+    public void printLists(java.util.List<List> lists, WrkIdsManager idsManager) {
+        if (requiresNonNull(lists)) {
+            lists.forEach(list -> printList(idsManager.invertedIdsMap().get("l:" + list.getId()), list));
+        }
     }
 
     public void describeCard(Card card) {
@@ -96,7 +102,7 @@ public class DefaultOutputter {
 
     public void printMembers(java.util.List<Member> members, WrkIdsManager idsManager) {
         if (requiresNonNull(members)) {
-            members.stream().forEach(m -> printMember(idsManager.invertedIdsMap().get("m:" + m.getId()), m));
+            members.forEach(m -> printMember(idsManager.invertedIdsMap().get("m:" + m.getId()), m));
         }
     }
 
