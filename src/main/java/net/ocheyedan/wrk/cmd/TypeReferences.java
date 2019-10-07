@@ -25,5 +25,6 @@ public class TypeReferences {
     public TypeReference<SearchResult> searchType = new TypeReference<>() {
     };
 
-
+    public TypeReference<Board> boardType = new TypeReference<>() {
+    };
 }

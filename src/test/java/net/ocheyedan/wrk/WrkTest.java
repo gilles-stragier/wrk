@@ -193,7 +193,7 @@ class WrkTest {
 
         Assertions.assertEquals(
                 "Creating card in list 34567:\n" +
-                        "  somename  somelabel  | wrk1\n" +
+                        "  somename  somelabel  | wrk1 | 123\n" +
                         "    http://Someurl\n",
                 getStdout()
         );

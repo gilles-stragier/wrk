@@ -15,7 +15,7 @@ package net.ocheyedan.wrk.trello;
  *  pos: 16384
  * }
  */
-public final class List {
+public final class List implements TrelloObject {
 
     private final String id;
 
@@ -57,5 +57,10 @@ public final class List {
 
     public Integer getPos() {
         return pos;
+    }
+
+    @Override
+    public String keyPrefix() {
+        return null;
     }
 }

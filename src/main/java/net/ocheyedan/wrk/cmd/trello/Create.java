@@ -1,15 +1,14 @@
 package net.ocheyedan.wrk.cmd.trello;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import net.ocheyedan.wrk.ApplicationContext;
 import net.ocheyedan.wrk.cmd.Args;
+import net.ocheyedan.wrk.ids.WrkIdsManager;
 import net.ocheyedan.wrk.output.Output;
 import net.ocheyedan.wrk.trello.Board;
 import net.ocheyedan.wrk.trello.Card;
 import net.ocheyedan.wrk.trello.Trello;
 
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -65,40 +64,24 @@ public final class Create extends IdCommand {
 
     @Override protected Map<String, String> _run() {
         Output.print(description);
-        Map<String, String> wrkIds = new HashMap<>(1, 1.0f);
+        WrkIdsManager idsManager = new WrkIdsManager();
         String wrkId = "wrk1";
         switch (type) {
             case Board:
-                Board board = applicationContext.restTemplate.post(url, new TypeReference<>() {
-                });
-                if (board == null) {
-                    Output.print("^red^Invalid id or insufficient privileges.^r^");
-                    break;
-                }
-                wrkIds.put(wrkId, String.format("b:%s", board.getId()));
-                Output.print("  ^b^%s^r^ ^black^| %s^r^", board.getName(), wrkId);
-                Output.print("    ^black^%s^r^", board.getUrl());
-                return wrkIds;
+                Board board = applicationContext.restTemplate.post(url, applicationContext.typeReferences.boardType);
+                idsManager.registerTrelloIds(Collections.singletonList(board));
+                applicationContext.defaultOutputter.printBoard(wrkId, board);
+                return idsManager.idsMap();
             case List:
                 net.ocheyedan.wrk.trello.List list = applicationContext.restTemplate.post(url, applicationContext.typeReferences.listType);
-                if (list == null) {
-                    Output.print("^red^Invalid id or insufficient privileges.^r^");
-                    break;
-                }
-                wrkIds.put(wrkId, String.format("l:%s", list.getId()));
+                idsManager.registerTrelloIds(Collections.singletonList(list));
                 applicationContext.defaultOutputter.printList(wrkId, list);
-                return wrkIds;
+                return idsManager.idsMap();
             case Card:
                 Card card = applicationContext.restTemplate.post(url, applicationContext.typeReferences.cardType);
-                if (card == null) {
-                    Output.print("^red^Invalid id or insufficient privileges.^r^");
-                    break;
-                }
-                String labels = Cards.buildLabel(card.getLabels());
-                wrkIds.put(wrkId, String.format("c:%s", card.getId()));
-                Output.print("  ^b^%s^r^%s ^black^| %s^r^", card.getName(), labels, wrkId);
-                Output.print("    ^black^%s^r^", Cards.getPrettyUrl(card));
-                return wrkIds;
+                idsManager.registerTrelloIds(Collections.singletonList(card));
+                applicationContext.defaultOutputter.printCard(wrkId, card);
+                return idsManager.idsMap();
         }
         return Collections.emptyMap();
     }

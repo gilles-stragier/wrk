@@ -58,9 +58,11 @@ public class DefaultOutputter {
     }
 
     public void printBoard(String wrkId, Board board) {
-        String closed = ((board.getClosed() != null) && board.getClosed()) ? "^black^[closed] ^r^" : "^b^";
-        Output.print("  %s%s^r^ ^black^| %s^r^ | %s", closed, board.getName(), wrkId, board.getId());
-        Output.print("    ^black^%s^r^", board.getUrl());
+        if (requiresNonNull(board)) {
+            String closed = ((board.getClosed() != null) && board.getClosed()) ? "^black^[closed] ^r^" : "^b^";
+            Output.print("  %s%s^r^ ^black^| %s^r^ | %s", closed, board.getName(), wrkId, board.getId());
+            Output.print("    ^black^%s^r^", board.getUrl());
+        }
     }
 
     public void printBoards(java.util.List<Board> boards, WrkIdsManager idsManager) {
