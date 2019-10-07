@@ -2,6 +2,8 @@ package net.ocheyedan.wrk.trello;
 
 import java.util.List;
 
+import static net.ocheyedan.wrk.trello.TrelloObject.Type.ORG;
+
 /**
  * User: blangel
  * Date: 6/30/12
@@ -111,7 +113,7 @@ public final class Organization implements TrelloObject {
     }
 
     @Override
-    public String keyPrefix() {
-        return "o:";
+    public Type type() {
+        return ORG;
     }
 }

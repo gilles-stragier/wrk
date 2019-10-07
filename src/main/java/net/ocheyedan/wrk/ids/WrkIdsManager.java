@@ -5,6 +5,7 @@ import net.ocheyedan.wrk.trello.TrelloObject;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static java.util.Collections.unmodifiableMap;
@@ -22,16 +23,24 @@ public class WrkIdsManager {
             int startIndex = addIds.size() + 1;
             for (T trelloObject : trelloObjects) {
                 String wrkId = "wrk" + startIndex++;
-                addIds.put(wrkId, String.format(trelloObject.keyPrefix() + "%s", trelloObject.getId()));
+                addIds.put(wrkId, trelloObject.type().keyPrefix() + trelloObject.getId());
             }
         }
+    }
+
+    public Optional<String> findByTrelloId(TrelloObject object) {
+        return findByTrelloId(object.getId(), object.type());
+    }
+
+    public Optional<String> findByTrelloId(String tid, TrelloObject.Type type) {
+        return Optional.ofNullable(invertedIdsMap().get(type.keyPrefix() + tid));
     }
 
     public Map<String, String> idsMap() {
         return unmodifiableMap(addIds);
     }
 
-    public Map<String, String> invertedIdsMap() {
+    private Map<String, String> invertedIdsMap() {
         return idsMap().entrySet()
                 .stream()
                 .collect(Collectors.toMap(Map.Entry::getValue, Map.Entry::getKey));

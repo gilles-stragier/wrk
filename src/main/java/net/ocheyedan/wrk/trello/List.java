@@ -1,5 +1,7 @@
 package net.ocheyedan.wrk.trello;
 
+import static net.ocheyedan.wrk.trello.TrelloObject.Type.LIST;
+
 /**
  * User: blangel
  * Date: 7/1/12
@@ -60,7 +62,7 @@ public final class List implements TrelloObject {
     }
 
     @Override
-    public String keyPrefix() {
-        return "l:";
+    public Type type() {
+        return LIST;
     }
 }

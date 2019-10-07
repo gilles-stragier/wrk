@@ -120,7 +120,7 @@ public final class Board implements TrelloObject {
     }
 
     @Override
-    public String keyPrefix() {
-        return "b:";
+    public Type type() {
+        return Type.BOARD;
     }
 }

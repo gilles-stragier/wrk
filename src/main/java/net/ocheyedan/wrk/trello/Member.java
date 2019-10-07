@@ -60,7 +60,7 @@ public final class Member implements TrelloObject {
     }
 
     @Override
-    public String keyPrefix() {
-        return "m:";
+    public Type type() {
+        return Type.MEMBER;
     }
 }

@@ -137,7 +137,7 @@ public class Card implements TrelloObject {
     }
 
     @Override
-    public String keyPrefix() {
-        return "c:";
+    public Type type() {
+        return Type.CARD;
     }
 }

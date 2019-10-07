@@ -31,7 +31,7 @@ public class DefaultOutputter {
 
     public void printLists(java.util.List<List> lists, WrkIdsManager idsManager) {
         if (requiresNonNull(lists)) {
-            lists.forEach(list -> printList(idsManager.invertedIdsMap().get("l:" + list.getId()), list));
+            lists.forEach(list -> printList(idsManager.findByTrelloId(list).get(), list));
         }
     }
 
@@ -65,7 +65,7 @@ public class DefaultOutputter {
     public void printCards(java.util.List<Card> cards, WrkIdsManager idsManager) {
         if (requiresNonNull(cards)) {
             for (Card card : cards) {
-                printCard(idsManager.invertedIdsMap().get("c:" + card.getId()), card);
+                printCard(idsManager.findByTrelloId(card).get(), card);
             }
         }
     }
@@ -81,7 +81,7 @@ public class DefaultOutputter {
     public void printBoards(java.util.List<Board> boards, WrkIdsManager idsManager) {
         if (requiresNonNull(boards)) {
             for (Board board : boards) {
-                printBoard(idsManager.invertedIdsMap().get("b:" + board.getId()), board);
+                printBoard(idsManager.findByTrelloId(board).get(), board);
             }
         }
     }
@@ -89,7 +89,7 @@ public class DefaultOutputter {
     public void printOrgs(java.util.List<Organization> organizations, WrkIdsManager idsManager) {
         if (requiresNonNull(organizations)) {
             for (Organization organization : organizations) {
-                printOrganization(idsManager.invertedIdsMap().get("o:" + organization.getId()), organization);
+                printOrganization(idsManager.findByTrelloId(organization).get(), organization);
             }
         }
     }
@@ -102,7 +102,7 @@ public class DefaultOutputter {
 
     public void printMembers(java.util.List<Member> members, WrkIdsManager idsManager) {
         if (requiresNonNull(members)) {
-            members.forEach(m -> printMember(idsManager.invertedIdsMap().get("m:" + m.getId()), m));
+            members.forEach(m -> printMember(idsManager.findByTrelloId(m).get(), m));
         }
     }
 
