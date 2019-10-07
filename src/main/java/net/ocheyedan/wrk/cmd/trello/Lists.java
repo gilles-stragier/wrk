@@ -51,15 +51,4 @@ public final class Lists extends IdCommand {
         return "lists";
     }
 
-    private Map<String, String> printLists(List<net.ocheyedan.wrk.trello.List> lists, int baseIndex) {
-        Map<String, String> wrkIds = new HashMap<>(lists.size());
-        for (net.ocheyedan.wrk.trello.List list : lists) {
-            String wrkId = "wrk" + baseIndex++;
-            wrkIds.put(wrkId, String.format("l:%s", list.getId()));
-
-            applicationContext.defaultOutputter.printList(wrkId, list);
-        }
-        return wrkIds;
-    }
-
 }

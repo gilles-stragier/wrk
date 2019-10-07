@@ -24,4 +24,5 @@ public class TypeReferences {
     public TypeReference<Board> boardType = new TypeReference<>() {};
     public TypeReference<Member> memberType = new TypeReference<>() {};
     public TypeReference<Organization> orgType = new TypeReference<>() {};
+    public TypeReference<List<Member>> memberListType = new TypeReference<>() {};
 }

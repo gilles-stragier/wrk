@@ -3,6 +3,7 @@ package net.ocheyedan.wrk.cmd.trello;
 import com.fasterxml.jackson.core.type.TypeReference;
 import net.ocheyedan.wrk.ApplicationContext;
 import net.ocheyedan.wrk.cmd.Args;
+import net.ocheyedan.wrk.ids.WrkIdsManager;
 import net.ocheyedan.wrk.output.Output;
 import net.ocheyedan.wrk.trello.Member;
 import net.ocheyedan.wrk.trello.Trello;
@@ -52,12 +53,11 @@ public final class Members extends IdCommand {
 
     @Override protected Map<String, String> _run() {
         Output.print(description);
-        List<Member> members = applicationContext.restTemplate.get(url, new TypeReference<List<Member>>() { });
-        if ((members == null) || members.isEmpty()) {
-            Output.print("  ^black^None^r^");
-            return Collections.emptyMap();
-        }
-        return printMembers(members, 1);
+        List<Member> members = applicationContext.restTemplate.get(url, applicationContext.typeReferences.memberListType);
+        WrkIdsManager wrkIdsManager = new WrkIdsManager();
+        wrkIdsManager.registerTrelloIds(members);
+        applicationContext.defaultOutputter.printMembers(members, wrkIdsManager);
+        return wrkIdsManager.idsMap();
     }
 
     @Override protected boolean valid() {
@@ -68,17 +68,5 @@ public final class Members extends IdCommand {
         return "members";
     }
 
-    static Map<String, String> printMembers(List<Member> members, int indexBase) {
-        Map<String, String> wrkIds = new HashMap<String, String>(members.size());
-        int memberIndex = indexBase;
-        for (Member member : members) {
-            String wrkId = "wrk" + memberIndex++;
-            wrkIds.put(wrkId, String.format("m:%s", member.getId()));
-
-            Output.print("  ^b^%s^r^ ^black^| %s^r^", member.getFullName(), wrkId);
-            Output.print("    ^black^username^r^ %s", member.getUsername());
-        }
-        return wrkIds;
-    }
 
 }

@@ -141,6 +141,29 @@ class WrkTest {
     }
 
     @Test
+    void testMembers() {
+        when(
+                applicationContext.restTemplate.get(
+                        "https://trello.com/1/organizations/456/members?key=fakeKey&token=fakeToken",
+                        applicationContext.typeReferences.memberListType
+                )).thenReturn(
+                singletonList(
+                        testData.sampleMember()
+                )
+        );
+
+        wrk.execute(new String[]{"members", "in", "o:456"});
+
+        Assertions.assertEquals(
+                "Members of organization 456:\n" +
+                        "  Some Name Full | wrk1\n" +
+                        "    username somename\n",
+                getStdout()
+        );
+    }
+
+
+    @Test
     void testOrgs() {
         when(
                 applicationContext.restTemplate.get(
