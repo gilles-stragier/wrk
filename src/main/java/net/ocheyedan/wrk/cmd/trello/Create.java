@@ -30,7 +30,7 @@ public final class Create extends IdCommand {
         super(args, applicationContext);
         if (((args.args.size() == 4) || (args.args.size() == 5))
                 && "board".equals(args.args.get(0)) && "in".equals(args.args.get(1))) {
-            TrelloId orgId = parseWrkId(args.args.get(2), orgPrefix);
+            LegacyTrelloId orgId = parseWrkId(args.args.get(2), orgPrefix);
             String name = validate(encode(args.args.get(3)), "Board name", "board names");
             String desc = (args.args.size() == 5 ? "&desc=" + validate(encode(args.args.get(4)), "Board desc", "board descriptions") : "");
             url = Trello.url("https://trello.com/1/boards?name=%s&idOrganization=%s%s&key=%s&token=%s", name, orgId.id,
@@ -38,7 +38,7 @@ public final class Create extends IdCommand {
             description = String.format("Creating board in organization ^b^%s^r^:", orgId.id);
             type = Type.Board;
         } else if ((args.args.size() == 4) && "list".equals(args.args.get(0)) && "in".equals(args.args.get(1))) {
-            TrelloId boardId = parseWrkId(args.args.get(2), boardsPrefix);
+            LegacyTrelloId boardId = parseWrkId(args.args.get(2), boardsPrefix);
             String name = validate(encode(args.args.get(3)), "List name", "list names");
             url = Trello.url("https://trello.com/1/lists?name=%s&idBoard=%s&key=%s&token=%s", name, boardId.id,
                              Trello.APP_DEV_KEY, Trello.USR_TOKEN);
@@ -46,7 +46,7 @@ public final class Create extends IdCommand {
             type = Type.List;
         } else if (((args.args.size() == 4) || (args.args.size() == 5))
                 && "card".equals(args.args.get(0)) && "in".equals(args.args.get(1))) {
-            TrelloId listId = parseWrkId(args.args.get(2), listsPrefix);
+            LegacyTrelloId listId = parseWrkId(args.args.get(2), listsPrefix);
             String name = validate(encode(args.args.get(3)), "Card name", "card names");
             String desc = (args.args.size() == 5 ? "&desc=" + validate(encode(args.args.get(4)), "Card desc",
                     "card descriptions") : "");

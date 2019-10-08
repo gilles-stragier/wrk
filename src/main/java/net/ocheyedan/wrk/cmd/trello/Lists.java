@@ -21,7 +21,7 @@ public final class Lists extends IdCommand {
     public Lists(Args args, ApplicationContext applicationContext) {
         super(args, applicationContext);
         if ((args.args.size() == 2) && "in".equals(args.args.get(0))) {
-            TrelloId boardId = parseWrkId(args.args.get(1), boardsPrefix);
+            LegacyTrelloId boardId = parseWrkId(args.args.get(1), boardsPrefix);
             url = Trello.url("https://trello.com/1/boards/%s/lists?filter=open&key=%s&token=%s", boardId.id,
                     Trello.APP_DEV_KEY, Trello.USR_TOKEN);
             description = String.format("Open lists for board ^b^%s^r^:", boardId.id);

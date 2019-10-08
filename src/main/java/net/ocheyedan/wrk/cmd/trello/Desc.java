@@ -25,7 +25,7 @@ public final class Desc extends IdCommand {
     public Desc(Args args, ApplicationContext applicationContext) {
         super(args, applicationContext);
         if (args.args.size() == 1) {
-            TrelloId id = parseWrkId(args.args.get(0), allPrefix);
+            LegacyTrelloId id = parseWrkId(args.args.get(0), allPrefix);
             if (id.idWithTypePrefix.startsWith("o:")) {
                 String orgId = id.idWithTypePrefix.substring(2);
                 url = Trello.url("https://trello.com/1/organizations/%s?key=%s&token=%s", orgId,

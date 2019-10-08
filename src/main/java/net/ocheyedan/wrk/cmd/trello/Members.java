@@ -22,7 +22,7 @@ public final class Members extends IdCommand {
     public Members(Args args, ApplicationContext applicationContext) {
         super(args, applicationContext);
         if ((args.args.size() == 2) && "in".equals(args.args.get(0))) {
-            TrelloId id = parseWrkId(args.args.get(1), orgsBoardsCardsPrefix);
+            LegacyTrelloId id = parseWrkId(args.args.get(1), orgsBoardsCardsPrefix);
             if (id.idWithTypePrefix.startsWith("o:")) {
                 String orgId = id.idWithTypePrefix.substring(2);
                 url = Trello.url("https://trello.com/1/organizations/%s/members?key=%s&token=%s", orgId,

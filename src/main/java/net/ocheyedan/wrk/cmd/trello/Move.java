@@ -22,8 +22,8 @@ public final class Move extends IdCommand {
     public Move(Args args, ApplicationContext applicationContext) {
         super(args, applicationContext);
         if ((args.args.size() == 3) && "to".equals(args.args.get(1))) {
-            TrelloId cardId = parseWrkId(args.args.get(0), cardsPrefix);
-            TrelloId listId = parseWrkId(args.args.get(2), listsPrefix);
+            LegacyTrelloId cardId = parseWrkId(args.args.get(0), cardsPrefix);
+            LegacyTrelloId listId = parseWrkId(args.args.get(2), listsPrefix);
             url = Trello.url("https://trello.com/1/cards/%s/idList?value=%s&key=%s&token=%s", cardId.id, listId.id,
                              Trello.APP_DEV_KEY, Trello.USR_TOKEN);
             description = String.format("Moving card ^b^%s^r^ to list ^b^%s^r^:", cardId.id, listId.id);

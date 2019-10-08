@@ -26,13 +26,13 @@ public final class Comment extends IdCommand {
     public Comment(Args args, ApplicationContext applicationContext) {
         super(args, applicationContext);
         if ((args.args.size() == 3) && "on".equals(args.args.get(0))) {
-            TrelloId cardId = parseWrkId(args.args.get(1), cardsPrefix);
+            LegacyTrelloId cardId = parseWrkId(args.args.get(1), cardsPrefix);
             String comment = validate(encode(args.args.get(2)), "Comment", "comments");
             url = Trello.url("https://trello.com/1/cards/%s/actions/comments?text=%s&key=%s&token=%s", cardId.id,
                     comment, Trello.APP_DEV_KEY, Trello.USR_TOKEN);
             description = String.format("Commenting on card ^b^%s^r^:", cardId.id);
         } else if ((args.args.size() == 2) && "on".equals(args.args.get(0))) {
-            TrelloId cardId = parseWrkId(args.args.get(1), cardsPrefix);
+            LegacyTrelloId cardId = parseWrkId(args.args.get(1), cardsPrefix);
             String comment = validate(encode(getComment()), "Comment", "comments");
             url = Trello.url("https://trello.com/1/cards/%s/actions/comments?text=%s&key=%s&token=%s", cardId.id,
                     comment, Trello.APP_DEV_KEY, Trello.USR_TOKEN);

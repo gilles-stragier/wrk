@@ -23,7 +23,7 @@ public final class Labels extends IdCommand {
     public Labels(Args args, ApplicationContext applicationContext) {
         super(args, applicationContext);
         if ((args.args.size() == 3) && "with".equals(args.args.get(1))) {
-            TrelloId cardId = parseWrkId(args.args.get(0), cardsPrefix);
+            LegacyTrelloId cardId = parseWrkId(args.args.get(0), cardsPrefix);
             String label = validate(args.args.get(2));
             url = Trello.url("https://trello.com/1/cards/%s/labels?value=%s&key=%s&token=%s", cardId.id,
                              label, Trello.APP_DEV_KEY, Trello.USR_TOKEN);

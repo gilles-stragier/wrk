@@ -23,7 +23,7 @@ public final class UnLabels extends IdCommand {
     public UnLabels(Args args, ApplicationContext applicationContext) {
         super(args, applicationContext);
         if ((args.args.size() == 3) && "from".equals(args.args.get(1))) {
-            TrelloId cardId = parseWrkId(args.args.get(2), cardsPrefix);
+            LegacyTrelloId cardId = parseWrkId(args.args.get(2), cardsPrefix);
             String label = validate(args.args.get(0));
             url = Trello.url("https://trello.com/1/cards/%s/labels/%s?key=%s&token=%s", cardId.id,
                     label, Trello.APP_DEV_KEY, Trello.USR_TOKEN);

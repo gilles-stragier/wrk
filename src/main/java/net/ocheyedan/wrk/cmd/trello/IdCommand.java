@@ -1,16 +1,11 @@
 package net.ocheyedan.wrk.cmd.trello;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import net.ocheyedan.wrk.ApplicationContext;
-import net.ocheyedan.wrk.Json;
 import net.ocheyedan.wrk.cmd.Args;
 import net.ocheyedan.wrk.cmd.Command;
 import net.ocheyedan.wrk.cmd.Usage;
 import net.ocheyedan.wrk.output.Output;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
@@ -24,13 +19,13 @@ import java.util.*;
  */
 abstract class IdCommand extends Command {
 
-    static final class TrelloId {
+    static final class LegacyTrelloId {
 
         final String id;
 
         final String idWithTypePrefix;
 
-        TrelloId(String id, String idWithTypePrefix) {
+        LegacyTrelloId(String id, String idWithTypePrefix) {
             this.id = id;
             this.idWithTypePrefix = idWithTypePrefix;
         }
@@ -144,10 +139,10 @@ abstract class IdCommand extends Command {
         return URLEncoder.encode(comment, StandardCharsets.UTF_8);
     }
 
-    protected TrelloId parseWrkId(String wrkId, Set<String> desiredPrefixes) {
+    protected LegacyTrelloId parseWrkId(String wrkId, Set<String> desiredPrefixes) {
         Optional<String> trelloOptional = applicationContext.wrkIdsManager.findByWrkId(wrkId);
         if (!trelloOptional.isPresent()) {
-            return new TrelloId(wrkId, wrkId); // user entered a trello-id directly
+            return new LegacyTrelloId(wrkId, wrkId); // user entered a trello-id directly
         }
         String trelloId = trelloOptional.get();
         String existingPrefix = (trelloId.length() > 2 ? trelloId.substring(0, 2) : "");
@@ -157,7 +152,7 @@ abstract class IdCommand extends Command {
             Output.print("The wrk-id [ ^b^%s^r^ ] is for ^red^%s^r^ but the command is for %s.", wrkId, type, prefixesToString(desiredPrefixes));
             System.exit(1);
         }
-        return new TrelloId(trelloId.substring(2), trelloId);
+        return new LegacyTrelloId(trelloId.substring(2), trelloId);
     }
 
     private String prettyPrint(String prefix) {

@@ -22,7 +22,7 @@ public final class Boards extends IdCommand {
     public Boards(Args args, ApplicationContext applicationContext) {
         super(args, applicationContext);
         if ((args.args.size() == 2) && "in".equals(args.args.get(0))) {
-            TrelloId orgId = parseWrkId(args.args.get(1), orgPrefix);
+            LegacyTrelloId orgId = parseWrkId(args.args.get(1), orgPrefix);
             url = Trello.url("https://trello.com/1/organization/%s/boards?filter=open&key=%s&token=%s", orgId.id,
                     Trello.APP_DEV_KEY, Trello.USR_TOKEN);
             description = String.format("Open boards for organization ^b^%s^r^:", orgId.id);

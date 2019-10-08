@@ -23,7 +23,7 @@ public final class Cards extends IdCommand {
     public Cards(Args args, ApplicationContext applicationContext) {
         super(args, applicationContext);
         if ((args.args.size() == 2) && "in".equals(args.args.get(0))) {
-            TrelloId id = parseWrkId(args.args.get(1), boardsListsPrefix);
+            LegacyTrelloId id = parseWrkId(args.args.get(1), boardsListsPrefix);
             if (id.idWithTypePrefix.startsWith("b:")) {
                 String boardId = id.idWithTypePrefix.substring(2);
                 url = Trello.url("https://trello.com/1/boards/%s/cards?filter=open&key=%s&token=%s", boardId,

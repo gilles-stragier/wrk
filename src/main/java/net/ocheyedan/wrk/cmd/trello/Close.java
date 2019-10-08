@@ -22,7 +22,7 @@ public final class Close extends IdCommand {
     public Close(Args args, ApplicationContext applicationContext) {
         super(args, applicationContext);
         if (args.args.size() == 1) {
-            TrelloId id = parseWrkId(args.args.get(0), boardsListsCardsPrefix);
+            LegacyTrelloId id = parseWrkId(args.args.get(0), boardsListsCardsPrefix);
             if (id.idWithTypePrefix.startsWith("b:")) {
                 String boardId = id.idWithTypePrefix.substring(2);
                 url = Trello.url("https://trello.com/1/boards/%s/closed?value=true&key=%s&token=%s", boardId,

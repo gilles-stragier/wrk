@@ -24,7 +24,7 @@ public final class Comments extends IdCommand {
     public Comments(Args args, ApplicationContext applicationContext) {
         super(args, applicationContext);
         if ((args.args.size() == 2) && "in".equals(args.args.get(0))) {
-            TrelloId cardId = parseWrkId(args.args.get(1), cardsPrefix);
+            LegacyTrelloId cardId = parseWrkId(args.args.get(1), cardsPrefix);
             url = Trello.url("https://trello.com/1/cards/%s/actions?filter=commentCard&key=%s&token=%s", cardId.id,
                     Trello.APP_DEV_KEY, Trello.USR_TOKEN);
             description = String.format("Comments for card ^b^%s^r^:", cardId.id);
