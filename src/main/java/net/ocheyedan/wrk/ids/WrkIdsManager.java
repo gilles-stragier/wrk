@@ -11,20 +11,25 @@ import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static java.util.Collections.unmodifiableMap;
-
 public class WrkIdsManager {
 
     private final Map<String, String> addIds;
 
     private File wrkIdsFile;
 
+    private final IdGenerator idGenerator;
+
     public WrkIdsManager() {
-        this.addIds = new HashMap<>();
-        init();
+        this(new SequentialIdGenerator());
     }
 
-    private void init() {
+    public WrkIdsManager(IdGenerator idGenerator) {
+        this.addIds = new HashMap<>();
+        this.idGenerator = idGenerator;
+        initFileStuff();
+    }
+
+    private void initFileStuff() {
         wrkIdsFile = new File(String.format("%s%s%s%s%s", System.getProperty("user.home"), File.separator, ".wrk", File.separator, "wrk-ids"));
         try {
             if (wrkIdsFile.exists()) {
@@ -40,11 +45,10 @@ public class WrkIdsManager {
 
     public <T extends TrelloObject> void registerTrelloIds(List<T> trelloObjects) {
         if (trelloObjects != null && !trelloObjects.isEmpty()) {
-            int startIndex = addIds.size() + 1;
             for (T trelloObject : trelloObjects) {
                 if (!exists(trelloObject)) {
-                    String wrkId = "wrk" + startIndex++;
-                    addIds.put(wrkId, trelloObject.type().keyPrefix() + trelloObject.getId());
+                    String generatedId = idGenerator.generate(addIds.keySet(), trelloObject);
+                    addIds.put(generatedId, trelloObject.type().keyPrefix() + trelloObject.getId());
                 }
             }
         }
