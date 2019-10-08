@@ -9,10 +9,14 @@ import static java.util.Collections.emptyList;
 
 public class TestData {
 
-    Board sampleBoard() {
+    public Board sampleBoard() {
+        return sampleBoard("boardname");
+    }
+
+    public Board sampleBoard(String name) {
         return new Board(
                 "456",
-                "boardname",
+                name,
                 "boarddesc",
                 false,
                 "orgid",
@@ -26,7 +30,7 @@ public class TestData {
         );
     }
 
-    Card sampleCard() {
+    public Card sampleCard() {
         return new Card(
                 "123",
                 false,
@@ -45,7 +49,7 @@ public class TestData {
         );
     }
 
-    List sampleList() {
+    public List sampleList() {
         return new List(
             "789",
             "listname",
@@ -55,7 +59,7 @@ public class TestData {
         );
     }
 
-    Organization sampleOrganization() {
+    public Organization sampleOrganization() {
         return new Organization(
                 "abc",
                 "someorg",

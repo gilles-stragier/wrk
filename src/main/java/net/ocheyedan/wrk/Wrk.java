@@ -3,6 +3,7 @@ package net.ocheyedan.wrk;
 import net.ocheyedan.wrk.cmd.Command;
 import net.ocheyedan.wrk.cmd.CommandLineParser;
 import net.ocheyedan.wrk.cmd.TypeReferences;
+import net.ocheyedan.wrk.ids.NameIdGenerator;
 import net.ocheyedan.wrk.ids.WrkIdsManager;
 import net.ocheyedan.wrk.output.DefaultOutputter;
 import net.ocheyedan.wrk.output.Output;
@@ -28,7 +29,9 @@ public final class Wrk {
                 new RestTemplate(),
                 new TypeReferences(),
                 new DefaultOutputter(),
-                new WrkIdsManager()
+                new WrkIdsManager(
+                        new NameIdGenerator()
+                )
         );
         Wrk wrk = new Wrk(applicationContext);
         wrk.execute(args);

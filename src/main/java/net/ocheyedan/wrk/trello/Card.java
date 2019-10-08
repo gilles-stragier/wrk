@@ -140,4 +140,9 @@ public class Card implements TrelloObject {
     public Type type() {
         return Type.CARD;
     }
+
+    @Override
+    public String name() {
+        return getName();
+    }
 }

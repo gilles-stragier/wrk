@@ -63,4 +63,9 @@ public final class Member implements TrelloObject {
     public Type type() {
         return Type.MEMBER;
     }
+
+    @Override
+    public String name() {
+        return getUsername();
+    }
 }

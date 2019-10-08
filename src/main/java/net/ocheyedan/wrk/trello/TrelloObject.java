@@ -28,4 +28,6 @@ public interface TrelloObject {
 
     String getId();
 
+    String name();
+
 }

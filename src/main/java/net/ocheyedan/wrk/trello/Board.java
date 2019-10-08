@@ -123,4 +123,9 @@ public final class Board implements TrelloObject {
     public Type type() {
         return Type.BOARD;
     }
+
+    @Override
+    public String name() {
+        return getName();
+    }
 }

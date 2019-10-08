@@ -65,4 +65,9 @@ public final class List implements TrelloObject {
     public Type type() {
         return LIST;
     }
+
+    @Override
+    public String name() {
+        return getName();
+    }
 }

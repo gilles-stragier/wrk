@@ -116,4 +116,9 @@ public final class Organization implements TrelloObject {
     public Type type() {
         return ORG;
     }
+
+    @Override
+    public String name() {
+        return getName();
+    }
 }
