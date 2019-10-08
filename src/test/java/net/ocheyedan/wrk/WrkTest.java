@@ -37,6 +37,12 @@ class WrkTest {
 
     @BeforeEach
     void setUp() throws IOException {
+
+        System.setProperty("wrk.trello.usr.token", "fakeToken");
+        System.setProperty("wrk.trello.usr.key", "fakeKey");
+        System.setProperty("wrk.editor", "/usr/bin/vim");
+        System.setProperty("user.home", "./build/");
+
         applicationContext = new ApplicationContext(
                 Mockito.mock(RestTemplate.class),
                 new TypeReferences(),
@@ -50,10 +56,6 @@ class WrkTest {
 
         testData = new TestData();
 
-        System.setProperty("wrk.trello.usr.token", "fakeToken");
-        System.setProperty("wrk.trello.usr.key", "fakeKey");
-        System.setProperty("wrk.editor", "/usr/bin/vim");
-        System.setProperty("user.home", "./build/");
 
         File wrkDir = new File("build/.wrk");
         if (wrkDir.exists()) {
@@ -74,6 +76,11 @@ class WrkTest {
         System.out.println(baos.toString());
 
         Mockito.verifyNoMoreInteractions(applicationContext.restTemplate);
+
+        File wrkDir = new File("build/.wrk/wrk-ids");
+        if (wrkDir.exists()) {
+            FileUtils.deleteQuietly(wrkDir);
+        }
     }
 
     @Test
@@ -344,9 +351,9 @@ class WrkTest {
         );
 
 
-        LinkedList<Map<String, String>> wrkIds = readWrkIds();
-        Assertions.assertEquals("c:123", wrkIds.get(0).values().iterator().next());
-        Assertions.assertEquals("wrk1", wrkIds.get(0).keySet().iterator().next());
+        Map<String, String> wrkIds = readWrkIds();
+        Assertions.assertEquals("c:123", wrkIds.values().iterator().next());
+        Assertions.assertEquals("wrk1", wrkIds.keySet().iterator().next());
     }
 
     @Test
@@ -377,9 +384,9 @@ class WrkTest {
         );
 
 
-        LinkedList<Map<String, String>> wrkIds = readWrkIds();
-        Assertions.assertEquals("b:456", wrkIds.get(0).values().iterator().next());
-        Assertions.assertEquals("wrk1", wrkIds.get(0).keySet().iterator().next());
+        Map<String, String> wrkIds = readWrkIds();
+        Assertions.assertEquals("b:456", wrkIds.values().iterator().next());
+        Assertions.assertEquals("wrk1", wrkIds.keySet().iterator().next());
     }
 
     @Test
@@ -410,15 +417,15 @@ class WrkTest {
                 getStdout()
         );
 
-        LinkedList<Map<String, String>> wrkIds = readWrkIds();
-        Assertions.assertEquals("o:abc", wrkIds.get(0).values().iterator().next());
-        Assertions.assertEquals("wrk1", wrkIds.get(0).keySet().iterator().next());
+        Map<String, String> wrkIds = readWrkIds();
+        Assertions.assertEquals("o:abc", wrkIds.values().iterator().next());
+        Assertions.assertEquals("wrk1", wrkIds.keySet().iterator().next());
 
     }
 
-    private LinkedList<Map<String, String>> readWrkIds() {
+    private Map<String, String> readWrkIds() {
         try {
-            return Json.mapper().readValue(new File("./build/.wrk/wrk-ids"), new TypeReference<LinkedList<Map<String, String>>>() {
+            return Json.mapper().readValue(new File("./build/.wrk/wrk-ids"), new TypeReference<Map<String, String>>() {
             });
         } catch (IOException e) {
             return null;
@@ -453,9 +460,9 @@ class WrkTest {
         );
 
 
-        LinkedList<Map<String, String>> wrkIds = readWrkIds();
-        Assertions.assertEquals("m:637", wrkIds.get(0).values().iterator().next());
-        Assertions.assertEquals("wrk1", wrkIds.get(0).keySet().iterator().next());
+        Map<String, String> wrkIds = readWrkIds();
+        Assertions.assertEquals("m:637", wrkIds.values().iterator().next());
+        Assertions.assertEquals("wrk1", wrkIds.keySet().iterator().next());
     }
 
 
@@ -496,15 +503,14 @@ class WrkTest {
         );
 
 
-        LinkedList<Map<String, String>> wrkIds = readWrkIds();
-        Map<String, String> idsMap = wrkIds.get(0);
-        Iterator<String> trelloIds = idsMap.values().iterator();
+        Map<String, String> wrkIds = readWrkIds();
+        Iterator<String> trelloIds = wrkIds.values().iterator();
         Assertions.assertEquals("m:637", trelloIds.next());
         Assertions.assertEquals("c:123", trelloIds.next());
         Assertions.assertEquals("b:456", trelloIds.next());
         Assertions.assertEquals("o:abc", trelloIds.next());
 
-        Iterator<String> internalIds = idsMap.keySet().iterator();
+        Iterator<String> internalIds = wrkIds.keySet().iterator();
         Assertions.assertEquals("wrk4", internalIds.next());
         Assertions.assertEquals("wrk3", internalIds.next());
         Assertions.assertEquals("wrk2", internalIds.next());

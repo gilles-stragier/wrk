@@ -143,12 +143,6 @@ public final class Usage extends Command {
                     Output.print("    Note, if using a wrk id the prefix is not necessary as wrk ids know their type.");
                     Output.print("");
                     Output.print("Wrk ids are short versions of Trello ids prefixed with ^b^wrk^r^.");
-                } else if ("pop".equals(subcommand)) {
-                    Output.print("^b^pop [num|all]^r^");
-                    Output.print("    pops 1 (or ^b^num^r^ or ^b^all^r^) of the queued wrk id results.");
-                    Output.print("");
-                    Output.print("Wrk id results are created and pushed onto the queue by commands which list Trello ids.");
-                    Output.print("Wrk ids are short versions of Trello ids prefixed with ^b^wrk^r^.");
                 } else {
                     break subcommand; // sub-command given was not found, print general usage
                 }

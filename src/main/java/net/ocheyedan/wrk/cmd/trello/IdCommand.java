@@ -100,29 +100,8 @@ abstract class IdCommand extends Command {
         }
     };
 
-    private final File wrkIdsFile;
-
-    private final LinkedList<Map<String, String>> existingWrkIds;
-
-    private final Map<String, String> existingHead;
-
     protected IdCommand(Args args, ApplicationContext applicationContext) {
         super(args, applicationContext);
-        LinkedList<Map<String, String>> existing = new LinkedList<>();
-        wrkIdsFile = new File(String.format("%s%s%s%s%s", System.getProperty("user.home"), File.separator, ".wrk", File.separator, "wrk-ids"));
-        try {
-            if (wrkIdsFile.exists()) {
-                existing = Json.mapper().readValue(wrkIdsFile, new TypeReference<LinkedList<Map<String, String>>>() { });
-            }
-        } catch (FileNotFoundException fnfe) {
-            // ignore
-        } catch (IOException ioe) {
-            Output.print(ioe);
-        }
-        this.existingWrkIds = existing;
-        Map<String, String> existingHead = existingWrkIds.peek();
-        existingHead = (existingHead == null ? Collections.emptyMap() : existingHead);
-        this.existingHead = existingHead;
     }
 
     protected abstract boolean valid();
@@ -136,38 +115,9 @@ abstract class IdCommand extends Command {
             return;
         }
         _run();
-        push(applicationContext.wrkIdsManager.idsMap());
+        applicationContext.wrkIdsManager.store();
     }
 
-    private void push(Map<String, String> wrkids) {
-        if (wrkids.isEmpty()) {
-            return; // don't push an empty
-        }
-        try {
-            if (existingWrkIds.size() >= 50) {
-                existingWrkIds.removeLast();
-            }
-            existingWrkIds.push(wrkids);
-            Json.mapper().writeValue(wrkIdsFile, existingWrkIds);
-        } catch (IOException ioe) {
-            Output.print(ioe);
-        }
-    }
-
-    void pop(int times) {
-        for (int i = 0; i < times; i++) {
-            if (!this.existingWrkIds.isEmpty()) {
-                this.existingWrkIds.pop();
-            } else {
-                break;
-            }
-        }
-        try {
-            Json.mapper().writeValue(wrkIdsFile, existingWrkIds);
-        } catch (IOException ioe) {
-            Output.print(ioe);
-        }
-    }
 
     static String validate(String value, String type, String plural) {
         return validate(value, type, plural, false);
@@ -195,10 +145,11 @@ abstract class IdCommand extends Command {
     }
 
     protected TrelloId parseWrkId(String wrkId, Set<String> desiredPrefixes) {
-        String trelloId = existingHead.get(wrkId);
-        if (trelloId == null) {
+        Optional<String> trelloOptional = applicationContext.wrkIdsManager.findByWrkId(wrkId);
+        if (!trelloOptional.isPresent()) {
             return new TrelloId(wrkId, wrkId); // user entered a trello-id directly
         }
+        String trelloId = trelloOptional.get();
         String existingPrefix = (trelloId.length() > 2 ? trelloId.substring(0, 2) : "");
         if (!desiredPrefixes.contains(existingPrefix)) {
             // given a wrk-id for the wrong prefix; alert and exit.
