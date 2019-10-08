@@ -1,7 +1,7 @@
 package net.ocheyedan.wrk.output;
 
 import net.ocheyedan.wrk.cmd.trello.Cards;
-import net.ocheyedan.wrk.ids.WrkIdsManager;
+import net.ocheyedan.wrk.ids.IdsAliasingManager;
 import net.ocheyedan.wrk.trello.*;
 
 public class DefaultOutputter {
@@ -29,7 +29,7 @@ public class DefaultOutputter {
         Output.print("  %s%s^r^ ^black^| %s^r^ | %s", closed, list.getName(), wrkId, list.getId());
     }
 
-    public void printLists(java.util.List<List> lists, WrkIdsManager idsManager) {
+    public void printLists(java.util.List<List> lists, IdsAliasingManager idsManager) {
         if (requiresNonNull(lists)) {
             lists.forEach(list -> printList(idsManager.findByTrelloId(list).get(), list));
         }
@@ -62,7 +62,7 @@ public class DefaultOutputter {
     }
 
 
-    public void printCards(java.util.List<Card> cards, WrkIdsManager idsManager) {
+    public void printCards(java.util.List<Card> cards, IdsAliasingManager idsManager) {
         if (requiresNonNull(cards)) {
             for (Card card : cards) {
                 printCard(idsManager.findByTrelloId(card).get(), card);
@@ -78,7 +78,7 @@ public class DefaultOutputter {
         }
     }
 
-    public void printBoards(java.util.List<Board> boards, WrkIdsManager idsManager) {
+    public void printBoards(java.util.List<Board> boards, IdsAliasingManager idsManager) {
         if (requiresNonNull(boards)) {
             for (Board board : boards) {
                 printBoard(idsManager.findByTrelloId(board).get(), board);
@@ -86,7 +86,7 @@ public class DefaultOutputter {
         }
     }
 
-    public void printOrgs(java.util.List<Organization> organizations, WrkIdsManager idsManager) {
+    public void printOrgs(java.util.List<Organization> organizations, IdsAliasingManager idsManager) {
         if (requiresNonNull(organizations)) {
             for (Organization organization : organizations) {
                 printOrganization(idsManager.findByTrelloId(organization).get(), organization);
@@ -100,7 +100,7 @@ public class DefaultOutputter {
 
     }
 
-    public void printMembers(java.util.List<Member> members, WrkIdsManager idsManager) {
+    public void printMembers(java.util.List<Member> members, IdsAliasingManager idsManager) {
         if (requiresNonNull(members)) {
             members.forEach(m -> printMember(idsManager.findByTrelloId(m).get(), m));
         }

@@ -2,7 +2,7 @@ package net.ocheyedan.wrk;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import net.ocheyedan.wrk.cmd.TypeReferences;
-import net.ocheyedan.wrk.ids.WrkIdsManager;
+import net.ocheyedan.wrk.ids.IdsAliasingManager;
 import net.ocheyedan.wrk.output.DefaultOutputter;
 import net.ocheyedan.wrk.trello.SearchResult;
 import org.apache.commons.io.FileUtils;
@@ -19,7 +19,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.Map;
 
 import static java.util.Collections.singletonList;
@@ -47,7 +46,7 @@ class WrkTest {
                 Mockito.mock(RestTemplate.class),
                 new TypeReferences(),
                 new DefaultOutputter(),
-                new WrkIdsManager()
+                new IdsAliasingManager()
         );
 
         wrk = new Wrk(

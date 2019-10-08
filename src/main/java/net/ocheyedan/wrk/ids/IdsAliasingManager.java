@@ -11,7 +11,7 @@ import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class WrkIdsManager {
+public class IdsAliasingManager {
 
     private final Map<String, String> addIds;
 
@@ -19,11 +19,11 @@ public class WrkIdsManager {
 
     private final IdGenerator idGenerator;
 
-    public WrkIdsManager() {
+    public IdsAliasingManager() {
         this(new SequentialIdGenerator());
     }
 
-    public WrkIdsManager(IdGenerator idGenerator) {
+    public IdsAliasingManager(IdGenerator idGenerator) {
         this.addIds = new HashMap<>();
         this.idGenerator = idGenerator;
         initFileStuff();
