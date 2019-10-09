@@ -14,4 +14,6 @@ $ wrk orgs close
 * Manage multiple accounts
 * User input required attributes
 * Release to github on commit or not
+* An (auto) update command
+
 

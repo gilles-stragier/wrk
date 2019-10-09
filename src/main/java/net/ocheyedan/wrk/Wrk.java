@@ -5,6 +5,7 @@ import net.ocheyedan.wrk.cmd.CommandLineParser;
 import net.ocheyedan.wrk.cmd.TypeReferences;
 import net.ocheyedan.wrk.ids.NameIdGenerator;
 import net.ocheyedan.wrk.ids.IdsAliasingManager;
+import net.ocheyedan.wrk.ids.SequentiaByTypelIdGenerator;
 import net.ocheyedan.wrk.output.DefaultOutputter;
 import net.ocheyedan.wrk.output.Output;
 import net.ocheyedan.wrk.trello.Trello;
@@ -30,7 +31,7 @@ public final class Wrk {
                 new TypeReferences(),
                 new DefaultOutputter(),
                 new IdsAliasingManager(
-                        new NameIdGenerator()
+                        new SequentiaByTypelIdGenerator()
                 )
         );
         Wrk wrk = new Wrk(applicationContext);
