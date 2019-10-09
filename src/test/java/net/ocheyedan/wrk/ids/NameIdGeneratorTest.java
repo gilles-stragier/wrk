@@ -27,8 +27,8 @@ class NameIdGeneratorTest {
     void generate() {
         Board sample = testData.sampleBoard("Payer les 2 factures de l'UCM");
 
-        String result = nameIdGenerator.generate(Collections.emptyList(), sample);
+        IdMapping result = nameIdGenerator.generate(Collections.emptySet(), sample);
 
-        Assertions.assertTrue(result.startsWith("payer-les-2-factures-de-lucm"));
+        Assertions.assertTrue(result.getAliases().iterator().next().getId().startsWith("payer-les-2-factures-de-lucm"));
     }
 }

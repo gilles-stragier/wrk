@@ -2,9 +2,12 @@ package net.ocheyedan.wrk;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import net.ocheyedan.wrk.cmd.TypeReferences;
+import net.ocheyedan.wrk.cmd.trello.TrelloId;
+import net.ocheyedan.wrk.ids.IdMapping;
 import net.ocheyedan.wrk.ids.IdsAliasingManager;
 import net.ocheyedan.wrk.output.DefaultOutputter;
 import net.ocheyedan.wrk.trello.SearchResult;
+import net.ocheyedan.wrk.trello.TrelloObject;
 import org.apache.commons.io.FileUtils;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
@@ -18,8 +21,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
-import java.util.Iterator;
-import java.util.Map;
+import java.util.Set;
 
 import static java.util.Collections.singletonList;
 import static org.mockito.Mockito.when;
@@ -350,9 +352,9 @@ class WrkTest {
         );
 
 
-        Map<String, String> wrkIds = readWrkIds();
-        Assertions.assertEquals("c:123", wrkIds.values().iterator().next());
-        Assertions.assertEquals("wrk1", wrkIds.keySet().iterator().next());
+        IdMapping onlyOne = readWrkIds().iterator().next();
+        Assertions.assertEquals(new TrelloId("123", TrelloObject.Type.CARD), onlyOne.getTrelloId());
+        Assertions.assertEquals("wrk1", onlyOne.oneAlias().getId());
     }
 
     @Test
@@ -383,9 +385,9 @@ class WrkTest {
         );
 
 
-        Map<String, String> wrkIds = readWrkIds();
-        Assertions.assertEquals("b:456", wrkIds.values().iterator().next());
-        Assertions.assertEquals("wrk1", wrkIds.keySet().iterator().next());
+        IdMapping onlyOne = readWrkIds().iterator().next();
+        Assertions.assertEquals(new TrelloId("456", TrelloObject.Type.BOARD), onlyOne.getTrelloId());
+        Assertions.assertEquals("wrk1", onlyOne.oneAlias().getId());
     }
 
     @Test
@@ -416,18 +418,18 @@ class WrkTest {
                 getStdout()
         );
 
-        Map<String, String> wrkIds = readWrkIds();
-        Assertions.assertEquals("o:abc", wrkIds.values().iterator().next());
-        Assertions.assertEquals("wrk1", wrkIds.keySet().iterator().next());
+        IdMapping onlyOne = readWrkIds().iterator().next();
+        Assertions.assertEquals(new TrelloId("abc", TrelloObject.Type.ORG), onlyOne.getTrelloId());
+        Assertions.assertEquals("wrk1", onlyOne.oneAlias().getId());
 
     }
 
-    private Map<String, String> readWrkIds() {
+    private Set<IdMapping> readWrkIds() {
         try {
-            return Json.mapper().readValue(new File("./build/.wrk/wrk-ids"), new TypeReference<Map<String, String>>() {
+            return Json.mapper().readValue(new File("./build/.wrk/wrk-ids"), new TypeReference<Set<IdMapping>>() {
             });
         } catch (IOException e) {
-            return null;
+            throw new IllegalStateException("Unexpected exception !", e);
         }
     }
 
@@ -459,10 +461,9 @@ class WrkTest {
         );
 
 
-        Map<String, String> wrkIds = readWrkIds();
-        Assertions.assertEquals("m:637", wrkIds.values().iterator().next());
-        Assertions.assertEquals("wrk1", wrkIds.keySet().iterator().next());
-    }
+        IdMapping onlyOne = readWrkIds().iterator().next();
+        Assertions.assertEquals(new TrelloId("637", TrelloObject.Type.MEMBER), onlyOne.getTrelloId());
+        Assertions.assertEquals("wrk1", onlyOne.oneAlias().getId());    }
 
 
     @Test
@@ -502,18 +503,22 @@ class WrkTest {
         );
 
 
-        Map<String, String> wrkIds = readWrkIds();
-        Iterator<String> trelloIds = wrkIds.values().iterator();
-        Assertions.assertEquals("m:637", trelloIds.next());
-        Assertions.assertEquals("c:123", trelloIds.next());
-        Assertions.assertEquals("b:456", trelloIds.next());
-        Assertions.assertEquals("o:abc", trelloIds.next());
 
-        Iterator<String> internalIds = wrkIds.keySet().iterator();
-        Assertions.assertEquals("wrk4", internalIds.next());
-        Assertions.assertEquals("wrk3", internalIds.next());
-        Assertions.assertEquals("wrk2", internalIds.next());
-        Assertions.assertEquals("wrk1", internalIds.next());
+
+        Set<IdMapping> wrkIds = readWrkIds();
+
+        Assertions.assertTrue(wrkIds.stream().anyMatch(
+                m -> m.getTrelloId().equals(new TrelloId("637", TrelloObject.Type.MEMBER)) && m.contains("wrk4"))
+        );
+        Assertions.assertTrue(wrkIds.stream().anyMatch(
+                m -> m.getTrelloId().equals(new TrelloId("123", TrelloObject.Type.CARD)) && m.contains("wrk3"))
+        );
+        Assertions.assertTrue(wrkIds.stream().anyMatch(
+                m -> m.getTrelloId().equals(new TrelloId("456", TrelloObject.Type.BOARD)) && m.contains("wrk2"))
+        );
+        Assertions.assertTrue(wrkIds.stream().anyMatch(
+                m -> m.getTrelloId().equals(new TrelloId("abc", TrelloObject.Type.ORG)) && m.contains("wrk1"))
+        );
     }
 
     private String getStdout() {

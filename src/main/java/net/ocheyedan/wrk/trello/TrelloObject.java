@@ -1,6 +1,12 @@
 package net.ocheyedan.wrk.trello;
 
+import net.ocheyedan.wrk.cmd.trello.TrelloId;
+
 public interface TrelloObject {
+
+    default TrelloId trelloId() {
+        return new TrelloId(getId(), type());
+    }
 
     enum Type {
         CARD("c"),

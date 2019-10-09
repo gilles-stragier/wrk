@@ -1,13 +1,17 @@
 package net.ocheyedan.wrk.ids;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 
 public class Alias {
 
     private String id;
 
-    public Alias(String id) {
+    @JsonCreator
+    public Alias(@JsonProperty("id") String id) {
         this.id = id;
     }
 
@@ -33,5 +37,12 @@ public class Alias {
         return new HashCodeBuilder(17, 37)
                 .append(id)
                 .toHashCode();
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this)
+                .append("id", id)
+                .toString();
     }
 }
