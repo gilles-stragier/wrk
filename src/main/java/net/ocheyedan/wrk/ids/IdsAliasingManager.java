@@ -78,14 +78,14 @@ public class IdsAliasingManager {
         }
     }
 
-    public Optional<String> findByWrkId(String wrkId) {
+    public Optional<TrelloId> findByWrkId(String wrkId) {
         return findByWrkId(new Alias(wrkId));
     }
 
-    public Optional<String> findByWrkId(Alias alias) {
+    public Optional<TrelloId> findByWrkId(Alias alias) {
         return mappings.stream()
                 .filter(m -> m.getAliases().contains(alias))
-                .map(m -> m.getTrelloId().getId())
+                .map(m -> m.getTrelloId())
                 .findFirst();
     }
 }

@@ -140,11 +140,11 @@ abstract class IdCommand extends Command {
     }
 
     protected LegacyTrelloId parseWrkId(String wrkId, Set<String> desiredPrefixes) {
-        Optional<String> trelloOptional = applicationContext.wrkIdsManager.findByWrkId(wrkId);
+        Optional<TrelloId> trelloOptional = applicationContext.wrkIdsManager.findByWrkId(wrkId);
         if (!trelloOptional.isPresent()) {
             return new LegacyTrelloId(wrkId, wrkId); // user entered a trello-id directly
         }
-        String trelloId = trelloOptional.get();
+        String trelloId = trelloOptional.get().formatAsLegacy();
         String existingPrefix = (trelloId.length() > 2 ? trelloId.substring(0, 2) : "");
         if (!desiredPrefixes.contains(existingPrefix)) {
             // given a wrk-id for the wrong prefix; alert and exit.

@@ -28,6 +28,10 @@ public class TrelloId {
         return type;
     }
 
+    public String formatAsLegacy() {
+        return getType().keyPrefix() + getId();
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

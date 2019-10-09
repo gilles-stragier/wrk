@@ -5,6 +5,7 @@ import net.ocheyedan.wrk.cmd.TypeReferences;
 import net.ocheyedan.wrk.cmd.trello.TrelloId;
 import net.ocheyedan.wrk.ids.IdMapping;
 import net.ocheyedan.wrk.ids.IdsAliasingManager;
+import net.ocheyedan.wrk.ids.SequentiaByTypelIdGenerator;
 import net.ocheyedan.wrk.output.DefaultOutputter;
 import net.ocheyedan.wrk.trello.SearchResult;
 import net.ocheyedan.wrk.trello.TrelloObject;
@@ -21,6 +22,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Set;
 
 import static java.util.Collections.singletonList;
@@ -146,6 +149,45 @@ class WrkTest {
         Assertions.assertEquals(
                 "Open lists for board 456:\n" +
                         "  listname | wrk1 | 789\n",
+                getStdout()
+        );
+    }
+
+    @Test
+    void testListsAndCustomIds() {
+        IdsAliasingManager wrkIdsManager = new IdsAliasingManager(
+                new SequentiaByTypelIdGenerator()
+        );
+        applicationContext = new ApplicationContext(
+                Mockito.mock(RestTemplate.class),
+                new TypeReferences(),
+                new DefaultOutputter(),
+                wrkIdsManager
+        );
+
+        wrk = new Wrk(
+                applicationContext
+        );
+
+        wrkIdsManager.registerTrelloIds(Collections.singletonList(
+                testData.sampleBoard()
+        ));
+
+        when(
+                applicationContext.restTemplate.get(
+                        "https://trello.com/1/boards/456/lists?filter=open&key=fakeKey&token=fakeToken",
+                        applicationContext.typeReferences.listsListType
+                )).thenReturn(
+                singletonList(
+                        testData.sampleList()
+                )
+        );
+
+        wrk.execute(new String[]{"lists", "in", "b1"});
+
+        Assertions.assertEquals(
+                "Open lists for board 456:\n" +
+                        "  listname | l1 | 789\n",
                 getStdout()
         );
     }
