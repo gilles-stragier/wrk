@@ -78,7 +78,7 @@ public final class Config {
                 JsonFile defaultConfig = new JsonFile(defaultColor, defaultEditor, defaultEditorOpts);
                 editor.set(defaultConfig.getEditor());
                 editorOpts.set(defaultConfig.getEditorOpts());
-                Json.mapper().writeValue(configFile, defaultConfig);
+                Json.mapper().writerWithDefaultPrettyPrinter().writeValue(configFile, defaultConfig);
             }
         } catch (IOException ioe) {
             // ignore and take defaults
