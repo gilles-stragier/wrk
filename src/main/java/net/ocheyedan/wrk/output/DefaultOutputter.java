@@ -17,15 +17,15 @@ public class DefaultOutputter implements Outputter {
     }
 
     @Override
-    public void printList(String wrkId, List list) {
+    public void printList(IdsAliasingManager idsAliasingManager, List list) {
         String closed = ((list.getClosed() != null) && list.getClosed()) ? "^black^[closed] ^r^" : "^b^";
-        Output.print("  %s%s^r^ ^black^| %s^r^ | %s", closed, list.getName(), wrkId, list.getId());
+        Output.print("  %s%s^r^ ^black^| %s^r^ | %s", closed, list.getName(), idsAliasingManager.findByTrelloId(list).get(), list.getId());
     }
 
     @Override
     public void printLists(java.util.List<List> lists, IdsAliasingManager idsManager) {
         if (requiresNonNull(lists)) {
-            lists.forEach(list -> printList(idsManager.findByTrelloId(list).get(), list));
+            lists.forEach(list -> printList(idsManager, list));
         }
     }
 
@@ -51,10 +51,10 @@ public class DefaultOutputter implements Outputter {
     }
 
     @Override
-    public void printCard(String wrkId, Card card) {
+    public void printCard(IdsAliasingManager idsAliasingManager, Card card) {
         String labels = Cards.buildLabel(card.getLabels());
         String closed = ((card.getClosed() != null) && card.getClosed()) ? "^black^[closed] ^r^" : "^b^";
-        Output.print("  %s%s^r^%s ^black^| %s^r^ | %s", closed, card.getName(), labels, wrkId, card.getId());
+        Output.print("  %s%s^r^%s ^black^| %s^r^ | %s", closed, card.getName(), labels, idsAliasingManager.findByTrelloId(card).get(), card.getId());
         Output.print("    ^black^%s^r^", Cards.getPrettyUrl(card));
     }
 
@@ -63,16 +63,16 @@ public class DefaultOutputter implements Outputter {
     public void printCards(java.util.List<Card> cards, IdsAliasingManager idsManager) {
         if (requiresNonNull(cards)) {
             for (Card card : cards) {
-                printCard(idsManager.findByTrelloId(card).get(), card);
+                printCard(idsManager, card);
             }
         }
     }
 
     @Override
-    public void printBoard(String wrkId, Board board) {
+    public void printBoard(IdsAliasingManager idsAliasingManager, Board board) {
         if (requiresNonNull(board)) {
             String closed = ((board.getClosed() != null) && board.getClosed()) ? "^black^[closed] ^r^" : "^b^";
-            Output.print("  %s%s^r^ ^black^| %s^r^ | %s", closed, board.getName(), wrkId, board.getId());
+            Output.print("  %s%s^r^ ^black^| %s^r^ | %s", closed, board.getName(), idsAliasingManager.findByTrelloId(board).get(), board.getId());
             Output.print("    ^black^%s^r^", board.getUrl());
         }
     }
@@ -91,7 +91,7 @@ public class DefaultOutputter implements Outputter {
     public void printBoards(java.util.List<Board> boards, IdsAliasingManager idsManager) {
         if (requiresNonNull(boards)) {
             for (Board board : boards) {
-                printBoard(idsManager.findByTrelloId(board).get(), board);
+                printBoard(idsManager, board);
             }
         }
     }
@@ -100,14 +100,14 @@ public class DefaultOutputter implements Outputter {
     public void printOrgs(java.util.List<Organization> organizations, IdsAliasingManager idsManager) {
         if (requiresNonNull(organizations)) {
             for (Organization organization : organizations) {
-                printOrganization(idsManager.findByTrelloId(organization).get(), organization);
+                printOrganization(idsManager, organization);
             }
         }
     }
 
     @Override
-    public void printOrganization(String wrkId, Organization organization) {
-        Output.print("  ^b^%s^r^ ^black^| %s^r^ | %s", organization.getDisplayName(), wrkId, organization.getId());
+    public void printOrganization(IdsAliasingManager idsAliasingManager, Organization organization) {
+        Output.print("  ^b^%s^r^ ^black^| %s^r^ | %s", organization.getDisplayName(), idsAliasingManager.findByTrelloId(organization).get(), organization.getId());
         Output.print("    ^black^%s^r^", organization.getUrl());
 
     }
@@ -115,13 +115,13 @@ public class DefaultOutputter implements Outputter {
     @Override
     public void printMembers(java.util.List<Member> members, IdsAliasingManager idsManager) {
         if (requiresNonNull(members)) {
-            members.forEach(m -> printMember(idsManager.findByTrelloId(m).get(), m));
+            members.forEach(m -> printMember(idsManager, m));
         }
     }
 
     @Override
-    public void printMember(String wrkId, Member member) {
-        Output.print("  ^b^%s^r^ ^black^| %s^r^", member.getFullName(), wrkId);
+    public void printMember(IdsAliasingManager idsAliasingManager, Member member) {
+        Output.print("  ^b^%s^r^ ^black^| %s^r^", member.getFullName(), idsAliasingManager.findByTrelloId(member).get());
         Output.print("    ^black^username^r^ %s", member.getUsername());
     }
 

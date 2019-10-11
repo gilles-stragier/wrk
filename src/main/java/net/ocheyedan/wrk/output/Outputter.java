@@ -15,7 +15,7 @@ public interface Outputter {
 
     Boolean requiresNonNullNorEmpty(java.util.List<?> list);
 
-    void printList(String wrkId, List list);
+    void printList(IdsAliasingManager idsAliasingManager, List list);
 
     void printLists(java.util.List<List> lists, IdsAliasingManager idsManager);
 
@@ -23,21 +23,21 @@ public interface Outputter {
 
     void describeMember(Member member);
 
-    void printCard(String wrkId, Card card);
+    void printCard(IdsAliasingManager idsAliasingManager,  Card card);
 
     void printCards(java.util.List<Card> cards, IdsAliasingManager idsManager);
 
-    void printBoard(String wrkId, Board board);
+    void printBoard(IdsAliasingManager idsAliasingManager,  Board board);
 
     void printBoards(java.util.List<Board> boards, IdsAliasingManager idsManager);
 
     void printOrgs(java.util.List<Organization> organizations, IdsAliasingManager idsManager);
 
-    void printOrganization(String wrkId, Organization organization);
+    void printOrganization(IdsAliasingManager idsAliasingManager, Organization organization);
 
     void printMembers(java.util.List<Member> members, IdsAliasingManager idsManager);
 
-    void printMember(String wrkId, Member member);
+    void printMember(IdsAliasingManager idsAliasingManager,  Member member);
 
     void describeList(List list);
 

@@ -68,17 +68,17 @@ public final class Create extends IdCommand {
             case Board:
                 Board board = applicationContext.restTemplate.post(url, applicationContext.typeReferences.boardType);
                 applicationContext.wrkIdsManager.registerTrelloIds(Collections.singletonList(board));
-                applicationContext.outputter.printBoard(wrkId, board);
+                applicationContext.outputter.printBoard(applicationContext.wrkIdsManager, board);
                 break;
             case List:
                 net.ocheyedan.wrk.trello.List list = applicationContext.restTemplate.post(url, applicationContext.typeReferences.listType);
                 applicationContext.wrkIdsManager.registerTrelloIds(Collections.singletonList(list));
-                applicationContext.outputter.printList(wrkId, list);
+                applicationContext.outputter.printList(applicationContext.wrkIdsManager, list);
                 break;
             case Card:
                 Card card = applicationContext.restTemplate.post(url, applicationContext.typeReferences.cardType);
                 applicationContext.wrkIdsManager.registerTrelloIds(Collections.singletonList(card));
-                applicationContext.outputter.printCard(wrkId, card);
+                applicationContext.outputter.printCard(applicationContext.wrkIdsManager, card);
                 break;
         }
     }

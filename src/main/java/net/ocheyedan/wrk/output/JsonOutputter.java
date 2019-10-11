@@ -42,7 +42,7 @@ public class JsonOutputter implements Outputter {
     }
 
     @Override
-    public void printList(String wrkId, net.ocheyedan.wrk.trello.List list) {
+    public void printList(IdsAliasingManager idsAliasingManager, net.ocheyedan.wrk.trello.List list) {
         serializeToOutput(list);
     }
 
@@ -62,7 +62,7 @@ public class JsonOutputter implements Outputter {
     }
 
     @Override
-    public void printCard(String wrkId, Card card) {
+    public void printCard(IdsAliasingManager idsAliasingManager, Card card) {
         serializeToOutput(card);
     }
 
@@ -72,7 +72,7 @@ public class JsonOutputter implements Outputter {
     }
 
     @Override
-    public void printBoard(String wrkId, Board board) {
+    public void printBoard(IdsAliasingManager idsAliasingManager, Board board) {
         serializeToOutput(board);
     }
 
@@ -87,7 +87,7 @@ public class JsonOutputter implements Outputter {
     }
 
     @Override
-    public void printOrganization(String wrkId, Organization organization) {
+    public void printOrganization(IdsAliasingManager idsAliasingManager, Organization organization) {
         serializeToOutput(organization);
     }
 
@@ -97,7 +97,7 @@ public class JsonOutputter implements Outputter {
     }
 
     @Override
-    public void printMember(String wrkId, Member member) {
+    public void printMember(IdsAliasingManager idsAliasingManager, Member member) {
         serializeToOutput(member);
     }
 
