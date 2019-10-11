@@ -31,7 +31,7 @@ public final class Orgs extends IdCommand {
         Output.print(description);
         List<Organization> orgs = applicationContext.restTemplate.get(url, applicationContext.typeReferences.orgsListType);
         applicationContext.wrkIdsManager.registerTrelloIds(orgs);
-        applicationContext.defaultOutputter.printOrgs(orgs, applicationContext.wrkIdsManager);
+        applicationContext.outputter.printOrgs(orgs, applicationContext.wrkIdsManager);
     }
 
     @Override protected boolean valid() {

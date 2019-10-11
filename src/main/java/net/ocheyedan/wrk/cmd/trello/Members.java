@@ -52,7 +52,7 @@ public final class Members extends IdCommand {
         List<Member> members = applicationContext.restTemplate.get(url, applicationContext.typeReferences.memberListType);
 
         applicationContext.wrkIdsManager.registerTrelloIds(members);
-        applicationContext.defaultOutputter.printMembers(members, applicationContext.wrkIdsManager);
+        applicationContext.outputter.printMembers(members, applicationContext.wrkIdsManager);
     }
 
     @Override

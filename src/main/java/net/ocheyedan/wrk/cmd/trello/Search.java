@@ -86,21 +86,21 @@ public final class Search extends IdCommand {
                          (searchResults.getOrganizations().size() == 1 ? "" : "s"), (searchResults.getOrganizations().size() == 1000 ? " (limited to 1000)" : ""));
 
             applicationContext.wrkIdsManager.registerTrelloIds(searchResults.getOrganizations());
-            applicationContext.defaultOutputter.printOrgs(searchResults.getOrganizations(), applicationContext.wrkIdsManager);
+            applicationContext.outputter.printOrgs(searchResults.getOrganizations(), applicationContext.wrkIdsManager);
         }
         if (!searchResults.getBoards().isEmpty()) {
             Output.print("Found ^b^%d board%s%s^r^.", searchResults.getBoards().size(),
                     (searchResults.getBoards().size() == 1 ? "" : "s"), (searchResults.getBoards().size() == 1000 ? " (limited to 1000)" : ""));
 
             applicationContext.wrkIdsManager.registerTrelloIds(searchResults.getBoards());
-            applicationContext.defaultOutputter.printBoards(searchResults.getBoards(), applicationContext.wrkIdsManager);
+            applicationContext.outputter.printBoards(searchResults.getBoards(), applicationContext.wrkIdsManager);
         }
         if (!searchResults.getCards().isEmpty()) {
             Output.print("Found ^b^%d card%s%s^r^.", searchResults.getCards().size(),
                     (searchResults.getCards().size() == 1 ? "" : "s"), (searchResults.getCards().size() == 1000 ? " (limited to 1000)" : ""));
 
             applicationContext.wrkIdsManager.registerTrelloIds(searchResults.getCards());
-            applicationContext.defaultOutputter.printCards(searchResults.getCards(), applicationContext.wrkIdsManager);
+            applicationContext.outputter.printCards(searchResults.getCards(), applicationContext.wrkIdsManager);
 
         }
         if (!searchResults.getMembers().isEmpty()) {
@@ -108,7 +108,7 @@ public final class Search extends IdCommand {
                     (searchResults.getMembers().size() == 1 ? "" : "s"), (searchResults.getMembers().size() == 1000 ? " (limited to 1000)" : ""));
 
             applicationContext.wrkIdsManager.registerTrelloIds(searchResults.getMembers());
-            applicationContext.defaultOutputter.printMembers(searchResults.getMembers(), applicationContext.wrkIdsManager);
+            applicationContext.outputter.printMembers(searchResults.getMembers(), applicationContext.wrkIdsManager);
         }
         // TODO - actions?
         if (!searchResults.hadResults()) {

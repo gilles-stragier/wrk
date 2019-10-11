@@ -35,7 +35,7 @@ public final class Lists extends IdCommand {
         Output.print(description);
         List<net.ocheyedan.wrk.trello.List> lists = applicationContext.restTemplate.get(url, applicationContext.typeReferences.listsListType);
         applicationContext.wrkIdsManager.registerTrelloIds(lists);
-        applicationContext.defaultOutputter.printLists(lists, applicationContext.wrkIdsManager);
+        applicationContext.outputter.printLists(lists, applicationContext.wrkIdsManager);
     }
 
     @Override protected boolean valid() {

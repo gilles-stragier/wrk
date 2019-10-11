@@ -52,7 +52,7 @@ public final class Cards extends IdCommand {
 
         List<Card> cards = applicationContext.restTemplate.get(url, applicationContext.typeReferences.cardListType);
         applicationContext.wrkIdsManager.registerTrelloIds(cards);
-        applicationContext.defaultOutputter.printCards(cards, applicationContext.wrkIdsManager);
+        applicationContext.outputter.printCards(cards, applicationContext.wrkIdsManager);
 
     }
 

@@ -46,7 +46,7 @@ public final class Boards extends IdCommand {
         List<Board> boards = applicationContext.restTemplate.get(url, applicationContext.typeReferences.boardListType);
 
         applicationContext.wrkIdsManager.registerTrelloIds(boards);
-        applicationContext.defaultOutputter.printBoards(boards, applicationContext.wrkIdsManager);
+        applicationContext.outputter.printBoards(boards, applicationContext.wrkIdsManager);
 
     }
 

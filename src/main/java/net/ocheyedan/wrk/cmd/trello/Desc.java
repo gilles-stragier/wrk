@@ -73,23 +73,23 @@ public final class Desc extends IdCommand {
         switch (type) {
             case Org:
                 Organization org = applicationContext.restTemplate.get(url, applicationContext.typeReferences.orgType);
-                applicationContext.defaultOutputter.describeOrg(org);
+                applicationContext.outputter.describeOrg(org);
                 break;
             case Board:
                 Board board = applicationContext.restTemplate.get(url, applicationContext.typeReferences.boardType);
-                applicationContext.defaultOutputter.describeBoard(board);
+                applicationContext.outputter.describeBoard(board);
                 break;
             case List:
                 net.ocheyedan.wrk.trello.List list = applicationContext.restTemplate.get(url, applicationContext.typeReferences.listType);
-                applicationContext.defaultOutputter.describeList(list);
+                applicationContext.outputter.describeList(list);
                 break;
             case Card:
                 Card card = applicationContext.restTemplate.get(url, applicationContext.typeReferences.cardType);
-                applicationContext.defaultOutputter.describeCard(card);
+                applicationContext.outputter.describeCard(card);
                 break;
             case Member:
                 Member member = applicationContext.restTemplate.get(url, applicationContext.typeReferences.memberType);
-                applicationContext.defaultOutputter.describeMember(member);
+                applicationContext.outputter.describeMember(member);
                 break;
         }
     }

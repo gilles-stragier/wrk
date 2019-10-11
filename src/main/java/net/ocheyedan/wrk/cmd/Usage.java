@@ -168,7 +168,6 @@ public final class Usage extends Command {
         Output.print("    ^b^label^r^     Labels a card with a color.");
         Output.print("    ^b^unlabel^r^   Un-labels a color from a card.");
         Output.print("    ^b^close^r^     Closes a board/list/card.");
-        Output.print("    ^b^pop^r^       Pops wrk ids from the queue of wrk id results.");
         Output.print("");
         Output.print("See 'wrk help <command>' for more information on a specific command.");
     }
