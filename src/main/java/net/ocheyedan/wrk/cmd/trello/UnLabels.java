@@ -1,6 +1,5 @@
 package net.ocheyedan.wrk.cmd.trello;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import net.ocheyedan.wrk.ApplicationContext;
 import net.ocheyedan.wrk.cmd.Args;
 import net.ocheyedan.wrk.output.Output;
@@ -45,8 +44,8 @@ public final class UnLabels extends IdCommand {
     @Override
     protected void _run() {
         Output.print(description);
-        List<Label> result = applicationContext.restTemplate.delete(url, new TypeReference<>() {
-        });
+        List<Label> result = applicationContext.restTemplate.delete(url, applicationContext.typeReferences.labelListType);
+
         if (result == null) {
             Output.print("  ^red^Invalid id or insufficient privileges.^r^");
         } else {

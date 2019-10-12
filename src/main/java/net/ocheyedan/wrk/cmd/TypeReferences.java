@@ -33,4 +33,10 @@ public class TypeReferences {
     public TypeReference<Map<String, Object>> mapOfObjectsType = new TypeReference<>() {
     };
 
+    public TypeReference<List<Action>> actionListType = new TypeReference<>() {
+    };
+    public TypeReference<List<Label>> labelListType = new TypeReference<>() {
+    };
+
+
 }

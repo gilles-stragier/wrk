@@ -89,6 +89,27 @@ class WrkTest {
     }
 
     @Test
+    void testUnassignCard() {
+        when(
+                applicationContext.restTemplate.delete(
+                        "https://trello.com/1/cards/c1/members/m1?key=fakeKey&token=fakeToken",
+                        applicationContext.typeReferences.memberListType
+                )).thenReturn(
+                singletonList(
+                        testData.sampleMember()
+                )
+        );
+
+        wrk.execute(new String[]{"unassign", "m1", "from", "c1"});
+
+        Assertions.assertEquals(
+                "Un-assigning user m1 from card c1:\n" +
+                        "  Un-assigned!\n",
+                getStdout()
+        );
+    }
+
+    @Test
     void testAssignCards() {
         when(
                 applicationContext.restTemplate.post(
@@ -476,6 +497,136 @@ class WrkTest {
     }
 
     @Test
+    void testComment() {
+        when(
+                applicationContext.restTemplate.post(
+                        "https://trello.com/1/cards/c:5654/actions/comments?text=some+nice+comment&key=fakeKey&token=fakeToken",
+                        applicationContext.typeReferences.mapOfObjectsType
+                )).thenReturn(new HashMap<>());
+
+        wrk.execute(new String[]{"comment", "on", "c:5654", "some nice comment"});
+
+        Assertions.assertEquals(
+                "Commenting on card c:5654:\n" +
+                        "  Commented!\n",
+                getStdout()
+        );
+    }
+
+    @Test
+    void testComments() {
+        when(
+                applicationContext.restTemplate.get(
+                        "https://trello.com/1/cards/5654/actions?filter=commentCard&key=fakeKey&token=fakeToken",
+                        applicationContext.typeReferences.actionListType
+                )).thenReturn(
+                singletonList(testData.sampleAction())
+        );
+
+        wrk.execute(new String[]{"comments", "in", "5654"});
+
+        Assertions.assertEquals(
+                "Comments for card 5654:\n" +
+                        "|\n" +
+                        "| Some Name Full\n" +
+                        "| yesterday\n" +
+                        "|\n" +
+                        "| someaction\n" +
+                        "|\n\n",
+                getStdout()
+        );
+    }
+
+    @Test
+    void testLabel() {
+        when(
+                applicationContext.restTemplate.post(
+                        "https://trello.com/1/cards/1234/labels?value=red&key=fakeKey&token=fakeToken",
+                        applicationContext.typeReferences.labelListType
+                )).thenReturn(
+                singletonList(testData.sampleLabel())
+        );
+
+        wrk.execute(new String[]{"label", "1234", "with", "red"});
+
+        Assertions.assertEquals(
+                "Commenting on card 1234:\n" +
+                        "  Labeled!\n",
+                getStdout()
+        );
+    }
+
+    @Test
+    void testUnLabel() {
+        when(
+                applicationContext.restTemplate.delete(
+                        "https://trello.com/1/cards/1234/labels/red?key=fakeKey&token=fakeToken",
+                        applicationContext.typeReferences.labelListType
+                )).thenReturn(
+                singletonList(testData.sampleLabel())
+        );
+
+        wrk.execute(new String[]{"unlabel", "red", "from", "1234"});
+
+        Assertions.assertEquals(
+                "Un-labeling red from card 1234:\n" +
+                        "  Un-labeled!\n",
+                getStdout()
+        );
+    }
+
+    @Test
+    void testMove() {
+        when(
+                applicationContext.restTemplate.put(
+                        "https://trello.com/1/cards/c1/idList?value=l2&key=fakeKey&token=fakeToken",
+                        applicationContext.typeReferences.mapOfObjectsType
+                )).thenReturn(new HashMap<>()
+        );
+
+        wrk.execute(new String[]{"move", "c1", "to", "l2"});
+
+        Assertions.assertEquals(
+                "Moving card c1 to list l2:\n" +
+                        "  Moved!\n",
+                getStdout()
+        );
+    }
+
+
+    @Test
+    void testUsage() {
+
+        wrk.execute(new String[]{"--help"});
+
+        Assertions.assertEquals(
+                "wrk [--usage|--help|help] [--version|-v|-version] <command> [<args>]\n" +
+                        "\n" +
+                        "  where command is either:\n" +
+                        "    orgs      Lists organizations.\n" +
+                        "    boards    Lists boards (all created by user or those for an organization).\n" +
+                        "    lists     Lists lists for a particular board.\n" +
+                        "    cards     Lists cards (all open assigned to user, or those within a board or list).\n" +
+                        "    comments  Lists comments for a particular card.\n" +
+                        "    members   Lists members belonging to an organization, board or card.\n" +
+                        "    desc      Prints a description of an organization, board, list, card or member.\n" +
+                        "    search    Searches for organizations, boards, cards, members using the Trello search API.\n" +
+                        "    comment   Creates a comment on a particular card.\n" +
+                        "    assign    Assigns the user or a member to a particular card.\n" +
+                        "    unassign  Un-assigns the user or a member from a particular card.\n" +
+                        "    create    Creates a board/list/card.\n" +
+                        "    move      Moves a card to a list.\n" +
+                        "    label     Labels a card with a color.\n" +
+                        "    unlabel   Un-labels a color from a card.\n" +
+                        "    close     Closes a board/list/card.\n" +
+                        "\n" +
+                        "See 'wrk help <command>' for more information on a specific command.\n",
+                getStdout()
+        );
+    }
+
+
+    @Test
     void testSearchCard() {
         when(
                 applicationContext.restTemplate.get(
@@ -614,7 +765,8 @@ class WrkTest {
 
         IdMapping onlyOne = readWrkIds().iterator().next();
         Assertions.assertEquals(new TrelloId("637", TrelloObject.Type.MEMBER), onlyOne.getTrelloId());
-        Assertions.assertEquals("wrk1", onlyOne.oneAlias().getId());    }
+        Assertions.assertEquals("wrk1", onlyOne.oneAlias().getId());
+    }
 
 
     @Test
@@ -652,8 +804,6 @@ class WrkTest {
                         "    username somename\n",
                 getStdout()
         );
-
-
 
 
         Set<IdMapping> wrkIds = readWrkIds();

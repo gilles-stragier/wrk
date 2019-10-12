@@ -1,6 +1,5 @@
 package net.ocheyedan.wrk.cmd.trello;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import net.ocheyedan.wrk.ApplicationContext;
 import net.ocheyedan.wrk.Config;
 import net.ocheyedan.wrk.cmd.Args;
@@ -79,8 +78,7 @@ public final class Comment extends IdCommand {
     @Override
     protected void _run() {
         Output.print(description);
-        Map<String, Object> result = applicationContext.restTemplate.post(url, new TypeReference<Map<String, Object>>() {
-        });
+        Map<String, Object> result = applicationContext.restTemplate.post(url, applicationContext.typeReferences.mapOfObjectsType);
         if (result == null) {
             Output.print("  ^red^Invalid id or insufficient privileges.^r^");
         } else {

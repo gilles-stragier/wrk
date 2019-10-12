@@ -1,6 +1,5 @@
 package net.ocheyedan.wrk.cmd.trello;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import net.ocheyedan.wrk.ApplicationContext;
 import net.ocheyedan.wrk.cmd.Args;
 import net.ocheyedan.wrk.output.Output;
@@ -36,7 +35,7 @@ public final class Comments extends IdCommand {
     @Override
     protected void _run() {
         Output.print(description);
-        List<Action> comments = applicationContext.restTemplate.get(url, new TypeReference<List<Action>>() { });
+        List<Action> comments = applicationContext.restTemplate.get(url, applicationContext.typeReferences.actionListType);
         if ((comments == null) || comments.isEmpty()) {
             Output.print("  ^black^None^r^");
             return;

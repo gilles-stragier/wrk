@@ -95,4 +95,10 @@ public class TestData {
                 sampleMember()
         );
     }
+
+    public Label sampleLabel() {
+        return new Label(
+                "red", ""
+        );
+    }
 }

@@ -1,6 +1,5 @@
 package net.ocheyedan.wrk.cmd.trello;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import net.ocheyedan.wrk.ApplicationContext;
 import net.ocheyedan.wrk.cmd.Args;
 import net.ocheyedan.wrk.output.Output;
@@ -41,8 +40,7 @@ public final class UnAssign extends IdCommand {
     @Override
     protected void _run() {
         Output.print(description);
-        List<Member> members = applicationContext.restTemplate.delete(url, new TypeReference<List<Member>>() {
-        });
+        List<Member> members = applicationContext.restTemplate.delete(url, applicationContext.typeReferences.memberListType);
         if (members == null) {
             Output.print("  ^red^Not added or invalid user.^r^");
         } else {
