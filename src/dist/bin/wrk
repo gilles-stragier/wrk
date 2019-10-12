@@ -163,7 +163,7 @@ fi
 
 exec "$JAVACMD" \
   -client -Xms32M -Xmx32M -noverify \
-  -Xbootclasspath/a:"${WRK_HOME}"/lib/wrk-1.0.jar:"${WRK_HOME}"/lib/jackson-core-2.9.10.jar:"${WRK_HOME}"/lib/jackson-annotations-2.9.10.jar:"${WRK_HOME}"/lib/commons-lang3-3.8.1.jar:"${WRK_HOME}"/lib/jackson-databind-2.9.10.jar \
+  -Xbootclasspath/a:"${WRK_HOME}"/lib/wrk-1.0.jar:"${WRK_HOME}"/lib/jackson-core-2.9.10.jar:"${WRK_HOME}"/lib/jackson-annotations-2.9.10.jar:"${WRK_HOME}"/lib/commons-lang3-3.8.1.jar:"${WRK_HOME}"/lib/commons-io-2.6.jar:"${WRK_HOME}"/lib/jackson-databind-2.9.10.jar \
   "-Dwrk.version=${WRK_VERSION}" \
   "-Dwrk.home=${WRK_HOME}" \
   "-Dwrk.piped=${WRK_PIPED}" \

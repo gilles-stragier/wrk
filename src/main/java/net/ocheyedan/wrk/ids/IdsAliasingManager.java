@@ -5,13 +5,12 @@ import net.ocheyedan.wrk.Json;
 import net.ocheyedan.wrk.cmd.trello.TrelloId;
 import net.ocheyedan.wrk.output.Output;
 import net.ocheyedan.wrk.trello.TrelloObject;
+import org.apache.commons.io.FileUtils;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.*;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 public class IdsAliasingManager {
 
@@ -87,5 +86,14 @@ public class IdsAliasingManager {
                 .filter(m -> m.getAliases().contains(alias))
                 .map(m -> m.getTrelloId())
                 .findFirst();
+    }
+
+    public void clear() {
+        mappings.clear();
+        FileUtils.deleteQuietly(cacheFile);
+    }
+
+    public Set<IdMapping> findAll() {
+        return Collections.unmodifiableSet(mappings);
     }
 }

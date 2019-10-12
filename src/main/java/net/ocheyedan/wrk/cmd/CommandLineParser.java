@@ -58,6 +58,8 @@ public final class CommandLineParser {
             return new UnLabels(parse(args, 1), applicationContext);
         } else if ("close".equals(args[0])) {
             return new Close(parse(args, 1), applicationContext);
+        } else if ("ids".equals(args[0])) {
+            return new Ids(parse(args, 1), applicationContext);
         } else {
             return new Usage(parse(args, 0), applicationContext);
         }

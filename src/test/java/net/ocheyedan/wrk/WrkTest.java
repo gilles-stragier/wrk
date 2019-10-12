@@ -88,6 +88,7 @@ class WrkTest {
         }
     }
 
+
     @Test
     void testUnassignCard() {
         when(
@@ -619,6 +620,8 @@ class WrkTest {
                         "    label     Labels a card with a color.\n" +
                         "    unlabel   Un-labels a color from a card.\n" +
                         "    close     Closes a board/list/card.\n" +
+                        "    ids       Show / Manage custom ids\n" +
+
                         "\n" +
                         "See 'wrk help <command>' for more information on a specific command.\n",
                 getStdout()

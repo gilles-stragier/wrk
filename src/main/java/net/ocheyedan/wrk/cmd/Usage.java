@@ -35,6 +35,12 @@ public final class Usage extends Command {
                     Output.print("");
                     Output.print("The listed organizations will be assigned wrk ids and placed in the wrk id results queue.");
                     Output.print("Wrk ids are short versions of Trello ids prefixed with ^b^wrk^r^.");
+                } else if ("ids".equals(subcommand)) {
+                    Output.print("^b^ids clear^r^");
+                    Output.print("    clears the ids cache");
+                    Output.print("^b^ids list^r^");
+                    Output.print("    lists the ids in the cache.");
+                    Output.print("");
                 } else if ("boards".equals(subcommand)) {
                     Output.print("^b^boards^r^");
                     Output.print("    lists the user's open boards");
@@ -168,6 +174,8 @@ public final class Usage extends Command {
         Output.print("    ^b^label^r^     Labels a card with a color.");
         Output.print("    ^b^unlabel^r^   Un-labels a color from a card.");
         Output.print("    ^b^close^r^     Closes a board/list/card.");
+        Output.print("    ^b^ids^r^       Show / Manage custom ids");
+
         Output.print("");
         Output.print("See 'wrk help <command>' for more information on a specific command.");
     }
