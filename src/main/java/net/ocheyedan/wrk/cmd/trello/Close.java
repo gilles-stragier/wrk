@@ -1,6 +1,5 @@
 package net.ocheyedan.wrk.cmd.trello;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import net.ocheyedan.wrk.ApplicationContext;
 import net.ocheyedan.wrk.cmd.Args;
 import net.ocheyedan.wrk.output.Output;
@@ -49,7 +48,7 @@ public final class Close extends IdCommand {
     @Override
     protected void _run() {
         Output.print(description);
-        Map<String, Object> result = applicationContext.restTemplate.put(url, new TypeReference<Map<String, Object>>() { });
+        Map<String, Object> result = applicationContext.restTemplate.put(url, applicationContext.typeReferences.mapOfObjectsType);
         if (result == null) {
             Output.print("  ^red^Invalid id or insufficient privileges.^r^");
         } else {

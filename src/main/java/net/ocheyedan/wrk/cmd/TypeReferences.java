@@ -30,4 +30,7 @@ public class TypeReferences {
     public TypeReference<Map<String, String>> mapType = new TypeReference<>() {
     };
 
+    public TypeReference<Map<String, Object>> mapOfObjectsType = new TypeReference<>() {
+    };
+
 }

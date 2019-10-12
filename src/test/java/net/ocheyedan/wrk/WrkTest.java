@@ -139,6 +139,64 @@ class WrkTest {
     }
 
     @Test
+    void testCloseCard() {
+        when(
+                applicationContext.restTemplate.put(
+                        "https://trello.com/1/cards/tutu/closed?value=true&key=fakeKey&token=fakeToken",
+                        applicationContext.typeReferences.mapOfObjectsType
+                )).thenReturn(
+                new HashMap<>()
+        );
+
+        wrk.execute(new String[]{"close", "c:tutu"});
+
+        Assertions.assertEquals(
+                "Closing card tutu:\n" +
+                        "  Closed!\n",
+                getStdout()
+        );
+    }
+
+    @Test
+    void testCloseBoard() {
+        when(
+                applicationContext.restTemplate.put(
+                        "https://trello.com/1/boards/tutu/closed?value=true&key=fakeKey&token=fakeToken",
+                        applicationContext.typeReferences.mapOfObjectsType
+                )).thenReturn(
+                new HashMap<>()
+        );
+
+        wrk.execute(new String[]{"close", "b:tutu"});
+
+        Assertions.assertEquals(
+                "Closing board tutu:\n" +
+                        "  Closed!\n",
+                getStdout()
+        );
+    }
+
+    @Test
+    void testCloseList() {
+        when(
+                applicationContext.restTemplate.put(
+                        "https://trello.com/1/lists/tutu/closed?value=true&key=fakeKey&token=fakeToken",
+                        applicationContext.typeReferences.mapOfObjectsType
+                )).thenReturn(
+                new HashMap<>()
+        );
+
+        wrk.execute(new String[]{"close", "l:tutu"});
+
+        Assertions.assertEquals(
+                "Closing list tutu:\n" +
+                        "  Closed!\n",
+                getStdout()
+        );
+    }
+
+
+    @Test
     void testAssignedCards() {
         when(
                 applicationContext.restTemplate.get(
