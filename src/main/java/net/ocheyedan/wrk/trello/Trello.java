@@ -1,7 +1,6 @@
 package net.ocheyedan.wrk.trello;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import net.ocheyedan.wrk.RestTemplate;
+import net.ocheyedan.wrk.ApplicationContext;
 import net.ocheyedan.wrk.output.Output;
 
 import java.io.File;
@@ -31,10 +30,10 @@ public final class Trello {
         return uri.toASCIIString();
     }
 
-    public static String getUsrId() {
+    public static String getUsrId(ApplicationContext applicationContext) {
         if ((USR_ID == null) || USR_ID.isEmpty()) {
             String url = url("https://trello.com/1/members/my?fields=initials&key=%s&token=%s", APP_DEV_KEY, USR_TOKEN);
-            Map<String, String> result = new RestTemplate().get(url, new TypeReference<>() {});
+            Map<String, String> result = applicationContext.restTemplate.get(url, applicationContext.typeReferences.mapType);
             String id = result.get("id");
             File file = new File(String.format("%s%s%s%s%s", System.getProperty("user.home"), File.separator, ".wrk", File.separator, "usrid"));
             FileWriter fileWriter = null;

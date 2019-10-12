@@ -23,6 +23,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
 import static java.util.Collections.singletonList;
@@ -84,6 +86,56 @@ class WrkTest {
         if (wrkDir.exists()) {
             FileUtils.deleteQuietly(wrkDir);
         }
+    }
+
+    @Test
+    void testAssignCards() {
+        when(
+                applicationContext.restTemplate.post(
+                        "https://trello.com/1/cards/c1/members?value=m1&key=fakeKey&token=fakeToken",
+                        applicationContext.typeReferences.memberListType
+                )).thenReturn(
+                singletonList(
+                        testData.sampleMember()
+                )
+        );
+
+        wrk.execute(new String[]{"assign", "m1", "to", "c1"});
+
+        Assertions.assertEquals(
+                "Assigning user m1 to card c1:\n" +
+                        "  Added!\n",
+                getStdout()
+        );
+    }
+
+    @Test
+    void testAssignCardsToMe() {
+        when(
+                applicationContext.restTemplate.post(
+                        "https://trello.com/1/cards/c1/members?value=themember&key=fakeKey&token=fakeToken",
+                        applicationContext.typeReferences.memberListType
+                )).thenReturn(
+                singletonList(
+                        testData.sampleMember()
+                )
+        );
+        Map<String, String> map = new HashMap<>();
+        map.put("id", "themember");
+
+        when(
+                applicationContext.restTemplate.get(
+                        "https://trello.com/1/members/my?fields=initials&key=fakeKey&token=fakeToken",
+                        applicationContext.typeReferences.mapType
+                )).thenReturn(map);
+
+        wrk.execute(new String[]{"assign", "c1"});
+
+        Assertions.assertEquals(
+                "Assigning user to card c1:\n" +
+                        "  Added!\n",
+                getStdout()
+        );
     }
 
     @Test

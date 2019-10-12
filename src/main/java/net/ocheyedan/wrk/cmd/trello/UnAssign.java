@@ -25,7 +25,7 @@ public final class UnAssign extends IdCommand {
         if (args.args.size() == 1) {
             LegacyTrelloId cardId = parseWrkId(args.args.get(0), cardsPrefix);
             url = Trello.url("https://trello.com/1/cards/%s/members/%s?key=%s&token=%s", cardId.id,
-                    Trello.getUsrId(), Trello.APP_DEV_KEY, Trello.USR_TOKEN);
+                    Trello.getUsrId(applicationContext), Trello.APP_DEV_KEY, Trello.USR_TOKEN);
             description = String.format("Un-assigning user from card ^b^%s^r^:", cardId.id);
         } else if ((args.args.size() == 3) && "from".equals(args.args.get(1))) {
             LegacyTrelloId cardId = parseWrkId(args.args.get(2), cardsPrefix);

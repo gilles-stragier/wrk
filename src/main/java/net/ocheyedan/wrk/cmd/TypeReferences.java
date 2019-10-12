@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import net.ocheyedan.wrk.trello.*;
 
 import java.util.List;
+import java.util.Map;
 
 public class TypeReferences {
     public TypeReference<List<Card>> cardListType = new TypeReference<>() {};
@@ -25,4 +26,8 @@ public class TypeReferences {
     public TypeReference<Member> memberType = new TypeReference<>() {};
     public TypeReference<Organization> orgType = new TypeReference<>() {};
     public TypeReference<List<Member>> memberListType = new TypeReference<>() {};
+
+    public TypeReference<Map<String, String>> mapType = new TypeReference<>() {
+    };
+
 }

@@ -1,6 +1,5 @@
 package net.ocheyedan.wrk.cmd.trello;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import net.ocheyedan.wrk.ApplicationContext;
 import net.ocheyedan.wrk.cmd.Args;
 import net.ocheyedan.wrk.output.Output;
@@ -25,7 +24,7 @@ public final class Assign extends IdCommand {
         if (args.args.size() == 1) {
             LegacyTrelloId cardId = parseWrkId(args.args.get(0), cardsPrefix);
             url = Trello.url("https://trello.com/1/cards/%s/members?value=%s&key=%s&token=%s", cardId.id,
-                    Trello.getUsrId(), Trello.APP_DEV_KEY, Trello.USR_TOKEN);
+                    Trello.getUsrId(applicationContext), Trello.APP_DEV_KEY, Trello.USR_TOKEN);
             description = String.format("Assigning user to card ^b^%s^r^:", cardId.id);
         } else if ((args.args.size() == 3) && "to".equals(args.args.get(1))) {
             LegacyTrelloId cardId = parseWrkId(args.args.get(2), cardsPrefix);
@@ -41,7 +40,7 @@ public final class Assign extends IdCommand {
     @Override
     protected void _run() {
         Output.print(description);
-        List<Member> members = applicationContext.restTemplate.post(url, new TypeReference<List<Member>>() { });
+        List<Member> members = applicationContext.restTemplate.post(url, applicationContext.typeReferences.memberListType);
         if ((members == null) || members.isEmpty()) {
             Output.print("  ^red^Already added or invalid user.^r^");
         } else {
