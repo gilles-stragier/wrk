@@ -47,7 +47,7 @@ public final class Wrk {
         command.run();
     }
 
-    private static void ensureTrelloToken() {
+    static void ensureTrelloToken() {
         if (Trello.USR_TOKEN.isEmpty()) {
             Output.print("^red^Trello token not set.^r^");
             Output.print("  You must obtain a token from Trello for your user and place it in file [ ^b^~/.wrk/token^r^ ].");
