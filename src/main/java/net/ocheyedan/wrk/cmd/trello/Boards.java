@@ -2,11 +2,13 @@ package net.ocheyedan.wrk.cmd.trello;
 
 import net.ocheyedan.wrk.ApplicationContext;
 import net.ocheyedan.wrk.cmd.Args;
+import net.ocheyedan.wrk.cmd.trello.boards.BoardsService;
 import net.ocheyedan.wrk.output.Output;
 import net.ocheyedan.wrk.trello.Board;
-import net.ocheyedan.wrk.trello.Trello;
 
 import java.util.List;
+
+import static net.ocheyedan.wrk.trello.TrelloObject.Type.ORG;
 
 /**
  * User: blangel
@@ -14,10 +16,11 @@ import java.util.List;
  * Time: 9:24 PM
  */
 public final class Boards extends IdCommand {
-
+    private final BoardsService boardsService;
 
     public Boards(Args args, ApplicationContext applicationContext) {
         super(args, applicationContext);
+        this.boardsService = applicationContext.boardsService;
     }
 
     private boolean myBoardsMode(Args args) {
@@ -35,36 +38,25 @@ public final class Boards extends IdCommand {
 
     @Override
     protected void _run() {
-
         if (orgMode(args)) {
             fetchBoardsOfOrg();
         } else if (myBoardsMode(args)) {
             fetchMyBoards();
         }
-
     }
 
     private void fetchMyBoards() {
-
-        String url = Trello.url("https://trello.com/1/members/my/boards?filter=open&key=%s&token=%s",
-                Trello.APP_DEV_KEY, Trello.USR_TOKEN);
-        List<Board> boards = applicationContext.restTemplate.get(url, applicationContext.typeReferences.boardListType);
-        applicationContext.wrkIdsManager.registerTrelloIds(boards);
-
+        List<Board> boards = boardsService.fetchMyBoards();
 
         Output.print("Open boards you've created:");
         applicationContext.outputter.printBoards(boards, applicationContext.wrkIdsManager);
     }
 
     private void fetchBoardsOfOrg() {
+        TrelloId orgId = TrelloId.parseTrelloId(args.args.get(1), applicationContext.wrkIdsManager, ORG);
+        List<Board> boards = boardsService.fetchBoardsOfOrg(orgId);
 
-        LegacyTrelloId orgId = parseWrkId(args.args.get(1), orgPrefix);
-        String url = Trello.url("https://trello.com/1/organization/%s/boards?filter=open&key=%s&token=%s", orgId.id,
-                Trello.APP_DEV_KEY, Trello.USR_TOKEN);
-        List<Board> boards = applicationContext.restTemplate.get(url, applicationContext.typeReferences.boardListType);
-        applicationContext.wrkIdsManager.registerTrelloIds(boards);
-
-        Output.print(String.format("Open boards for organization ^b^%s^r^:", orgId.id));
+        Output.print(String.format("Open boards for organization ^b^%s^r^:", orgId.getId()));
         applicationContext.outputter.printBoards(boards, applicationContext.wrkIdsManager);
     }
 

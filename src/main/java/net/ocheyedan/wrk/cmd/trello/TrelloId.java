@@ -2,10 +2,17 @@ package net.ocheyedan.wrk.cmd.trello;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import net.ocheyedan.wrk.ids.IdsAliasingManager;
+import net.ocheyedan.wrk.output.Output;
 import net.ocheyedan.wrk.trello.TrelloObject;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+
+import java.util.Arrays;
+import java.util.Optional;
+
+import static net.ocheyedan.wrk.trello.TrelloObject.Type.arrayToString;
 
 public class TrelloId {
 
@@ -30,6 +37,19 @@ public class TrelloId {
 
     public String formatAsLegacy() {
         return getType().keyPrefix() + getId();
+    }
+
+    public static TrelloId parseTrelloId(String id, IdsAliasingManager idsAliasingManager, TrelloObject.Type... acceptedTypes) {
+        Optional<TrelloId> trelloOptional = idsAliasingManager.findByWrkId(id);
+        if (!trelloOptional.isPresent()) {
+            return new TrelloId(id, acceptedTypes.length == 1 ? acceptedTypes[0] : TrelloObject.Type.UNKNOWN);
+        } else if (!Arrays.asList(acceptedTypes).contains(trelloOptional.get().type)) {
+            Output.print("The wrk-id [ ^b^%s^r^ ] is for ^red^%s^r^ but the command is for %s.", id, trelloOptional.get().getType(), arrayToString(acceptedTypes));
+            System.exit(1);
+            return null;
+        } else {
+            return trelloOptional.get();
+        }
     }
 
     @Override

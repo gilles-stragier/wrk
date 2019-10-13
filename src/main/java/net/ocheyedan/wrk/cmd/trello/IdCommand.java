@@ -8,7 +8,9 @@ import net.ocheyedan.wrk.output.Output;
 
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
-import java.util.*;
+import java.util.HashSet;
+import java.util.Optional;
+import java.util.Set;
 
 /**
  * User: blangel
@@ -138,6 +140,7 @@ abstract class IdCommand extends Command {
     static String encode(String comment) {
         return URLEncoder.encode(comment, StandardCharsets.UTF_8);
     }
+
 
     protected LegacyTrelloId parseWrkId(String wrkId, Set<String> desiredPrefixes) {
         Optional<TrelloId> trelloOptional = applicationContext.wrkIdsManager.findByWrkId(wrkId);
