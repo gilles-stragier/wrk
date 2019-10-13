@@ -15,39 +15,57 @@ import java.util.List;
  */
 public final class Boards extends IdCommand {
 
-    private final String description;
-
-    private final String url;
 
     public Boards(Args args, ApplicationContext applicationContext) {
         super(args, applicationContext);
-        if ((args.args.size() == 2) && "in".equals(args.args.get(0))) {
-            LegacyTrelloId orgId = parseWrkId(args.args.get(1), orgPrefix);
-            url = Trello.url("https://trello.com/1/organization/%s/boards?filter=open&key=%s&token=%s", orgId.id,
-                    Trello.APP_DEV_KEY, Trello.USR_TOKEN);
-            description = String.format("Open boards for organization ^b^%s^r^:", orgId.id);
-        } else if (args.args.isEmpty()) {
-            url = Trello.url("https://trello.com/1/members/my/boards?filter=open&key=%s&token=%s",
-                    Trello.APP_DEV_KEY, Trello.USR_TOKEN);
-            description = "Open boards you've created:";
-        } else {
-            url = description = null;
-        }
+    }
+
+    private boolean myBoardsMode(Args args) {
+        return args.args.isEmpty();
+    }
+
+    private boolean orgMode(Args args) {
+        return (args.args.size() == 2) && "in".equals(args.args.get(0));
     }
 
     @Override
     protected boolean valid() {
-        return (url != null);
+        return orgMode(args) || myBoardsMode(args);
     }
 
     @Override
     protected void _run() {
-        Output.print(description);
+
+        if (orgMode(args)) {
+            fetchBoardsOfOrg();
+        } else if (myBoardsMode(args)) {
+            fetchMyBoards();
+        }
+
+    }
+
+    private void fetchMyBoards() {
+
+        String url = Trello.url("https://trello.com/1/members/my/boards?filter=open&key=%s&token=%s",
+                Trello.APP_DEV_KEY, Trello.USR_TOKEN);
         List<Board> boards = applicationContext.restTemplate.get(url, applicationContext.typeReferences.boardListType);
-
         applicationContext.wrkIdsManager.registerTrelloIds(boards);
-        applicationContext.outputter.printBoards(boards, applicationContext.wrkIdsManager);
 
+
+        Output.print("Open boards you've created:");
+        applicationContext.outputter.printBoards(boards, applicationContext.wrkIdsManager);
+    }
+
+    private void fetchBoardsOfOrg() {
+
+        LegacyTrelloId orgId = parseWrkId(args.args.get(1), orgPrefix);
+        String url = Trello.url("https://trello.com/1/organization/%s/boards?filter=open&key=%s&token=%s", orgId.id,
+                Trello.APP_DEV_KEY, Trello.USR_TOKEN);
+        List<Board> boards = applicationContext.restTemplate.get(url, applicationContext.typeReferences.boardListType);
+        applicationContext.wrkIdsManager.registerTrelloIds(boards);
+
+        Output.print(String.format("Open boards for organization ^b^%s^r^:", orgId.id));
+        applicationContext.outputter.printBoards(boards, applicationContext.wrkIdsManager);
     }
 
     @Override protected String getCommandName() {
