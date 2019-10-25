@@ -6,6 +6,7 @@ import net.ocheyedan.wrk.cmd.TypeReferences;
 import net.ocheyedan.wrk.ids.NameIdGenerator;
 import net.ocheyedan.wrk.ids.IdsAliasingManager;
 import net.ocheyedan.wrk.ids.SequentiaByTypelIdGenerator;
+import net.ocheyedan.wrk.output.CompactOutputter;
 import net.ocheyedan.wrk.output.DefaultOutputter;
 import net.ocheyedan.wrk.output.Output;
 import net.ocheyedan.wrk.trello.Trello;
@@ -29,7 +30,7 @@ public final class Wrk {
         ApplicationContext applicationContext = new ApplicationContext(
                 new RestTemplate(),
                 new TypeReferences(),
-                new DefaultOutputter(),
+                new CompactOutputter(),
                 new IdsAliasingManager(
                         new SequentiaByTypelIdGenerator()
                 )

@@ -16,6 +16,7 @@ dependencies {
     compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.9.10'
     compile 'commons-io:commons-io:2.6'
     compile 'org.apache.commons:commons-lang3:3.8.1'
+    compile 'com.github.freva:ascii-table:1.1.0'
     
     testCompile group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: '5.5.2'
     testCompile group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.5.2'
