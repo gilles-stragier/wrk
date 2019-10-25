@@ -36,7 +36,6 @@ public final class Wrk {
         );
         Wrk wrk = new Wrk(applicationContext);
         wrk.execute(args);
-
     }
 
     void execute(String[] args) {
