@@ -21,10 +21,10 @@ public class CompactOutputter extends DefaultOutputter {
         String table = AsciiTable.getTable(AsciiTable.NO_BORDERS, cards, Arrays.asList(
             new Column().header("id").with(c -> idsManager.findByTrelloId(c).get()),
             new Column().dataAlign(HorizontalAlign.LEFT).header("title").with(c -> c.getName()),
-            new Column().header("labels").with(c -> c.getLabels().stream().map(l -> l.getName()).collect(Collectors.joining(","))),
+            new Column().dataAlign(HorizontalAlign.LEFT).header("labels").with(c -> c.getLabels().stream().map(l -> l.getName()).collect(Collectors.joining(","))),
             new Column().header("list").with(c -> idsManager.findByTrelloId(new TrelloId(c.getIdList(), TrelloObject.Type.LIST)).orElse(c.getIdList()))
         ));
 
-        Output.print(table);
+        System.out.println(table);
     }
 }
