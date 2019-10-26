@@ -49,12 +49,16 @@ class WrkTest {
         System.setProperty("wrk.editor", "/usr/bin/vim");
         System.setProperty("user.home", "./build/");
 
+        TypeReferences typeReferences = new TypeReferences();
+        IdsAliasingManager wrkIdsManager = new IdsAliasingManager();
+        RestTemplate mock = Mockito.mock(RestTemplate.class);
+
         applicationContext = new ApplicationContext(
-                Mockito.mock(RestTemplate.class),
-                new TypeReferences(),
+                mock,
+                typeReferences,
                 new DefaultOutputter(),
-                new IdsAliasingManager(),
-                new SearchCards()
+                wrkIdsManager,
+                new SearchCards(mock, typeReferences, wrkIdsManager)
         );
 
         wrk = new Wrk(
@@ -291,12 +295,14 @@ class WrkTest {
         IdsAliasingManager wrkIdsManager = new IdsAliasingManager(
                 new SequentiaByTypelIdGenerator()
         );
+        TypeReferences typeReferences = new TypeReferences();
+        RestTemplate restTemplate = Mockito.mock(RestTemplate.class);
         applicationContext = new ApplicationContext(
-                Mockito.mock(RestTemplate.class),
-                new TypeReferences(),
+                restTemplate,
+                typeReferences,
                 new DefaultOutputter(),
                 wrkIdsManager,
-                new SearchCards()
+                new SearchCards(restTemplate, typeReferences, wrkIdsManager)
         );
 
         wrk = new Wrk(

@@ -6,7 +6,6 @@ import net.ocheyedan.wrk.domain.cards.search.*;
 import net.ocheyedan.wrk.output.Output;
 import net.ocheyedan.wrk.trello.Card;
 import net.ocheyedan.wrk.trello.Label;
-import net.ocheyedan.wrk.trello.Trello;
 
 import java.util.List;
 
@@ -26,7 +25,7 @@ public final class Cards extends IdCommand {
 
     }
 
-    private final SearchCards searchCards;
+    public final SearchCards searchCards;
 
     public CardsQuery buildFromArgs() {
         if (argsContainsInSomething(args)) {
@@ -43,51 +42,6 @@ public final class Cards extends IdCommand {
         }
     }
 
-    public class DescriptionCardsQueryVisitor implements CardsQueryVisitor {
-        private String description;
-
-        @Override
-        public void visit(AllMyCards allMyCards) {
-            this.description = "Open cards assigned to you:";
-        }
-
-        @Override
-        public void visit(CardsOfABoard cardsOfABoard) {
-            this.description = String.format("Open cards for board ^b^%s^r^:", cardsOfABoard.getTrelloId());
-        }
-
-        @Override
-        public void visit(CardsOfAList cardsOfAList) {
-            this.description = String.format("Open cards for list ^b^%s^r^:", cardsOfAList.getTrelloId());
-        }
-
-        public String getDescription() {
-            return description;
-        }
-    }
-
-    public String computeUrl(Args args, Cards cards) {
-        if (cards.argsContainsInSomething(args)) {
-            IdCommand.LegacyTrelloId id = cards.parseWrkId(args.args.get(1), IdCommand.boardsListsPrefix);
-            if (id.idWithTypePrefix.startsWith("b:")) {
-                String boardId = id.idWithTypePrefix.substring(2);
-                return Trello.url("https://trello.com/1/boards/%s/cards?filter=open&key=%s&token=%s", boardId,
-                        Trello.APP_DEV_KEY, Trello.USR_TOKEN);
-            } else if (id.idWithTypePrefix.startsWith("l:")) {
-                String listId = id.idWithTypePrefix.substring(2);
-                return Trello.url("https://trello.com/1/lists/%s/cards?filter=open&key=%s&token=%s", listId,
-                        Trello.APP_DEV_KEY, Trello.USR_TOKEN);
-            } else {
-                return null;
-            }
-        } else if (args.args.isEmpty()) {
-            return Trello.url("https://trello.com/1/members/my/cards?filter=open&key=%s&token=%s", Trello.APP_DEV_KEY,
-                    Trello.USR_TOKEN);
-        } else {
-            return null;
-        }
-    }
-
     public boolean argsContainsInSomething(Args args) {
         return (args.args.size() == 2) && "in".equals(args.args.get(0));
     }
@@ -95,15 +49,19 @@ public final class Cards extends IdCommand {
     @Override
     protected void _run() {
         CardsQuery cardsQuery = buildFromArgs();
-        DescriptionCardsQueryVisitor descriptionVisitor = new DescriptionCardsQueryVisitor();
-        cardsQuery.accept(descriptionVisitor);
-        Output.print(descriptionVisitor.description);
-        String url = computeUrl(args, this);
 
-        List<Card> cards = applicationContext.restTemplate.get(url, applicationContext.typeReferences.cardListType);
-        applicationContext.wrkIdsManager.registerTrelloIds(cards);
+        computeDescription(cardsQuery);
+
+        List<Card> cards = searchCards.execute(cardsQuery);
+
         applicationContext.outputter.printCards(cards, applicationContext.wrkIdsManager);
 
+    }
+
+    private void computeDescription(CardsQuery cardsQuery) {
+        DescriptionCardsQueryVisitor descriptionVisitor = new DescriptionCardsQueryVisitor();
+        cardsQuery.accept(descriptionVisitor);
+        Output.print(descriptionVisitor.getDescription());
     }
 
     @Override protected boolean valid() {

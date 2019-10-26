@@ -26,14 +26,19 @@ public final class Wrk {
     }
 
     public static void main(String[] args) {
+        TypeReferences typeReferences = new TypeReferences();
+        RestTemplate restTemplate = new RestTemplate();
+        IdsAliasingManager wrkIdsManager = new IdsAliasingManager(
+                new SequentiaByTypelIdGenerator()
+        );
         ApplicationContext applicationContext = new ApplicationContext(
-                new RestTemplate(),
-                new TypeReferences(),
+                restTemplate,
+                typeReferences,
                 new CompactOutputter(),
-                new IdsAliasingManager(
-                        new SequentiaByTypelIdGenerator()
-                ),
-                new SearchCards()
+                wrkIdsManager,
+                new SearchCards(
+                        restTemplate, typeReferences, wrkIdsManager
+                )
         );
         Wrk wrk = new Wrk(applicationContext);
         wrk.execute(args);
