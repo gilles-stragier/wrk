@@ -3,7 +3,7 @@ package net.ocheyedan.wrk;
 import com.fasterxml.jackson.core.type.TypeReference;
 import net.ocheyedan.wrk.cmd.TypeReferences;
 import net.ocheyedan.wrk.cmd.trello.TrelloId;
-import net.ocheyedan.wrk.domain.cards.SearchCards;
+import net.ocheyedan.wrk.domain.cards.search.SearchCards;
 import net.ocheyedan.wrk.ids.IdMapping;
 import net.ocheyedan.wrk.ids.IdsAliasingManager;
 import net.ocheyedan.wrk.ids.SequentiaByTypelIdGenerator;

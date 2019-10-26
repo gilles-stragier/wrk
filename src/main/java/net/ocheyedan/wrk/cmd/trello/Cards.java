@@ -2,13 +2,16 @@ package net.ocheyedan.wrk.cmd.trello;
 
 import net.ocheyedan.wrk.ApplicationContext;
 import net.ocheyedan.wrk.cmd.Args;
-import net.ocheyedan.wrk.domain.cards.SearchCards;
+import net.ocheyedan.wrk.domain.cards.search.*;
 import net.ocheyedan.wrk.output.Output;
 import net.ocheyedan.wrk.trello.Card;
 import net.ocheyedan.wrk.trello.Label;
 import net.ocheyedan.wrk.trello.Trello;
 
 import java.util.List;
+
+import static net.ocheyedan.wrk.trello.TrelloObject.Type.BOARD;
+import static net.ocheyedan.wrk.trello.TrelloObject.Type.LIST;
 
 /**
  * User: blangel
@@ -25,24 +28,41 @@ public final class Cards extends IdCommand {
 
     private final SearchCards searchCards;
 
-
-
-    public String computeDescription(Args args) {
+    public CardsQuery buildFromArgs() {
         if (argsContainsInSomething(args)) {
-            LegacyTrelloId id = parseWrkId(args.args.get(1), boardsListsPrefix);
-            if (id.idWithTypePrefix.startsWith("b:")) {
-                String boardId = id.idWithTypePrefix.substring(2);
-                return String.format("Open cards for board ^b^%s^r^:", boardId);
-            } else if (id.idWithTypePrefix.startsWith("l:")) {
-                String listId = id.idWithTypePrefix.substring(2);
-               return String.format("Open cards for list ^b^%s^r^:", listId);
+            String anIdOfSomething = args.args.get(1);
+            TrelloId id = parseWrkId(anIdOfSomething, BOARD, LIST);
+
+            if (id.getType() == BOARD) {
+                return new CardsOfABoard(id);
             } else {
-                return null;
+                return new CardsOfAList(id);
             }
-        } else if (args.args.isEmpty()) {
-            return "Open cards assigned to you:";
         } else {
-            return null;
+            return new AllMyCards();
+        }
+    }
+
+    public class DescriptionCardsQueryVisitor implements CardsQueryVisitor {
+        private String description;
+
+        @Override
+        public void visit(AllMyCards allMyCards) {
+            this.description = "Open cards assigned to you:";
+        }
+
+        @Override
+        public void visit(CardsOfABoard cardsOfABoard) {
+            this.description = String.format("Open cards for board ^b^%s^r^:", cardsOfABoard.getTrelloId());
+        }
+
+        @Override
+        public void visit(CardsOfAList cardsOfAList) {
+            this.description = String.format("Open cards for list ^b^%s^r^:", cardsOfAList.getTrelloId());
+        }
+
+        public String getDescription() {
+            return description;
         }
     }
 
@@ -74,7 +94,10 @@ public final class Cards extends IdCommand {
 
     @Override
     protected void _run() {
-        Output.print(computeDescription(args));
+        CardsQuery cardsQuery = buildFromArgs();
+        DescriptionCardsQueryVisitor descriptionVisitor = new DescriptionCardsQueryVisitor();
+        cardsQuery.accept(descriptionVisitor);
+        Output.print(descriptionVisitor.description);
         String url = computeUrl(args, this);
 
         List<Card> cards = applicationContext.restTemplate.get(url, applicationContext.typeReferences.cardListType);

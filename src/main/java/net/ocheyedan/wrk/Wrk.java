@@ -3,7 +3,7 @@ package net.ocheyedan.wrk;
 import net.ocheyedan.wrk.cmd.Command;
 import net.ocheyedan.wrk.cmd.CommandLineParser;
 import net.ocheyedan.wrk.cmd.TypeReferences;
-import net.ocheyedan.wrk.domain.cards.SearchCards;
+import net.ocheyedan.wrk.domain.cards.search.SearchCards;
 import net.ocheyedan.wrk.ids.IdsAliasingManager;
 import net.ocheyedan.wrk.ids.SequentiaByTypelIdGenerator;
 import net.ocheyedan.wrk.output.CompactOutputter;

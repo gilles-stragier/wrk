@@ -61,4 +61,20 @@ public class TrelloId {
                 .append("type", type)
                 .toString();
     }
+
+    public static TrelloId fromLegacyString(String wrkId) {
+        if (wrkId.startsWith(TrelloObject.Type.BOARD.keyPrefix())) {
+            return new TrelloId(wrkId.substring(2), TrelloObject.Type.BOARD);
+        } else if (wrkId.startsWith(TrelloObject.Type.CARD.keyPrefix())) {
+            return new TrelloId(wrkId.substring(2), TrelloObject.Type.CARD);
+        } else if (wrkId.startsWith(TrelloObject.Type.LIST.keyPrefix())) {
+            return new TrelloId(wrkId.substring(2), TrelloObject.Type.LIST);
+        } else if (wrkId.startsWith(TrelloObject.Type.ORG.keyPrefix())) {
+            return new TrelloId(wrkId.substring(2), TrelloObject.Type.ORG);
+        } else if (wrkId.startsWith(TrelloObject.Type.MEMBER.keyPrefix())) {
+            return new TrelloId(wrkId.substring(2), TrelloObject.Type.MEMBER);
+        } else {
+            throw new IllegalArgumentException("Unknox prefix for id " + wrkId);
+        }
+    }
 }
