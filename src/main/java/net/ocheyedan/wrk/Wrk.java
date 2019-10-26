@@ -3,11 +3,10 @@ package net.ocheyedan.wrk;
 import net.ocheyedan.wrk.cmd.Command;
 import net.ocheyedan.wrk.cmd.CommandLineParser;
 import net.ocheyedan.wrk.cmd.TypeReferences;
-import net.ocheyedan.wrk.ids.NameIdGenerator;
+import net.ocheyedan.wrk.domain.cards.SearchCards;
 import net.ocheyedan.wrk.ids.IdsAliasingManager;
 import net.ocheyedan.wrk.ids.SequentiaByTypelIdGenerator;
 import net.ocheyedan.wrk.output.CompactOutputter;
-import net.ocheyedan.wrk.output.DefaultOutputter;
 import net.ocheyedan.wrk.output.Output;
 import net.ocheyedan.wrk.trello.Trello;
 
@@ -33,7 +32,8 @@ public final class Wrk {
                 new CompactOutputter(),
                 new IdsAliasingManager(
                         new SequentiaByTypelIdGenerator()
-                )
+                ),
+                new SearchCards()
         );
         Wrk wrk = new Wrk(applicationContext);
         wrk.execute(args);

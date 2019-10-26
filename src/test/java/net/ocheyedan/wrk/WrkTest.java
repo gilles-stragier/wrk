@@ -3,6 +3,7 @@ package net.ocheyedan.wrk;
 import com.fasterxml.jackson.core.type.TypeReference;
 import net.ocheyedan.wrk.cmd.TypeReferences;
 import net.ocheyedan.wrk.cmd.trello.TrelloId;
+import net.ocheyedan.wrk.domain.cards.SearchCards;
 import net.ocheyedan.wrk.ids.IdMapping;
 import net.ocheyedan.wrk.ids.IdsAliasingManager;
 import net.ocheyedan.wrk.ids.SequentiaByTypelIdGenerator;
@@ -52,7 +53,8 @@ class WrkTest {
                 Mockito.mock(RestTemplate.class),
                 new TypeReferences(),
                 new DefaultOutputter(),
-                new IdsAliasingManager()
+                new IdsAliasingManager(),
+                new SearchCards()
         );
 
         wrk = new Wrk(
@@ -293,7 +295,8 @@ class WrkTest {
                 Mockito.mock(RestTemplate.class),
                 new TypeReferences(),
                 new DefaultOutputter(),
-                wrkIdsManager
+                wrkIdsManager,
+                new SearchCards()
         );
 
         wrk = new Wrk(

@@ -2,6 +2,7 @@ package net.ocheyedan.wrk.cmd.trello;
 
 import net.ocheyedan.wrk.ApplicationContext;
 import net.ocheyedan.wrk.cmd.Args;
+import net.ocheyedan.wrk.domain.cards.SearchCards;
 import net.ocheyedan.wrk.output.Output;
 import net.ocheyedan.wrk.trello.Card;
 import net.ocheyedan.wrk.trello.Label;
@@ -16,39 +17,65 @@ import java.util.List;
  */
 public final class Cards extends IdCommand {
 
-    private final String url;
-
-    private final String description;
-
     public Cards(Args args, ApplicationContext applicationContext) {
         super(args, applicationContext);
-        if ((args.args.size() == 2) && "in".equals(args.args.get(0))) {
+        this.searchCards = applicationContext.searchCards;
+
+    }
+
+    private final SearchCards searchCards;
+
+
+
+    public String computeDescription(Args args) {
+        if (argsContainsInSomething(args)) {
             LegacyTrelloId id = parseWrkId(args.args.get(1), boardsListsPrefix);
             if (id.idWithTypePrefix.startsWith("b:")) {
                 String boardId = id.idWithTypePrefix.substring(2);
-                url = Trello.url("https://trello.com/1/boards/%s/cards?filter=open&key=%s&token=%s", boardId,
-                        Trello.APP_DEV_KEY, Trello.USR_TOKEN);
-                description = String.format("Open cards for board ^b^%s^r^:", boardId);
+                return String.format("Open cards for board ^b^%s^r^:", boardId);
             } else if (id.idWithTypePrefix.startsWith("l:")) {
                 String listId = id.idWithTypePrefix.substring(2);
-                url = Trello.url("https://trello.com/1/lists/%s/cards?filter=open&key=%s&token=%s", listId,
-                        Trello.APP_DEV_KEY, Trello.USR_TOKEN);
-                description = String.format("Open cards for list ^b^%s^r^:", listId);
+               return String.format("Open cards for list ^b^%s^r^:", listId);
             } else {
-                url = description = null;
+                return null;
             }
         } else if (args.args.isEmpty()) {
-            url = Trello.url("https://trello.com/1/members/my/cards?filter=open&key=%s&token=%s", Trello.APP_DEV_KEY,
-                    Trello.USR_TOKEN);
-            description = "Open cards assigned to you:";
+            return "Open cards assigned to you:";
         } else {
-            url = description = null;
+            return null;
         }
+    }
+
+    public String computeUrl(Args args, Cards cards) {
+        if (cards.argsContainsInSomething(args)) {
+            IdCommand.LegacyTrelloId id = cards.parseWrkId(args.args.get(1), IdCommand.boardsListsPrefix);
+            if (id.idWithTypePrefix.startsWith("b:")) {
+                String boardId = id.idWithTypePrefix.substring(2);
+                return Trello.url("https://trello.com/1/boards/%s/cards?filter=open&key=%s&token=%s", boardId,
+                        Trello.APP_DEV_KEY, Trello.USR_TOKEN);
+            } else if (id.idWithTypePrefix.startsWith("l:")) {
+                String listId = id.idWithTypePrefix.substring(2);
+                return Trello.url("https://trello.com/1/lists/%s/cards?filter=open&key=%s&token=%s", listId,
+                        Trello.APP_DEV_KEY, Trello.USR_TOKEN);
+            } else {
+                return null;
+            }
+        } else if (args.args.isEmpty()) {
+            return Trello.url("https://trello.com/1/members/my/cards?filter=open&key=%s&token=%s", Trello.APP_DEV_KEY,
+                    Trello.USR_TOKEN);
+        } else {
+            return null;
+        }
+    }
+
+    public boolean argsContainsInSomething(Args args) {
+        return (args.args.size() == 2) && "in".equals(args.args.get(0));
     }
 
     @Override
     protected void _run() {
-        Output.print(description);
+        Output.print(computeDescription(args));
+        String url = computeUrl(args, this);
 
         List<Card> cards = applicationContext.restTemplate.get(url, applicationContext.typeReferences.cardListType);
         applicationContext.wrkIdsManager.registerTrelloIds(cards);
@@ -57,7 +84,7 @@ public final class Cards extends IdCommand {
     }
 
     @Override protected boolean valid() {
-        return (url != null);
+        return argsContainsInSomething(args) || args.args.isEmpty();
     }
 
     @Override protected String getCommandName() {
