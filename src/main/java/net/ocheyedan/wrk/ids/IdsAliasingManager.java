@@ -44,6 +44,10 @@ public class IdsAliasingManager {
     }
 
 
+    public <T extends TrelloObject> void registerTrelloId(T trelloObject) {
+        registerTrelloIds(Arrays.asList(trelloObject));
+    }
+
     public <T extends TrelloObject> void registerTrelloIds(List<T> trelloObjects) {
         if (trelloObjects != null && !trelloObjects.isEmpty()) {
             trelloObjects.stream().forEach(t -> mappings.add(idGenerator.generate(mappings, t)));

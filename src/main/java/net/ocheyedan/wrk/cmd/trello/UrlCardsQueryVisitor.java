@@ -18,13 +18,13 @@ public class UrlCardsQueryVisitor implements CardsQueryVisitor {
 
     @Override
     public void visit(CardsOfABoard cardsOfABoard) {
-        url = Trello.url("https://trello.com/1/boards/%s/cards?filter=open&key=%s&token=%s", cardsOfABoard.getTrelloId(),
+        url = Trello.url("https://trello.com/1/boards/%s/cards?filter=open&key=%s&token=%s", cardsOfABoard.getTrelloId().getId(),
                 Trello.APP_DEV_KEY, Trello.USR_TOKEN);
     }
 
     @Override
     public void visit(CardsOfAList cardsOfAList) {
-        url = Trello.url("https://trello.com/1/lists/%s/cards?filter=open&key=%s&token=%s", cardsOfAList.getTrelloId(),
+        url = Trello.url("https://trello.com/1/lists/%s/cards?filter=open&key=%s&token=%s", cardsOfAList.getTrelloId().getId(),
                 Trello.APP_DEV_KEY, Trello.USR_TOKEN);
     }
 

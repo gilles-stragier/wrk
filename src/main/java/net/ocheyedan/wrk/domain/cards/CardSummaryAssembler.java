@@ -1,13 +1,22 @@
 package net.ocheyedan.wrk.domain.cards;
 
 import net.ocheyedan.wrk.cmd.trello.Cards;
+import net.ocheyedan.wrk.domain.lists.FindById;
+import net.ocheyedan.wrk.domain.lists.ListView;
 import net.ocheyedan.wrk.trello.Card;
 
 public class CardSummaryAssembler {
 
+    private final FindById findById;
+
+    public CardSummaryAssembler(FindById findById) {
+        this.findById = findById;
+    }
+
     public CardView assemble(Card card) {
 
-        CardView.ListView list = new CardView.ListView(card.getIdList(), "Fake list", 0);
+        ListView listView = findById.execute(card.getIdList());
+        CardView.ListView list = new CardView.ListView(listView.getId(), listView.getName(), listView.getPos());
 
         return CardView.newBuilder()
                 .labels(card.getLabels())

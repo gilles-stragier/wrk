@@ -5,6 +5,8 @@ import net.ocheyedan.wrk.cmd.CommandLineParser;
 import net.ocheyedan.wrk.cmd.TypeReferences;
 import net.ocheyedan.wrk.domain.cards.CardSummaryAssembler;
 import net.ocheyedan.wrk.domain.cards.search.SearchCards;
+import net.ocheyedan.wrk.domain.lists.FindById;
+import net.ocheyedan.wrk.domain.lists.ListViewAssembler;
 import net.ocheyedan.wrk.ids.IdsAliasingManager;
 import net.ocheyedan.wrk.ids.SequentiaByTypelIdGenerator;
 import net.ocheyedan.wrk.output.CompactOutputter;
@@ -32,13 +34,17 @@ public final class Wrk {
         IdsAliasingManager wrkIdsManager = new IdsAliasingManager(
                 new SequentiaByTypelIdGenerator()
         );
+        FindById findById = new FindById(
+                restTemplate, typeReferences, wrkIdsManager, new ListViewAssembler(wrkIdsManager)
+        );
+
         ApplicationContext applicationContext = new ApplicationContext(
                 restTemplate,
                 typeReferences,
                 new CompactOutputter(),
                 wrkIdsManager,
                 new SearchCards(
-                        restTemplate, typeReferences, wrkIdsManager, new CardSummaryAssembler()
+                        restTemplate, typeReferences, wrkIdsManager, new CardSummaryAssembler(findById)
                 )
         );
         Wrk wrk = new Wrk(applicationContext);

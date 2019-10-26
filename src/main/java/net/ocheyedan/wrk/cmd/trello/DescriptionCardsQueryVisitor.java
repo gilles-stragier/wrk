@@ -15,12 +15,12 @@ public class DescriptionCardsQueryVisitor implements CardsQueryVisitor {
 
     @Override
     public void visit(CardsOfABoard cardsOfABoard) {
-        this.description = String.format("Open cards for board ^b^%s^r^:", cardsOfABoard.getTrelloId());
+        this.description = String.format("Open cards for board ^b^%s^r^:", cardsOfABoard.getTrelloId().getId());
     }
 
     @Override
     public void visit(CardsOfAList cardsOfAList) {
-        this.description = String.format("Open cards for list ^b^%s^r^:", cardsOfAList.getTrelloId());
+        this.description = String.format("Open cards for list ^b^%s^r^:", cardsOfAList.getTrelloId().getId());
     }
 
     public String getDescription() {

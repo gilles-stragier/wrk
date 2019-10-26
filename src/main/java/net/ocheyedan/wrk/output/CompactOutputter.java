@@ -35,7 +35,7 @@ public class CompactOutputter extends DefaultOutputter {
                 new Column().header("id").with(c -> idsManager.findByTrelloId(c).get()),
                 new Column().dataAlign(HorizontalAlign.LEFT).header("title").with(c -> c.name()),
                 new Column().dataAlign(HorizontalAlign.LEFT).header("labels").with(c -> c.getLabels().stream().map(l -> l.getName()).collect(Collectors.joining(","))),
-                new Column().header("list").with(c -> c.getListView().getId() + " - " + c.getListView().getName())
+                new Column().header("list").with(c -> c.getListView().getName() + " (" + c.getListView().getId() + ")")
         ));
 
         Output.print(table);
