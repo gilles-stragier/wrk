@@ -1,6 +1,7 @@
 package net.ocheyedan.wrk.output;
 
 import net.ocheyedan.wrk.cmd.trello.Cards;
+import net.ocheyedan.wrk.cmd.trello.TrelloId;
 import net.ocheyedan.wrk.ids.IdsAliasingManager;
 import net.ocheyedan.wrk.trello.*;
 
@@ -54,7 +55,8 @@ public class DefaultOutputter implements Outputter {
     public void printCard(IdsAliasingManager idsAliasingManager, Card card) {
         String labels = Cards.buildLabel(card.getLabels());
         String closed = ((card.getClosed() != null) && card.getClosed()) ? "^black^[closed] ^r^" : "^b^";
-        Output.print("  %s%s^r^%s ^black^| %s^r^ | %s", closed, card.getName(), labels, idsAliasingManager.findByTrelloId(card).get(), card.getId());
+        String listId = idsAliasingManager.findByTrelloId(new TrelloId(card.getIdList(), TrelloObject.Type.LIST)).orElse(card.getIdList());
+        Output.print("  %s%s^r^%s ^black^| %s^r^ | %s | l:%s", closed, card.getName(), labels, idsAliasingManager.findByTrelloId(card).get(), card.getId(), listId);
         Output.print("    ^black^%s^r^", Cards.getPrettyUrl(card));
     }
 

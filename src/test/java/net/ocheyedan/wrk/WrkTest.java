@@ -234,7 +234,7 @@ class WrkTest {
 
         Assertions.assertEquals(
                 "Open cards assigned to you:\n" +
-                        "  somename  somelabel  | wrk1 | 123\n" +
+                        "  somename  somelabel  | wrk1 | 123 | l:lid\n" +
                         "    http://Someurl\n",
                 getStdout()
         );
@@ -399,7 +399,7 @@ class WrkTest {
 
         Assertions.assertEquals(
                 "Creating card in list 34567:\n" +
-                        "  somename  somelabel  | wrk1 | 123\n" +
+                        "  somename  somelabel  | wrk1 | 123 | l:lid\n" +
                         "    http://Someurl\n",
                 getStdout()
         );
@@ -651,7 +651,7 @@ class WrkTest {
         Assertions.assertEquals(
                 "Searching cards for keyword\n" +
                         "Found 1 card.\n" +
-                        "  somename  somelabel  | wrk1 | 123\n" +
+                        "  somename  somelabel  | wrk1 | 123 | l:lid\n" +
                         "    http://Someurl\n",
                 getStdout()
         );
@@ -800,7 +800,7 @@ class WrkTest {
                         "  boardname | wrk2 | 456\n" +
                         "    http://boardurl\n" +
                         "Found 1 card.\n" +
-                        "  somename  somelabel  | wrk3 | 123\n" +
+                        "  somename  somelabel  | wrk3 | 123 | l:lid\n" +
                         "    http://Someurl\n" +
                         "Found 1 member.\n" +
                         "  Some Name Full | wrk4\n" +
