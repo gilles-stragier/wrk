@@ -4,6 +4,7 @@ import com.github.freva.asciitable.AsciiTable;
 import com.github.freva.asciitable.Column;
 import com.github.freva.asciitable.HorizontalAlign;
 import net.ocheyedan.wrk.cmd.trello.TrelloId;
+import net.ocheyedan.wrk.domain.cards.CardView;
 import net.ocheyedan.wrk.ids.IdsAliasingManager;
 import net.ocheyedan.wrk.trello.Card;
 
@@ -27,4 +28,17 @@ public class CompactOutputter extends DefaultOutputter {
 
         Output.print(table);
     }
+
+    @Override
+    public void printCardViews(List<CardView> cards, IdsAliasingManager idsManager) {
+        String table = AsciiTable.getTable(AsciiTable.NO_BORDERS, cards, Arrays.asList(
+                new Column().header("id").with(c -> idsManager.findByTrelloId(c).get()),
+                new Column().dataAlign(HorizontalAlign.LEFT).header("title").with(c -> c.name()),
+                new Column().dataAlign(HorizontalAlign.LEFT).header("labels").with(c -> c.getLabels().stream().map(l -> l.getName()).collect(Collectors.joining(","))),
+                new Column().header("list").with(c -> c.getListView().getId() + " - " + c.getListView().getName())
+        ));
+
+        Output.print(table);
+    }
+
 }

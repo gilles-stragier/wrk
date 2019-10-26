@@ -1,5 +1,6 @@
 package net.ocheyedan.wrk.output;
 
+import net.ocheyedan.wrk.domain.cards.CardView;
 import net.ocheyedan.wrk.ids.IdsAliasingManager;
 import net.ocheyedan.wrk.trello.*;
 
@@ -26,6 +27,8 @@ public interface Outputter {
     void printCard(IdsAliasingManager idsAliasingManager,  Card card);
 
     void printCards(java.util.List<Card> cards, IdsAliasingManager idsManager);
+
+    void printCardViews(java.util.List<CardView> cards, IdsAliasingManager idsManager);
 
     void printBoard(IdsAliasingManager idsAliasingManager,  Board board);
 

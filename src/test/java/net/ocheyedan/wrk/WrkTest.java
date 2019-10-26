@@ -3,6 +3,7 @@ package net.ocheyedan.wrk;
 import com.fasterxml.jackson.core.type.TypeReference;
 import net.ocheyedan.wrk.cmd.TypeReferences;
 import net.ocheyedan.wrk.cmd.trello.TrelloId;
+import net.ocheyedan.wrk.domain.cards.CardSummaryAssembler;
 import net.ocheyedan.wrk.domain.cards.search.SearchCards;
 import net.ocheyedan.wrk.ids.IdMapping;
 import net.ocheyedan.wrk.ids.IdsAliasingManager;
@@ -58,7 +59,7 @@ class WrkTest {
                 typeReferences,
                 new DefaultOutputter(),
                 wrkIdsManager,
-                new SearchCards(mock, typeReferences, wrkIdsManager)
+                new SearchCards(mock, typeReferences, wrkIdsManager, new CardSummaryAssembler())
         );
 
         wrk = new Wrk(
@@ -302,7 +303,7 @@ class WrkTest {
                 typeReferences,
                 new DefaultOutputter(),
                 wrkIdsManager,
-                new SearchCards(restTemplate, typeReferences, wrkIdsManager)
+                new SearchCards(restTemplate, typeReferences, wrkIdsManager, new CardSummaryAssembler())
         );
 
         wrk = new Wrk(

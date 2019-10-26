@@ -2,6 +2,7 @@ package net.ocheyedan.wrk.cmd.trello;
 
 import net.ocheyedan.wrk.ApplicationContext;
 import net.ocheyedan.wrk.cmd.Args;
+import net.ocheyedan.wrk.domain.cards.CardView;
 import net.ocheyedan.wrk.domain.cards.search.*;
 import net.ocheyedan.wrk.output.Output;
 import net.ocheyedan.wrk.trello.Card;
@@ -52,9 +53,9 @@ public final class Cards extends IdCommand {
 
         computeDescription(cardsQuery);
 
-        List<Card> cards = searchCards.execute(cardsQuery);
+        List<CardView> cards = searchCards.execute(cardsQuery);
 
-        applicationContext.outputter.printCards(cards, applicationContext.wrkIdsManager);
+        applicationContext.outputter.printCardViews(cards, applicationContext.wrkIdsManager);
 
     }
 

@@ -2,6 +2,7 @@ package net.ocheyedan.wrk.output;
 
 import net.ocheyedan.wrk.cmd.trello.Cards;
 import net.ocheyedan.wrk.cmd.trello.TrelloId;
+import net.ocheyedan.wrk.domain.cards.CardView;
 import net.ocheyedan.wrk.ids.IdsAliasingManager;
 import net.ocheyedan.wrk.trello.*;
 
@@ -159,5 +160,16 @@ public class DefaultOutputter implements Outputter {
             Output.print("    ^black^%s^r^", org.getUrl());
 
         }
+    }
+
+    @Override
+    public void printCardViews(java.util.List<CardView> cards, IdsAliasingManager idsManager) {
+        cards.forEach(c -> {
+            String labels = Cards.buildLabel(c.getLabels());
+            String listId = idsManager.findByTrelloId(new TrelloId(c.getListView().getId(), TrelloObject.Type.LIST)).orElse(c.getListView().getId());
+            Output.print("  %s^r^%s ^black^| %s^r^ | %s | l:%s", c.name(), labels, idsManager.findByTrelloId(c).get(), c.getId(), listId);
+            Output.print("    ^black^%s^r^", c.getPrettyUrl());
+        });
+
     }
 }

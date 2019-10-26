@@ -1,6 +1,7 @@
 package net.ocheyedan.wrk.output;
 
 import net.ocheyedan.wrk.Json;
+import net.ocheyedan.wrk.domain.cards.CardView;
 import net.ocheyedan.wrk.ids.IdsAliasingManager;
 import net.ocheyedan.wrk.trello.Board;
 import net.ocheyedan.wrk.trello.Card;
@@ -68,6 +69,11 @@ public class JsonOutputter implements Outputter {
 
     @Override
     public void printCards(List<Card> cards, IdsAliasingManager idsManager) {
+        serializeToOutput(cards);
+    }
+
+    @Override
+    public void printCardViews(List<CardView> cards, IdsAliasingManager idsManager) {
         serializeToOutput(cards);
     }
 

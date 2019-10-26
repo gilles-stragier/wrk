@@ -3,6 +3,7 @@ package net.ocheyedan.wrk;
 import net.ocheyedan.wrk.cmd.Command;
 import net.ocheyedan.wrk.cmd.CommandLineParser;
 import net.ocheyedan.wrk.cmd.TypeReferences;
+import net.ocheyedan.wrk.domain.cards.CardSummaryAssembler;
 import net.ocheyedan.wrk.domain.cards.search.SearchCards;
 import net.ocheyedan.wrk.ids.IdsAliasingManager;
 import net.ocheyedan.wrk.ids.SequentiaByTypelIdGenerator;
@@ -37,7 +38,7 @@ public final class Wrk {
                 new CompactOutputter(),
                 wrkIdsManager,
                 new SearchCards(
-                        restTemplate, typeReferences, wrkIdsManager
+                        restTemplate, typeReferences, wrkIdsManager, new CardSummaryAssembler()
                 )
         );
         Wrk wrk = new Wrk(applicationContext);
