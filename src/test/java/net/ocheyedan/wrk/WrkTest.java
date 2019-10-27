@@ -243,11 +243,17 @@ class WrkTest {
                 )
         );
 
+        when(
+                applicationContext.restTemplate.get(
+                        "https://trello.com/1/lists/lid/?fields=all&key=fakeKey&token=fakeToken",
+                        applicationContext.typeReferences.listType
+                )).thenReturn(testData.sampleList());
+
         wrk.execute(new String[]{});
 
         Assertions.assertEquals(
                 "Open cards assigned to you:\n" +
-                        "  somename  somelabel  | wrk1 | 123 | l:lid\n" +
+                        "  somename  somelabel  | wrk1 | 123 | l:wrk2\n" +
                         "    http://Someurl\n",
                 getStdout()
         );
