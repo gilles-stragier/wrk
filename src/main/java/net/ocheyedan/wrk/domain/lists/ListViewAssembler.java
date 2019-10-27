@@ -1,11 +1,12 @@
 package net.ocheyedan.wrk.domain.lists;
 
+import net.ocheyedan.wrk.domain.Assembler;
 import net.ocheyedan.wrk.ids.IdsAliasingManager;
 import net.ocheyedan.wrk.trello.List;
 
 import java.util.Optional;
 
-public class ListViewAssembler {
+public class ListViewAssembler implements Assembler<ListView, List> {
 
     private final IdsAliasingManager idsAliasingManager;
 
@@ -13,6 +14,7 @@ public class ListViewAssembler {
         this.idsAliasingManager = idsAliasingManager;
     }
 
+    @Override
     public ListView assemble(List list) {
         Optional<String> byTrelloId = idsAliasingManager.findByTrelloId(list);
 

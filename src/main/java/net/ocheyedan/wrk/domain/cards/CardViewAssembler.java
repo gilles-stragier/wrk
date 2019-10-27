@@ -1,15 +1,16 @@
 package net.ocheyedan.wrk.domain.cards;
 
 import net.ocheyedan.wrk.cmd.trello.Cards;
-import net.ocheyedan.wrk.domain.lists.FindById;
+import net.ocheyedan.wrk.domain.Assembler;
+import net.ocheyedan.wrk.domain.lists.FindListById;
 import net.ocheyedan.wrk.domain.lists.ListView;
 import net.ocheyedan.wrk.trello.Card;
 
-public class CardSummaryAssembler {
+public class CardViewAssembler implements Assembler<CardView, Card> {
 
-    private final FindById findById;
+    private final FindListById findById;
 
-    public CardSummaryAssembler(FindById findById) {
+    public CardViewAssembler(FindListById findById) {
         this.findById = findById;
     }
 

@@ -1,5 +1,6 @@
 package net.ocheyedan.wrk.domain.cards;
 
+import net.ocheyedan.wrk.domain.View;
 import net.ocheyedan.wrk.trello.Label;
 import net.ocheyedan.wrk.trello.TrelloObject;
 
@@ -7,7 +8,7 @@ import java.util.List;
 
 import static net.ocheyedan.wrk.trello.TrelloObject.Type.CARD;
 
-public class CardView implements TrelloObject {
+public class CardView implements TrelloObject, View {
 
     public static class ListView {
         private String id;

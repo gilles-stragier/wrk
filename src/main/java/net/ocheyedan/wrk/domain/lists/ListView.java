@@ -1,6 +1,8 @@
 package net.ocheyedan.wrk.domain.lists;
 
-public class ListView {
+import net.ocheyedan.wrk.domain.View;
+
+public class ListView implements View {
 
     private String name;
     private String id;

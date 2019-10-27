@@ -6,7 +6,7 @@ import net.ocheyedan.wrk.ids.IdsAliasingManager;
 import net.ocheyedan.wrk.trello.List;
 import net.ocheyedan.wrk.trello.Trello;
 
-public class FindById {
+public class FindListById {
 
 
     private final RestTemplate restTemplate;
@@ -14,7 +14,7 @@ public class FindById {
     private final IdsAliasingManager idsAliasingManager;
     private final ListViewAssembler listViewAssembler;
 
-    public FindById(
+    public FindListById(
             RestTemplate restTemplate,
             TypeReferences typeReferences,
             IdsAliasingManager idsAliasingManager,

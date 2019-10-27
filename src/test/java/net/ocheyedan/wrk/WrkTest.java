@@ -3,9 +3,9 @@ package net.ocheyedan.wrk;
 import com.fasterxml.jackson.core.type.TypeReference;
 import net.ocheyedan.wrk.cmd.TypeReferences;
 import net.ocheyedan.wrk.cmd.trello.TrelloId;
-import net.ocheyedan.wrk.domain.cards.CardSummaryAssembler;
+import net.ocheyedan.wrk.domain.cards.CardViewAssembler;
 import net.ocheyedan.wrk.domain.cards.search.SearchCards;
-import net.ocheyedan.wrk.domain.lists.FindById;
+import net.ocheyedan.wrk.domain.lists.FindListById;
 import net.ocheyedan.wrk.domain.lists.ListViewAssembler;
 import net.ocheyedan.wrk.ids.IdMapping;
 import net.ocheyedan.wrk.ids.IdsAliasingManager;
@@ -56,7 +56,7 @@ class WrkTest {
         IdsAliasingManager wrkIdsManager = new IdsAliasingManager();
         RestTemplate mock = Mockito.mock(RestTemplate.class);
 
-        FindById findById = new FindById(
+        FindListById findById = new FindListById(
                 mock, typeReferences, wrkIdsManager, new ListViewAssembler(wrkIdsManager)
         );
 
@@ -65,7 +65,7 @@ class WrkTest {
                 typeReferences,
                 new DefaultOutputter(),
                 wrkIdsManager,
-                new SearchCards(mock, typeReferences, wrkIdsManager, new CardSummaryAssembler(findById))
+                new SearchCards(mock, typeReferences, wrkIdsManager, new CardViewAssembler(findById))
         );
 
         wrk = new Wrk(
@@ -311,7 +311,7 @@ class WrkTest {
         TypeReferences typeReferences = new TypeReferences();
         RestTemplate restTemplate = Mockito.mock(RestTemplate.class);
 
-        FindById findById = new FindById(
+        FindListById findById = new FindListById(
                 restTemplate, typeReferences, wrkIdsManager, new ListViewAssembler(wrkIdsManager)
         );
 
@@ -320,7 +320,7 @@ class WrkTest {
                 typeReferences,
                 new DefaultOutputter(),
                 wrkIdsManager,
-                new SearchCards(restTemplate, typeReferences, wrkIdsManager, new CardSummaryAssembler(findById))
+                new SearchCards(restTemplate, typeReferences, wrkIdsManager, new CardViewAssembler(findById))
         );
 
         wrk = new Wrk(
