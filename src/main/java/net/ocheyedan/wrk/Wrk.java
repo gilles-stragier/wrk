@@ -5,12 +5,12 @@ import net.ocheyedan.wrk.cmd.CommandLineParser;
 import net.ocheyedan.wrk.cmd.TypeReferences;
 import net.ocheyedan.wrk.domain.cards.CardViewAssembler;
 import net.ocheyedan.wrk.domain.cards.search.SearchCards;
-import net.ocheyedan.wrk.domain.lists.FindListById;
-import net.ocheyedan.wrk.domain.lists.ListViewAssembler;
+import net.ocheyedan.wrk.domain.lists.FindById;
 import net.ocheyedan.wrk.ids.IdsAliasingManager;
 import net.ocheyedan.wrk.ids.SequentiaByTypelIdGenerator;
 import net.ocheyedan.wrk.output.CompactOutputter;
 import net.ocheyedan.wrk.output.Output;
+import net.ocheyedan.wrk.trello.List;
 import net.ocheyedan.wrk.trello.Trello;
 
 /**
@@ -34,9 +34,6 @@ public final class Wrk {
         IdsAliasingManager wrkIdsManager = new IdsAliasingManager(
                 new SequentiaByTypelIdGenerator()
         );
-        FindListById findById = new FindListById(
-                restTemplate, typeReferences, wrkIdsManager, new ListViewAssembler(wrkIdsManager)
-        );
 
         ApplicationContext applicationContext = new ApplicationContext(
                 restTemplate,
@@ -44,7 +41,12 @@ public final class Wrk {
                 new CompactOutputter(),
                 wrkIdsManager,
                 new SearchCards(
-                        restTemplate, typeReferences, wrkIdsManager, new CardViewAssembler(findById)
+                        restTemplate,
+                        typeReferences,
+                        wrkIdsManager,
+                        new CardViewAssembler(
+                                new FindById<List>(restTemplate, typeReferences.listType, wrkIdsManager, "https://trello.com/1/lists/%s/?fields=all&key=%s&token=%s")
+                        )
                 )
         );
         Wrk wrk = new Wrk(applicationContext);

@@ -2,22 +2,24 @@ package net.ocheyedan.wrk.domain.cards;
 
 import net.ocheyedan.wrk.cmd.trello.Cards;
 import net.ocheyedan.wrk.domain.Assembler;
-import net.ocheyedan.wrk.domain.lists.FindListById;
-import net.ocheyedan.wrk.domain.lists.ListView;
+import net.ocheyedan.wrk.domain.lists.FindById;
 import net.ocheyedan.wrk.trello.Card;
+import net.ocheyedan.wrk.trello.List;
 
 public class CardViewAssembler implements Assembler<CardView, Card> {
 
-    private final FindListById findById;
+    private final FindById findById;
 
-    public CardViewAssembler(FindListById findById) {
+    public CardViewAssembler(FindById findById) {
         this.findById = findById;
     }
 
+
     public CardView assemble(Card card) {
 
-        ListView listView = findById.execute(card.getIdList());
-        CardView.ListView list = new CardView.ListView(listView.getId(), listView.getName(), listView.getPos());
+        Assembler<CardView.ListView, List> assembler = t -> new CardView.ListView(t.getId(), t.getName(), t.getPos());
+
+        CardView.ListView list = findById.execute(card.getIdList(), assembler).as(CardView.ListView.class);
 
         return CardView.newBuilder()
                 .labels(card.getLabels())

@@ -10,7 +10,7 @@ import static net.ocheyedan.wrk.trello.TrelloObject.Type.CARD;
 
 public class CardView implements TrelloObject, View {
 
-    public static class ListView {
+    public static class ListView implements View {
         private String id;
         private String name;
         private Integer pos;

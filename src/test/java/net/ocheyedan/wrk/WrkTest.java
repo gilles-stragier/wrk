@@ -5,8 +5,7 @@ import net.ocheyedan.wrk.cmd.TypeReferences;
 import net.ocheyedan.wrk.cmd.trello.TrelloId;
 import net.ocheyedan.wrk.domain.cards.CardViewAssembler;
 import net.ocheyedan.wrk.domain.cards.search.SearchCards;
-import net.ocheyedan.wrk.domain.lists.FindListById;
-import net.ocheyedan.wrk.domain.lists.ListViewAssembler;
+import net.ocheyedan.wrk.domain.lists.FindById;
 import net.ocheyedan.wrk.ids.IdMapping;
 import net.ocheyedan.wrk.ids.IdsAliasingManager;
 import net.ocheyedan.wrk.ids.SequentiaByTypelIdGenerator;
@@ -56,8 +55,8 @@ class WrkTest {
         IdsAliasingManager wrkIdsManager = new IdsAliasingManager();
         RestTemplate mock = Mockito.mock(RestTemplate.class);
 
-        FindListById findById = new FindListById(
-                mock, typeReferences, wrkIdsManager, new ListViewAssembler(wrkIdsManager)
+        FindById findById = new FindById<>(
+                mock, typeReferences.listType, wrkIdsManager, "https://trello.com/1/lists/%s/?fields=all&key=%s&token=%s"
         );
 
         applicationContext = new ApplicationContext(
@@ -311,8 +310,8 @@ class WrkTest {
         TypeReferences typeReferences = new TypeReferences();
         RestTemplate restTemplate = Mockito.mock(RestTemplate.class);
 
-        FindListById findById = new FindListById(
-                restTemplate, typeReferences, wrkIdsManager, new ListViewAssembler(wrkIdsManager)
+        FindById findById = new FindById<>(
+                restTemplate, typeReferences.listType, wrkIdsManager, "https://trello.com/1/lists/%s/?fields=all&key=%s&token=%s"
         );
 
         applicationContext = new ApplicationContext(
