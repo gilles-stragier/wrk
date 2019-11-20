@@ -1,8 +1,11 @@
 package net.ocheyedan.wrk;
 
 import net.ocheyedan.wrk.cmd.TypeReferences;
+import net.ocheyedan.wrk.cmd.trello.boards.BoardsService;
 import net.ocheyedan.wrk.domain.cards.search.SearchCards;
 import net.ocheyedan.wrk.ids.IdsAliasingManager;
+import net.ocheyedan.wrk.output.DefaultOutputter;
+import net.ocheyedan.wrk.output.Output;
 import net.ocheyedan.wrk.output.Outputter;
 
 public class ApplicationContext {
@@ -11,6 +14,7 @@ public class ApplicationContext {
     public final TypeReferences typeReferences;
     public final Outputter outputter;
     public final IdsAliasingManager wrkIdsManager;
+    public final BoardsService boardsService;
     public final SearchCards searchCards;
 
     public ApplicationContext(
@@ -24,6 +28,7 @@ public class ApplicationContext {
         this.typeReferences = typeReferences;
         this.outputter = outputter;
         this.wrkIdsManager = wrkIdsManager;
+        this.boardsService = new BoardsService(wrkIdsManager, typeReferences, restTemplate);
         this.searchCards = searchCards;
     }
 }

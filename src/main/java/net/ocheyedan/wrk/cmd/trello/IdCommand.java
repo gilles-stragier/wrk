@@ -5,11 +5,9 @@ import net.ocheyedan.wrk.cmd.Args;
 import net.ocheyedan.wrk.cmd.Command;
 import net.ocheyedan.wrk.cmd.Usage;
 import net.ocheyedan.wrk.output.Output;
-import net.ocheyedan.wrk.trello.TrelloObject;
 
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
@@ -143,17 +141,6 @@ abstract class IdCommand extends Command {
         return URLEncoder.encode(comment, StandardCharsets.UTF_8);
     }
 
-    protected TrelloId parseWrkId(String wrkId, TrelloObject.Type... acceptedTypes) {
-        TrelloId result = applicationContext.wrkIdsManager.findByWrkId(wrkId).orElseGet(() -> TrelloId.fromLegacyString(wrkId));
-
-        if (!Arrays.asList(acceptedTypes).contains(applicationContext.wrkIdsManager.findByWrkId(wrkId).get().getType())) {
-            Output.print("The wrk-id [ ^b^%s^r^ ] is for ^red^%s^r^ but the command is for %s.", wrkId, applicationContext.wrkIdsManager.findByWrkId(wrkId).get().getType().name(), acceptedTypes);
-            System.exit(1);
-        }
-
-        return result;
-
-    }
 
     protected LegacyTrelloId parseWrkId(String wrkId, Set<String> desiredPrefixes) {
         Optional<TrelloId> trelloOptional = applicationContext.wrkIdsManager.findByWrkId(wrkId);

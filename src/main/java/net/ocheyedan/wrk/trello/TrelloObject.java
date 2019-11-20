@@ -2,6 +2,9 @@ package net.ocheyedan.wrk.trello;
 
 import net.ocheyedan.wrk.cmd.trello.TrelloId;
 
+import java.util.Arrays;
+import java.util.stream.Collectors;
+
 public interface TrelloObject {
 
     default TrelloId trelloId() {
@@ -13,7 +16,9 @@ public interface TrelloObject {
         BOARD("b"),
         ORG("o"),
         MEMBER("m"),
-        LIST("l");
+        LIST("l"),
+        UNKNOWN("?"),
+        ;
 
         private String prefix;
 
@@ -27,6 +32,10 @@ public interface TrelloObject {
 
         public String keyPrefix() {
             return prefix() + ":";
+        }
+
+        public static String arrayToString(Type... types) {
+            return Arrays.stream(types).map(t -> t.name()).collect(Collectors.joining());
         }
     }
 
