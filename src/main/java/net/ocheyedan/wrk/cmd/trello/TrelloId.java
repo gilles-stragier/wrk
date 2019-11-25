@@ -35,11 +35,11 @@ public class TrelloId {
         return type;
     }
 
-    public String formatAsLegacy() {
+    String formatAsLegacy() {
         return getType().keyPrefix() + getId();
     }
 
-    public static TrelloId parseTrelloId(String id, IdsAliasingManager idsAliasingManager, TrelloObject.Type... acceptedTypes) {
+    static TrelloId parseTrelloId(String id, IdsAliasingManager idsAliasingManager, TrelloObject.Type... acceptedTypes) {
         Optional<TrelloId> trelloOptional = idsAliasingManager.findByWrkId(id);
         if (!trelloOptional.isPresent()) {
             return new TrelloId(id, acceptedTypes.length == 1 ? acceptedTypes[0] : TrelloObject.Type.UNKNOWN);
@@ -82,19 +82,4 @@ public class TrelloId {
                 .toString();
     }
 
-    public static TrelloId fromLegacyString(String wrkId) {
-        if (wrkId.startsWith(TrelloObject.Type.BOARD.keyPrefix())) {
-            return new TrelloId(wrkId.substring(2), TrelloObject.Type.BOARD);
-        } else if (wrkId.startsWith(TrelloObject.Type.CARD.keyPrefix())) {
-            return new TrelloId(wrkId.substring(2), TrelloObject.Type.CARD);
-        } else if (wrkId.startsWith(TrelloObject.Type.LIST.keyPrefix())) {
-            return new TrelloId(wrkId.substring(2), TrelloObject.Type.LIST);
-        } else if (wrkId.startsWith(TrelloObject.Type.ORG.keyPrefix())) {
-            return new TrelloId(wrkId.substring(2), TrelloObject.Type.ORG);
-        } else if (wrkId.startsWith(TrelloObject.Type.MEMBER.keyPrefix())) {
-            return new TrelloId(wrkId.substring(2), TrelloObject.Type.MEMBER);
-        } else {
-            throw new IllegalArgumentException("Unknox prefix for id " + wrkId);
-        }
-    }
 }

@@ -21,16 +21,16 @@ public class CardViewAssembler implements Assembler<CardView, Card> {
 
         CardView.ListView list = findById.execute(card.getIdList(), assembler).as(CardView.ListView.class);
 
+        String dueDate = card.getBadges() != null ? card.getBadges().getDue() : "/";
+
         return CardView.newBuilder()
                 .labels(card.getLabels())
                 .id(card.getId())
                 .name(card.getName())
-                .listView(
-                        list
-                )
+                .listView(list)
                 .prettyUrl(Cards.getPrettyUrl(card))
                 .pos(card.getPos())
-                .due(card.getBadges().getDue())
+                .due(dueDate)
                 .build();
     }
 
