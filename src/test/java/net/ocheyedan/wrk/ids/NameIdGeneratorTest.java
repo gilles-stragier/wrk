@@ -2,14 +2,11 @@ package net.ocheyedan.wrk.ids;
 
 import net.ocheyedan.wrk.TestData;
 import net.ocheyedan.wrk.trello.Board;
-import net.ocheyedan.wrk.trello.TrelloObject;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class NameIdGeneratorTest {
 

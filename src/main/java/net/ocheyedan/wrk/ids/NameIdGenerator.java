@@ -4,7 +4,6 @@ import net.ocheyedan.wrk.trello.TrelloObject;
 import org.apache.commons.lang3.RandomStringUtils;
 
 import java.text.Normalizer;
-import java.util.Collection;
 import java.util.Set;
 
 public class NameIdGenerator implements IdGenerator {

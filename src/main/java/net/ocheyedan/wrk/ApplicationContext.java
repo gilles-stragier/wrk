@@ -4,8 +4,6 @@ import net.ocheyedan.wrk.cmd.TypeReferences;
 import net.ocheyedan.wrk.cmd.trello.boards.BoardsService;
 import net.ocheyedan.wrk.domain.cards.search.SearchCards;
 import net.ocheyedan.wrk.ids.IdsAliasingManager;
-import net.ocheyedan.wrk.output.DefaultOutputter;
-import net.ocheyedan.wrk.output.Output;
 import net.ocheyedan.wrk.output.Outputter;
 
 public class ApplicationContext {

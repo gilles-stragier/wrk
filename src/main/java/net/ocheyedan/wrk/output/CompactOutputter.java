@@ -15,7 +15,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static com.github.freva.asciitable.AsciiTable.NO_BORDERS;
-import static net.ocheyedan.wrk.trello.TrelloObject.Type.*;
+import static net.ocheyedan.wrk.trello.TrelloObject.Type.LIST;
+import static net.ocheyedan.wrk.trello.TrelloObject.Type.ORG;
 
 public class CompactOutputter extends DefaultOutputter {
 

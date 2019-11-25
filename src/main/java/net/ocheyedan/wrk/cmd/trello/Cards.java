@@ -29,9 +29,9 @@ public final class Cards extends IdCommand {
     public final SearchCards searchCards;
 
     public CardsQuery buildFromArgs() {
-        if (argsContainsInSomething(args)) {
+        if (argsContainsTheInKeyword(args)) {
             String anIdOfSomething = args.args.get(1);
-            TrelloId id = parseWrkId(anIdOfSomething, BOARD, LIST);
+            TrelloId id = TrelloId.parseTrelloId(anIdOfSomething, applicationContext.wrkIdsManager, BOARD, LIST);
 
             if (id.getType() == BOARD) {
                 return new CardsOfABoard(id);
@@ -43,7 +43,7 @@ public final class Cards extends IdCommand {
         }
     }
 
-    public boolean argsContainsInSomething(Args args) {
+    public boolean argsContainsTheInKeyword(Args args) {
         return (args.args.size() == 2) && "in".equals(args.args.get(0));
     }
 
@@ -66,7 +66,7 @@ public final class Cards extends IdCommand {
     }
 
     @Override protected boolean valid() {
-        return argsContainsInSomething(args) || args.args.isEmpty();
+        return argsContainsTheInKeyword(args) || args.args.isEmpty();
     }
 
     @Override protected String getCommandName() {
