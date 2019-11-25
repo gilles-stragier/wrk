@@ -1,5 +1,7 @@
 package net.ocheyedan.wrk.cmd;
 
+import net.ocheyedan.wrk.Collections;
+
 import java.util.List;
 
 /**
@@ -21,15 +23,7 @@ public final class Args {
         if ((args == null) || args.isEmpty()) {
             return "<none>";
         }
-        StringBuilder buffer = new StringBuilder();
-        boolean first = true;
-        for (String arg : args) {
-            if (!first) {
-                buffer.append(' ');
-            }
-            buffer.append(arg);
-            first = false;
-        }
-        return buffer.toString();
+        return Collections.asAString(args);
     }
+
 }

@@ -68,8 +68,10 @@ public class CompactOutputter extends DefaultOutputter {
     @Override
     public void printCardViews(List<CardView> cards, IdsAliasingManager idsManager) {
         String table = AsciiTable.getTable(NO_BORDERS, cards, Arrays.asList(
+                new Column().header("#").with(c -> c.getPos().toString()),
                 new Column().header("id").with(c -> idsManager.findByTrelloId(c).get()),
                 new Column().dataAlign(HorizontalAlign.LEFT).header("title").with(c -> c.name()),
+                new Column().dataAlign(HorizontalAlign.LEFT).header("due").with(c -> c.due()),
                 new Column().dataAlign(HorizontalAlign.LEFT).header("labels").with(c -> c.getLabels().stream().map(l -> l.getName()).collect(Collectors.joining(","))),
                 new Column().header("list").with(c -> {
                     String alias = idsManager.findByTrelloId(new TrelloId(c.getListView().getId(), LIST)).get();

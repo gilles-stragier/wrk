@@ -30,6 +30,7 @@ public class CardViewAssembler implements Assembler<CardView, Card> {
                 )
                 .prettyUrl(Cards.getPrettyUrl(card))
                 .pos(card.getPos())
+                .due(card.getBadges().getDue())
                 .build();
     }
 

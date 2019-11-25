@@ -30,8 +30,7 @@ public final class Cards extends IdCommand {
 
     public CardsQuery buildFromArgs() {
         if (argsContainsTheInKeyword(args)) {
-            String anIdOfSomething = args.args.get(1);
-            TrelloId id = TrelloId.parseTrelloId(anIdOfSomething, applicationContext.wrkIdsManager, BOARD, LIST);
+            TrelloId id = TrelloId.parseTrelloId(args.args.get(1), applicationContext.wrkIdsManager, BOARD, LIST);
 
             if (id.getType() == BOARD) {
                 return new CardsOfABoard(id);

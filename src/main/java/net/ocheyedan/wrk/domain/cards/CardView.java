@@ -34,6 +34,7 @@ public class CardView implements TrelloObject, View {
         }
     }
 
+    private String due;
     private String id;
     private String name;
     private List<Label> labels;
@@ -42,6 +43,7 @@ public class CardView implements TrelloObject, View {
     private String prettyUrl;
 
     private CardView(Builder builder) {
+        due = builder.due;
         id = builder.id;
         name = builder.name;
         labels = builder.labels;
@@ -72,6 +74,10 @@ public class CardView implements TrelloObject, View {
         return id;
     }
 
+    public String due() {
+        return due;
+    }
+
     @Override
     public String name() {
         return name;
@@ -92,6 +98,7 @@ public class CardView implements TrelloObject, View {
         private ListView listView;
         private Integer pos;
         private String prettyUrl;
+        private String due;
 
         private Builder() {
         }
@@ -129,6 +136,11 @@ public class CardView implements TrelloObject, View {
 
         public CardView build() {
             return new CardView(this);
+        }
+
+        public Builder due(String val) {
+            due = val;
+            return this;
         }
     }
 }

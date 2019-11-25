@@ -1,12 +1,11 @@
 package net.ocheyedan.wrk.cmd.trello;
 
 import net.ocheyedan.wrk.ApplicationContext;
+import net.ocheyedan.wrk.Collections;
 import net.ocheyedan.wrk.cmd.Args;
 import net.ocheyedan.wrk.output.Output;
 import net.ocheyedan.wrk.trello.SearchResult;
 import net.ocheyedan.wrk.trello.Trello;
-
-import java.util.List;
 
 /**
  * User: blangel
@@ -23,7 +22,7 @@ public final class Search extends IdCommand {
         super(args, applicationContext);
         String query, entered;
         if (args.args.size() > 1) {
-            entered = combine(args.args.subList(1, args.args.size()));
+            entered = Collections.asAString(args.args.subList(1, args.args.size()));
             query = validate(encode(entered), "Search query", "search queries", true);
             String type = args.args.get(0);
             if ("orgs".equals(type)) {
@@ -43,7 +42,7 @@ public final class Search extends IdCommand {
                         Trello.APP_DEV_KEY, Trello.USR_TOKEN);
                 description = String.format("Searching members for ^b^%s^r^", entered);
             } else {
-                entered = combine(args.args);
+                entered = Collections.asAString(args.args);
                 query = validate(encode(entered), "Search query", "search queries", true);
                 url = Trello.url("https://trello.com/1/search?query=%s&board_fields=name,url&boards_limit=1000&cards_limit=1000&organizations_limit=1000&members_limit=1000&key=%s&token=%s", query,
                         Trello.APP_DEV_KEY, Trello.USR_TOKEN);
@@ -58,19 +57,6 @@ public final class Search extends IdCommand {
         } else {
             url = description = null;
         }
-    }
-
-    private String combine(List<String> values) {
-        StringBuilder buffer = new StringBuilder();
-        boolean first = true;
-        for (String value : values) {
-            if (!first) {
-                buffer.append(' ');
-            }
-            buffer.append(value);
-            first = false;
-        }
-        return buffer.toString();
     }
 
     @Override

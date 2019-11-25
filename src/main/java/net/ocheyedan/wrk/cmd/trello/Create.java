@@ -63,7 +63,6 @@ public final class Create extends IdCommand {
     @Override
     protected void _run() {
         Output.print(description);
-        String wrkId = "wrk1";
         switch (type) {
             case Board:
                 Board board = applicationContext.restTemplate.post(url, applicationContext.typeReferences.boardType);
